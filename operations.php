@@ -14,11 +14,14 @@ switch($op)
 {
   case 'insert':
   $name= $_REQUEST['name'];
-  $email $_REQUEST['email'];
+  $email = $_REQUEST['email'];
   $dao->insert($name,$email);
   break;
 
   case 'delete':
+  $id = $_REQUEST['email'];
+  $dao->insert($name,$email);
+  echo "DELETED $id";
   break;
 
   case 'update':

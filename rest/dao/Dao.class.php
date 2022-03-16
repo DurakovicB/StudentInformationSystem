@@ -41,7 +41,7 @@ class Dao
 
   public function update($id,$name,$email)
   {
-    $table='students'
+    $table='students';
     $query = "update $table set fullname=$name, email=$mail where id=$id";
     $insert = $this->connection->prepare($query);
     $insert->execute();
