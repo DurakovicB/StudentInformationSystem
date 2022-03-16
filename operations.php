@@ -13,12 +13,18 @@ $table = $_REQUEST['table'];
 switch($op)
 {
   case 'insert':
+  $name= $_REQUEST['name'];
+  $email $_REQUEST['email'];
+  $dao->insert($name,$email);
   break;
 
   case 'delete':
   break;
 
   case 'update':
+  $name= $_REQUEST['name'];
+  $email $_REQUEST['email'];
+  $dao->update($name,$email);
   break;
 
   case 'select':

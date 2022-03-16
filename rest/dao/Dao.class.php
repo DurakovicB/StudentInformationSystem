@@ -31,18 +31,26 @@ class Dao
     return $result;
   }
 
-  public function insert($table,$id,$name)
+  public function insert($name,$email)
   {
-
+    $table='students';
+    $query = "INSERT INTO $table (fullname, email) VALUES ($name, $email)";
+    $insert = $this->connection->prepare($query);
+    $insert->execute();
   }
 
-  public function update()
+  public function update($id,$name,$email)
   {
-
+    $table='students'
+    $query = "update $table set fullname=$name, email=$mail where id=$id";
+    $insert = $this->connection->prepare($query);
+    $insert->execute();
   }
-  public function delete()
+  public function delete($id)
   {
-
+    $table = "students";
+    $query = "delete from $table where id=$id";
+    $delete = $this->connection->prepare($query);
   }
 
 
