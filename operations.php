@@ -3,11 +3,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require 'rest/dao/Dao.class.php';
+require_once 'rest/dao/courseDao.class.php';
 
-$dao=new Dao();
-$op = $_REQUEST['op'];
-$table = $_REQUEST['table'];
+$dao=new courseDao();
+if(isset($_REQUEST['op']))$op = $_REQUEST['op'];
+else $op=" ";
+$table = 'course';
 
 
 switch($op)
@@ -26,14 +27,14 @@ switch($op)
 
   case 'update':
   $name= $_REQUEST['name'];
-  $email $_REQUEST['email'];
+  $email= $_REQUEST['email'];
   $dao->update($name,$email);
   break;
 
   case 'select':
   default:
-  $result = $dao.select_all($table);
-  print_r($results);
+  $result = $dao->select_all();
+  print_r($result);
 
   break;
 
