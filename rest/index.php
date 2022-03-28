@@ -14,14 +14,14 @@ Flight::register('courseDao', 'courseDao');
 * List all course
 */
 Flight::route('GET /course', function(){
-  Flight::json(Flight::courseDao()->get_all());
+  Flight::json(Flight::courseDao()->select_all());
 });
 
 /**
 * List invidiual course
 */
 Flight::route('GET /course/@id', function($id){
-  Flight::json(Flight::courseDao()->get_by_id($id));
+  Flight::json(Flight::courseDao()->selectByID($id));
 });
 
 /**

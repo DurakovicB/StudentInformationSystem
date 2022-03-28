@@ -36,6 +36,11 @@ class courseDao
   {
     $query = "select * from $this->dbname.$table ";
     $query.="where id=$id";
+    
+    $select = $this->connection->prepare($query);
+    $query->execute();
+    $result = $select->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
   }
 
   public function insert($name,$email)
