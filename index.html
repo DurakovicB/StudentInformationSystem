@@ -10,7 +10,7 @@
 
 <main>
 
-      <div id="course-list" class="row">
+      <div id="course-list" class="row" >
         <div class="spinner-border" role="status">
           <span class="sr-only"></span>
         </div>
@@ -29,6 +29,7 @@
 </style>
 <script>
 display_courses();
+
 function display_courses()
 {
   $.get("rest/course", function(data)
@@ -41,6 +42,8 @@ function display_courses()
       <div class="col-lg-4">
         <h2>`+data[i].name+`</h2>
         <p>`+data[i].description+`</p>
+        <p>ProfessorID: ` + data[i].professor_id+`</p>
+
         <p>
         <button type="button" class="btn btn-primary course-button" onclick="showModal(`+data[i].id+`)" >
               Launch demo modal
@@ -53,14 +56,15 @@ function display_courses()
 
     });
 }
+
     function enableCourseButtons()
     {
-      $('.course-button').attr('disabled', true);
+      $('.course-button').attr('disabled', false);
     }
 
     function disableCourseButtons()
     {
-      $('.course-button').attr('disabled', false);
+      $('.course-button').attr('disabled', true);
     }
 
     function showModal(id){
@@ -70,11 +74,39 @@ function display_courses()
       $("#description").val(data.description);
       $("#id").val(data.id);
       $("#name").val(data.name);
+      $("#professor_id").val(data.professor_id);
       $("#exampleModal").modal("show");
-      enableCourseButtons();
+
     })
   }
+    function saveCourse()
+    {
+      $('.save-course-button').attr('disabled', true);
+        var course={};
 
+        course.description=$("#description").val();
+        course.name=$("#name").val();
+        course.professor_id=$("#professor_id").val();
+        console.log(course);
+
+        $.ajax({
+      url: 'rest/course/'+$('#id').val(),
+      type: 'PUT',
+      data: JSON.stringify(course),
+      contentType: "application/json",
+      dataType: "json",
+      success: function(result) {
+          $("#exampleModal").modal("hide");
+          $('.save-course-button').attr('disabled', false);
+          $("#course-list").html('<div class="spinner-border" role="status"> <span class="sr-only"></span>  </div>');
+          display_courses(); // perf optimization
+          console.log(result);
+      }
+    });
+
+
+       enableCourseButtons();
+    }
 
 </script>
 
@@ -83,15 +115,16 @@ function display_courses()
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" onclick =disableCourseButtons() class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button"  class="btn-close" data-bs-dismiss="modal" onclick=enableCourseButtons(); aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <input id="id" type="hidden" />
+        <input id="name" type="text" />
         <input id="description" type="text" />
-        <input id="created" type="hidden" />
+        <input id="professor_id" type="text" />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-secondary" onclick =enableCourseButtons() data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary save-course-button" onclick="saveCourse()">Save changes</button>
       </div>
     </div>

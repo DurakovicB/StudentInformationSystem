@@ -1,6 +1,11 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 class courseDao
 {
+
+
   private $connection;
   private $dbname = "systeminformationsystem";
   private $table='course';
@@ -40,7 +45,7 @@ class courseDao
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
-    return $result;
+    return reset($result);
   }
 
   public function insert($name,$email)
@@ -50,16 +55,18 @@ class courseDao
     $insert->execute();
   }
 
-  public function update($id,$name,$email)
+  public function update($course)
   {
-    $query = "update $table set fullname=$name, email=$mail where id=$id";
+    $query = "update $this->table set name=:name, description=:description, professor_id=:professor_id WHERE id=:id";
     $insert = $this->connection->prepare($query);
-    $insert->execute();
+    $insert->execute($course);
+    return $course;
   }
   public function delete($id)
   {
-    $query = "delete from $table where id=$id";
+    $query = "delete from $table where id=:id";
     $delete = $this->connection->prepare($query);
+    $delete->bindParam(':id',$id); //SQL injection prevention
     $delete->execute();
   }
 
