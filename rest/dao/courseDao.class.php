@@ -34,11 +34,11 @@ class courseDao
   }
   public function selectByID($id)
   {
-    $query = "select * from $this->dbname.$table ";
+    $query = "select * from $this->dbname.$this->table ";
     $query.="where id=$id";
-    
+
     $select = $this->connection->prepare($query);
-    $query->execute();
+    $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
