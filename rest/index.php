@@ -28,7 +28,7 @@ Flight::route('GET /course/@id', function($id){
 * add course
 */
 Flight::route('POST /course', function(){
-  Flight::json(Flight::courseDao()->add(Flight::request()->data->getData()));
+  Flight::json(Flight::courseDao()->insert(Flight::request()->data->getData()));
 });
 
 /**

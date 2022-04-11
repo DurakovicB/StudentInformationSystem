@@ -9,113 +9,32 @@
 
 
 <main>
+  <div class="container marketing" style="margin-top:100px;">
+    <div class="row">
+      <div>
+        <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addCourseModal">Add Course</button>
+      </div>
+    </div>
 
-      <div id="course-list" class="row" >
-        <div class="spinner-border" role="status">
-          <span class="sr-only"></span>
-        </div>
-        </div>
-      </div><!-- /.row -->
+    <div id="course-list" class="row">
+    </div><!-- /.row -->
+  </div>
 </main>
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
-
-<style>
-.spinner-border{
-  position: fixed; /* or absolute */
- top: 50%;
- left: 50%;
-}
-</style>
-<script>
-display_courses();
-
-function display_courses()
-{
-  $.get("rest/course", function(data)
-  {
-    $('course-list').html("");
-    var html="";
-    for(let i=0;i<data.length;i++)
-    {
-      html+= `
-      <div class="col-lg-4">
-        <h2>`+data[i].name+`</h2>
-        <p>`+data[i].description+`</p>
-        <p>ProfessorID: ` + data[i].professor_id+`</p>
-
-        <p>
-        <button type="button" class="btn btn-primary course-button" onclick="showModal(`+data[i].id+`)" >
-              Launch demo modal
-        </button>
-        </p>
-      </div>`;
-        }
-        $('#course-list').html(html);
-        console.log(data);
-
-    });
-}
-
-    function enableCourseButtons()
-    {
-      $('.course-button').attr('disabled', false);
-    }
-
-    function disableCourseButtons()
-    {
-      $('.course-button').attr('disabled', true);
-    }
-
-    function showModal(id){
-    disableCourseButtons();
-    $.get('rest/course/'+id, function(data){
-      console.log(data);
-      $("#description").val(data.description);
-      $("#id").val(data.id);
-      $("#name").val(data.name);
-      $("#professor_id").val(data.professor_id);
-      $("#exampleModal").modal("show");
-
-    })
-  }
-    function saveCourse()
-    {
-      $('.save-course-button').attr('disabled', true);
-        var course={};
-
-        course.description=$("#description").val();
-        course.name=$("#name").val();
-        course.professor_id=$("#professor_id").val();
-        console.log(course);
-
-        $.ajax({
-      url: 'rest/course/'+$('#id').val(),
-      type: 'PUT',
-      data: JSON.stringify(course),
-      contentType: "application/json",
-      dataType: "json",
-      success: function(result) {
-          $("#exampleModal").modal("hide");
-          $('.save-course-button').attr('disabled', false);
-          $("#course-list").html('<div class="spinner-border" role="status"> <span class="sr-only"></span>  </div>');
-          display_courses(); // perf optimization
-          console.log(result);
-      }
-    });
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/course-service.js"></script>
 
 
-       enableCourseButtons();
-    }
 
-</script>
 
+<!-- EDIT MODAL -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button"  class="btn-close" data-bs-dismiss="modal" onclick=enableCourseButtons(); aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <input id="id" type="hidden" />
@@ -124,11 +43,46 @@ function display_courses()
         <input id="professor_id" type="text" />
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" onclick =enableCourseButtons() data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-course-button" onclick="saveCourse()">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-course-button" onclick="CourseService.update()">Save changes</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="addCourseModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="addCourseForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Course</h5>
+          <button type="button" class"btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input name="name" type="text" class="form-control required" placeholder="Enter name">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input name="description" type="text" class="form-control required" placeholder="Enter description">
+          </div>
+          <div class="form-group">
+            <label>ProfessorID</label>
+            <input name="professor_id" type="text" class="form-control required" placeholder="Enter professor_id">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  CourseService.init();
+</script>
 
 </html>

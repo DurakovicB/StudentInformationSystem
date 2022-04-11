@@ -48,23 +48,23 @@ class courseDao
     return reset($result);
   }
 
-  public function insert($name,$email)
+  public function insert($course)
   {
-    $query = "INSERT INTO $table (fullname, email) VALUES ($name, $email)";
+    $query = "INSERT INTO $this->dbname.$this->table (name, description,professor_id) VALUES (:name, :description,:professor_id)";
     $insert = $this->connection->prepare($query);
-    $insert->execute();
+    $insert->execute($course);
   }
 
   public function update($course)
   {
-    $query = "update $this->table set name=:name, description=:description, professor_id=:professor_id WHERE id=:id";
+    $query = "update $this->dbname.$this->table set name=:name, description=:description, professor_id=:professor_id WHERE id=:id";
     $insert = $this->connection->prepare($query);
     $insert->execute($course);
     return $course;
   }
   public function delete($id)
   {
-    $query = "delete from $table where id=:id";
+    $query = "delete from $this->dbname.$this->table where id=:id";
     $delete = $this->connection->prepare($query);
     $delete->bindParam(':id',$id); //SQL injection prevention
     $delete->execute();
