@@ -3,50 +3,17 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once 'dao/courseDao.class.php';
-require_once '../vendor/autoload.php';
+require_once __DIR__, '../vendor/autoload.php';
+require_once __DIR__, '../services/CourseService.class.php';
+require_once __DIR__, '../services/ProfessorService.class.php';
 
-Flight::register('courseDao', 'courseDao');
+Flight::register('courseService', 'CourseService');
+Flight::register('professorService', 'ProfessorService');
 
-// CRUD operations for todos entity
+require_once __DIR__, '../routes/ProfessorRoutes.php';
+require_once __DIR__, '../routes/CourseRoutes.php';
 
-/**
-* List all course
-*/
-Flight::route('GET /course', function(){
-  Flight::json(Flight::courseDao()->select_all());
-});
 
-/**
-* List invidiual course
-*/
-Flight::route('GET /course/@id', function($id){
-  Flight::json(Flight::courseDao()->selectByID($id));
-});
-
-/**
-* add course
-*/
-Flight::route('POST /course', function(){
-  Flight::json(Flight::courseDao()->insert(Flight::request()->data->getData()));
-});
-
-/**
-* update course
-*/
-Flight::route('PUT /course/@id', function($id){
-  $data = Flight::request()->data->getData();
-  $data['id'] = $id;
-  Flight::json(Flight::courseDao()->update($data));
-});
-
-/**
-* delete course
-*/
-Flight::route('DELETE /course/@id', function($id){
-  Flight::courseDao()->delete($id);
-  Flight::json(["message" => "deleted"]);
-});
 
 Flight::start();
 

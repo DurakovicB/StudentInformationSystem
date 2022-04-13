@@ -5,18 +5,16 @@ var CourseService = {
         var course = Object.fromEntries((new FormData(form)).entries());
         console.log(course);
         CourseService.add(course);
-        throw new Error("Something went badly wrong!");
-
       }
     });
     CourseService.list();
   },
 
-  add: function(forw) {
+  add: function(course) {
     $.ajax({
       url: 'rest/course/',
       type: 'POST',
-      data: JSON.stringify(forw),
+      data: JSON.stringify(course),
       contentType: "application/json",
       dataType: "json",
       success: function(result) {
@@ -55,8 +53,8 @@ var CourseService = {
                   <p class="card-text">`+ data[i].description +`</p>
                   <p class="card-text">ProfessorID: `+ data[i].professor_id +`</p>
                   <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-primary todo-button" onclick="ToDoService.get(`+data[i].id+`)">Edit</button>
-                    <button type="button" class="btn btn-danger todo-button" onclick="ToDoService.delete(`+data[i].id+`)">Delete</button>
+                    <button type="button" class="btn btn-primary course-button" onclick="CourseService.showEditModal(`+data[i].id+`)">Edit</button>
+                    <button type="button" class="btn btn-danger course-button" onclick="CourseService.delete(`+data[i].id+`)">Delete</button>
                   </div>
                   </div>
           </div>
