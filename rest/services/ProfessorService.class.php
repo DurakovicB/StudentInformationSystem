@@ -5,7 +5,7 @@ require_once __DIR__.'/../dao/ProfessorDao.class.php';
 class ProfessorService extends BaseService{
 
   public function __construct(){
-    parent::__construct(new NoteDao());
+    parent::__construct(new ProfessorDao());
   }
 
 }

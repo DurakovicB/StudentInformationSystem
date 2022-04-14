@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-class courseDao
+class BaseDao
 {
 
 
@@ -12,7 +12,7 @@ class courseDao
   //constructor
   public function __construct($table)
   {
-    $this->table=$table
+    $this->table=$table;
     $servername = "localhost";
     $username = "WebProgrammer";
     $password = "WebProgrammer";
@@ -32,7 +32,7 @@ class courseDao
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
-  public function selectByID($id)
+  public function select_by_id($id)
   {
     $query = "select * from $this->dbname.$this->table ";
     $query.="where id=$id";
@@ -50,7 +50,7 @@ class courseDao
     $delete->execute();
   }
   public function add($entity){
-    $query = "INSERT INTO ".$this->table." (";
+    $query = "INSERT INTO $this->dbname.$this->table ";$query.=" (";
     foreach ($entity as $column => $value) {
       $query .= $column.", ";
     }
@@ -61,7 +61,7 @@ class courseDao
     }
     $query = substr($query, 0, -2);
     $query .= ")";
-
+    print_r($query);
     $stmt= $this->connection->prepare($query);
     $stmt->execute($entity); // sql injection prevention
     $entity['id'] = $this->connection->lastInsertId();
@@ -69,7 +69,7 @@ class courseDao
   }
 
   public function update($id, $entity, $id_column = "id"){
-    $query = "UPDATE $this->table SET ";
+    $query = "UPDATE $this->dbname.$this->table SET ";
     foreach($entity as $name => $value){
       $query .= $name ."= :". $name. ", ";
     }

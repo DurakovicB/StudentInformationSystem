@@ -41,6 +41,7 @@ var CourseService = {
 
   list: function() {
     $.get("rest/course", function(data) {
+      console.log(data);
       $('course-list').html("");
       var html = "";
       for (let i = 0; i < data.length; i++) {
@@ -61,7 +62,6 @@ var CourseService = {
       </div>`;
       }
       $('#course-list').html(html);
-      console.log(data);
 
     });
   },

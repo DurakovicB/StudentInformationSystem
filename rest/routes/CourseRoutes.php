@@ -10,14 +10,14 @@ Flight::route('GET /course', function(){
 * List invidiual course
 */
 Flight::route('GET /course/@id', function($id){
-  Flight::json(Flight::courseService()->selectByID($id));
+  Flight::json(Flight::courseService()->select_by_id($id));
 });
 
 /**
 * add course
 */
 Flight::route('POST /course', function(){
-  Flight::json(Flight::courseService()->insert(Flight::request()->data->getData()));
+  Flight::json(Flight::courseService()->add(Flight::request()->data->getData()));
 });
 
 /**

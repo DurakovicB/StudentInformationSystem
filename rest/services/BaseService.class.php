@@ -7,12 +7,12 @@ abstract class BaseService {
     $this->dao = $dao;
   }
 
-  public function get_all(){
-    return $this->dao->get_all();
+  public function select_all(){
+    return $this->dao->select_all();
   }
 
-  public function get_by_id($id){
-    return $this->dao->get_by_id($id);
+  public function select_by_id($id){
+    return $this->dao->select_by_id($id);
   }
 
   public function add($entity){
