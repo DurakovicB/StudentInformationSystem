@@ -16,7 +16,13 @@ class CourseDao extends BaseDao
   }
 
 
-
+  public function search($string)
+  {
+    $query="SELECT  *  FROM systeminformationsystem.course WHERE CONCAT(name, ' ', description) LIKE '%$string%';";
+    $stmt = $this->connection->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
 
 
 

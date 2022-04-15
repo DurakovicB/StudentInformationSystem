@@ -10,6 +10,11 @@ require_once __DIR__.'/services/ProfessorService.class.php';
 Flight::register('courseService', 'CourseService');
 Flight::register('professorService', 'ProfessorService');
 
+Flight::map('error', function(Exception $ex){
+    // Handle error
+    Flight::json(['message' => $ex->getMessage()], 500);
+});
+
 require_once __DIR__.'../routes/ProfessorRoutes.php';
 require_once __DIR__.'../routes/CourseRoutes.php';
 

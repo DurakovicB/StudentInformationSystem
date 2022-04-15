@@ -1,4 +1,4 @@
-var CourseService = {
+var ProfessorService = {
   init: function() {
     $('#addCourseForm').validate({
       submitHandler: function(form) {

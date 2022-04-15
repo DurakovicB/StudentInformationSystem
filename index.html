@@ -3,12 +3,52 @@
 
 <head>
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
   <title>Student Information System</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
+<!--
+<main id="jqueryspapp" role="main">
+  <section id="emails" data-load="emails.html"></section>
+  <section id="campaigns" data-load="campaigns.html"></section>
+  <section id="settings" data-load="settings.html"></section>
+  <section id="email-templates" data-load="email-templates.html"></section>
+</main>
+-->
 
 <main>
-
+  <div id="professors" data-load="professors.html"></div>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          <img src="resources\pictures\logo.png" alt="" width="80" height="50" class="d-inline-block align-text-top">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#courses">Courses</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#professors">Professors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link " href="#students">Students</a>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+      </div>
+    </nav>
+  </div>
   <!-- END: Topbar -->
   </div>
   <div class="container marketing" style="margin-top:100px;">
@@ -80,6 +120,25 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- Professor MODAL -->
+<div class="modal fade" id="professorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id='professorInfo'></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-course-button" onclick="">Go to professors</button>
+      </div>
     </div>
   </div>
 </div>
