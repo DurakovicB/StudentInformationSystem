@@ -6,12 +6,19 @@ Flight::route('GET /course', function(){
   Flight::json(Flight::courseService()->select_all());
 });
 
+//search for course
+Flight::route('GET /course', function(){
+  Flight::json(Flight::courseService()->select_all());
+});
+
+
 /**
 * List invidiual course
 */
 Flight::route('GET /course/@id', function($id){
   Flight::json(Flight::courseService()->select_by_id($id));
 });
+
 
 /**
 * add course

@@ -7,7 +7,7 @@ class BaseDao
 
 
   private $connection;
-  private $dbname = "systeminformationsystem";
+  protected $dbname = "systeminformationsystem";
   private $table;
   //constructor
   public function __construct($table)

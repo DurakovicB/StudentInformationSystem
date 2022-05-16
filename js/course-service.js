@@ -111,8 +111,12 @@ var CourseService = {
       $("#professor_id").val(data.professor_id);
       $("#exampleModal").modal("show");
 
-    })}
+    })
+  },
+
   search: function search(string){
+    $.get('rest/course/search/' + string, function(data) {
+    });
 
   }
 
