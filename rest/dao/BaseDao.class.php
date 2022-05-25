@@ -20,7 +20,7 @@ class BaseDao
     $this->connection = new PDO("mysql:host=$servername;$this->dbname", $username, $password);
     // set the PDO error mode to exception
     $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "Connected successfully <br>";
+  //  echo "Connected successfully <br>";
   }
 
   public function select_all()
