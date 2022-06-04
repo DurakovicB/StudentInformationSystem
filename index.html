@@ -37,9 +37,12 @@
             <li class="nav-item">
               <a class="nav-link" href="#professors">Professors</a>
             </li>
+
             <li class="nav-item">
               <a class="nav-link " href="#students">Students</a>
             </li>
+            <button class="btn btn-outline-success" type="
+            " onclick="UserService.logout()">Logout</button>
           </ul>
           <form class="d-flex">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -66,6 +69,7 @@
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/jquery.validate.min.js"></script>
 <script src="js/course-service.js"></script>
+<script src="js/user-service.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 
@@ -144,7 +148,12 @@
   </div>
 </div>
 <script>
-  CourseService.init();
+  var token = localStorage.getItem("token");
+  if (token) {
+    CourseService.init();
+  } else {
+    window.location.replace("login.html");
+  }
 </script>
 
 </html>

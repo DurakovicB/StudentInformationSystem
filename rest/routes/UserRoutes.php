@@ -2,6 +2,7 @@
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
+require_once __DIR__.'/../Config.class.php';
 /**
 * Check user login
 */

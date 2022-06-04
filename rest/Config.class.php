@@ -1,6 +1,6 @@
 <?php
 
-class Config {
+ class Config {
 
   public static function DB_HOST(){
     return Config::get_env("DB_HOST", "localhost");
