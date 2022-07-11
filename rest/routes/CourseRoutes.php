@@ -2,12 +2,18 @@
 /**
 * List all course
 */
+/**
+ * @OA\Get(path="/course", tags={"notes"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Return all user notes from the API. ",
+ *         @OA\Response( response=200, description="List of notes.")
+ * )
+ */
 Flight::route('GET /course', function(){
   Flight::json(Flight::courseService()->select_all());
 });
 
 //search for course
-Flight::route('GET /course', function(){
+Flight::route('GET /course/search', function(){
   Flight::json(Flight::courseService()->select_all());
 });
 

@@ -1,13 +1,15 @@
 <?php
 /**
-* List all professor
+* List all professors
 */
+
+
 Flight::route('GET /professor', function(){
   Flight::json(Flight::professorService()->select_all());
 });
 
 /**
-* List invidiual professor
+* List an  invidiual professor
 */
 Flight::route('GET /professor/@id', function($id){
   Flight::json(Flight::professorService()->select_by_id($id));
@@ -17,7 +19,7 @@ Flight::route('GET /professor/@id', function($id){
 * add professor
 */
 Flight::route('POST /professor', function(){
-  Flight::json(Flight::professorService()->insert(Flight::request()->data->getData()));
+  Flight::json(Flight::professorService()->add(Flight::request()->data->getData()));
 });
 
 /**

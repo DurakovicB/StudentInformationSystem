@@ -68,7 +68,7 @@ var CourseService = {
                  for (let i = 0; i < data.length; i++) {
                    html += `
                    <div class="col-lg-3">
-                         <div class="card" style="width: 18rem;">
+                         <div class="card" style="width: 18rem;  margin-bottom: 25px;">
                            <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
                            <div class="card-body">
                              <h5 class="card-title">`+ data[i].name +`</h5>

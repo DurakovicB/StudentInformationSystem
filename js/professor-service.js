@@ -13,7 +13,7 @@ var ProfessorService = {
 
   add: function(course) {
     $.ajax({
-      url: 'rest/course/',
+      url: 'rest/professor/',
       type: 'POST',
       data: JSON.stringify(course),
       contentType: "application/json",
@@ -30,7 +30,7 @@ var ProfessorService = {
   delete: function(id) {
     if (confirm('Are you sure?') == true) {
       $.ajax({
-        url: 'rest/course/' + id,
+        url: 'rest/professor/' + id,
         type: 'DELETE',
         success: function(result) {
           CourseService.list();
@@ -41,7 +41,7 @@ var ProfessorService = {
 
 
   list: function() {
-    $.get("rest/course", function(data) {
+    $.get("rest/professor", function(data) {
       console.log(data);
       $('course-list').html("");
       var html = "";
@@ -112,7 +112,7 @@ var ProfessorService = {
       $("#professor_id").val(data.professor_id);
       $("#exampleModal").modal("show");
 
-    })}
+    })},
   search: function search(string){
 
   }

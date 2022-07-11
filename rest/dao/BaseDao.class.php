@@ -17,7 +17,7 @@ class BaseDao
     $username = "WebProgrammer";
     $password = "WebProgrammer";
 
-    $this->connection = new PDO("mysql:host=$servername;$this->dbname", $username, $password);
+    $this->connection = new PDO("mysql:host=$servername;dbname=$this->dbname", $username, $password);
     // set the PDO error mode to exception
     $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   //  echo "Connected successfully <br>";
@@ -27,7 +27,6 @@ class BaseDao
   {
     $query = "select * from $this->dbname.$this->table";
     $select = $this->connection->prepare($query);
-
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
@@ -92,3 +91,4 @@ class BaseDao
   }
 
 }
+?>

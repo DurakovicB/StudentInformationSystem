@@ -1,0 +1,102 @@
+<div>
+
+
+  <!-- END: Topbar -->
+</div>
+<div class="container marketing" style="margin-top:100px;">
+  <div class="row">
+    <div>
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addNotificationModal">Add Notification</button>
+    </div>
+  </div>
+
+
+
+
+  <div id="notification-list" class="row">
+  </div><!-- /.row -->
+</div>
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/jQuerySPApp.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/notification-service.js"></script>
+<script src="js/user-service.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <input id="id" type="hidden" />
+        <input id="name" type="text" />
+        <input id="description" type="text" />
+        <input id="professor_id" type="text" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-notification-button" onclick="NotificationService.update()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="addNotificationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="addNotificationForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Notification</h5>
+          <button type="button" class"btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name</label>
+            <input name="name" type="text" class="form-control required" placeholder="Enter name">
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input name="description" type="text" class="form-control required" placeholder="Enter description">
+          </div>
+          <div class="form-group">
+            <label>ProfessorID</label>
+            <input name="professor_id" type="text" class="form-control required" placeholder="Enter professor_id">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Professor MODAL -->
+<div class="modal fade" id="professorModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id='professorInfo'></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-notification-button" onclick="">Go to professors</button>
+      </div>
+    </div>
+  </div>
+</div>
