@@ -13,7 +13,15 @@
 
 
 
-  <div id="notification-list" class="row">
+  <div class="row">
+    <table id="notifications-table" class="table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
   </div><!-- /.row -->
 </div>
 <script src="js/jquery-3.6.0.min.js"></script>
@@ -56,25 +64,21 @@
       <form id="addNotificationForm">
         <div class="modal-header">
           <h5 class="modal-title" id="addModalLabel">Add Notification</h5>
-          <button type="button" class"btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>Name</label>
-            <input name="name" type="text" class="form-control required" placeholder="Enter name">
+            <label>Title</label>
+            <input name="title" type="text" class="form-control required" placeholder="Enter title">
           </div>
           <div class="form-group">
             <label>Description</label>
             <input name="description" type="text" class="form-control required" placeholder="Enter description">
           </div>
-          <div class="form-group">
-            <label>ProfessorID</label>
-            <input name="professor_id" type="text" class="form-control required" placeholder="Enter professor_id">
-          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary" onclick="saveNotification()">Add</button>
         </div>
       </form>
     </div>
@@ -83,20 +87,35 @@
 
 
 <!-- Professor MODAL -->
-<div class="modal fade" id="professorModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="notificationModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">Notification Description</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p id='professorInfo'></p>
+        <p id='notificationInfo'></p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-notification-button" onclick="">Go to professors</button>
+
       </div>
     </div>
   </div>
 </div>
+<script>
+  function saveNotification(){
+    var notification={};
+    notification.description=$("[name=description]").val();
+    notification.title=$("[name=title]").val();
+    NotificationService.add(notification);
+    
+  }
+  var token = localStorage.getItem("token");
+  if (token) {
+    NotificationService.init();
+  } else {
+    window.location.replace("login.html");
+  }
+
+</script>

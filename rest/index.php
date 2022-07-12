@@ -10,12 +10,15 @@ require_once __DIR__.'/../vendor/autoload.php';
 require_once __DIR__.'/services/CourseService.class.php';
 require_once __DIR__.'/services/ProfessorService.class.php';
 require_once __DIR__.'/services/StudentService.class.php';
+require_once __DIR__.'/services/NotificationService.class.php';
 require_once __DIR__.'/dao/UserDao.class.php' ;
 
 Flight::register('userDao', 'UserDao');
 Flight::register('courseService', 'CourseService');
 Flight::register('professorService', 'ProfessorService');
 Flight::register('studentService', 'StudentService');
+Flight::register('notificationService', 'NotificationService');
+
 /*
 Flight::map('error', function(Exception $ex){
     // Handle error
@@ -54,6 +57,8 @@ echo $openapi->toJson();
 require_once __DIR__.'../routes/CourseRoutes.php';
 require_once __DIR__.'../routes/UserRoutes.php';
 require_once __DIR__.'../routes/StudentRoutes.php';
+require_once __DIR__.'../routes/NotificationRoutes.php';
+
 
 
 Flight::start();
