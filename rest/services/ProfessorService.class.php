@@ -7,6 +7,10 @@ class ProfessorService extends BaseService{
   public function __construct(){
     parent::__construct(new ProfessorDao());
   }
+  public function find_courses($id){
+    return $this->dao->find_courses($id);
+  }
+
 
 }
 ?>

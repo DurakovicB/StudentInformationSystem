@@ -7,23 +7,23 @@
 
   <div class="row">
     <div>
-      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addStudentModal"
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addProfessorModal"
       style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;
-">Add Student</button>
+">Add Professor</button>
     </div>
   </div>
 
 
 
 
-  <div id="student-list" class="row">
+  <div id="professor-list" class="row">
   </div><!-- /.row -->
 </div>
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/jQuerySPApp.js"></script>
 <script src="js/bootstrap.bundle.min.js"></script>
 <script src="js/jquery.validate.min.js"></script>
-<script src="js/student-service.js"></script>
+<script src="js/professor-service.js"></script>
 <script src="js/user-service.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
@@ -46,7 +46,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-student-button" onclick="StudentService.update()">Save changes</button>
+        <button type="button" class="btn btn-primary save-professor-button" onclick="ProfessorService.update()">Save changes</button>
       </div>
     </div>
   </div>
@@ -55,12 +55,12 @@
 <!-- ADD MODAL -->
 
 <body>
-  <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="addProfessorModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form id="addStudentForm">
+        <form id="addProfessorForm">
           <div class="modal-header">
-            <h5 class="modal-title" id="addModalLabel">Add Student</h5>
+            <h5 class="modal-title" id="addModalLabel">Add Professor</h5>
             <button type="button" class"btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -83,6 +83,10 @@
 	                 <option value="female">Female</option>
                    </select>
             </div>
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input class="form-control required" type="date" id="start" name="dateofbirth" value="2000-01-01" min="1950-01-01" max="2001-12-31">
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -95,30 +99,12 @@
 </body>
 
 
-<!-- Professor MODAL -->
-<div class="modal fade" id="professorModal" tabindex="-1" aria-hidden="true">
+<!-- Professor courses MODAL -->
+<div class="modal fade modal-ku" id="professorCoursesModal" tabindex="-1" aria-hidden="true" ;>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p id='professorInfo'></p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-student-button" onclick="">Go to professors</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Student courses MODAL -->
-<div class="modal fade " id="studentCoursesModal" tabindex="-1" aria-hidden="true" ;>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="studentCoursesLabel">Professor courses</h5>
+        <h5 class="modal-title" id="professorCoursesLabel">Professor courses</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="forCourses">
@@ -133,7 +119,7 @@
 <script>
   var token = localStorage.getItem("token");
   if (token) {
-    StudentService.init();
+    ProfessorService.init();
   } else {
     window.location.replace("login.html");
   }

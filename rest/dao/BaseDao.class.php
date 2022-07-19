@@ -6,7 +6,7 @@ class BaseDao
 {
 
 
-  private $connection;
+  protected $connection;
   protected $dbname = "systeminformationsystem";
   private $table;
   //constructor
@@ -89,6 +89,7 @@ class BaseDao
     $results = $this->query($query, $params);
     return reset($results);
   }
+
 
 }
 ?>

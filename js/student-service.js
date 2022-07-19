@@ -51,7 +51,6 @@ var StudentService = {
 
   list: function() {
     $.get("rest/student", function(data) {
-      console.log(data);
       $('student-list').html("");
       var html = "";
       for (let i = 0; i < data.length; i++) {
@@ -70,6 +69,7 @@ var StudentService = {
                   <div class="btn-group" role="group">
                     <button type="button" class="btn btn-primary student-button" onclick="StudentService.showEditModal(`+data[i].id+`)">Edit</button>
                     <button type="button" class="btn btn-danger student-button" onclick="StudentService.delete(`+data[i].id+`)">Delete</button>
+                    <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
                   </div>
                   </div>
           </div>
@@ -79,7 +79,29 @@ var StudentService = {
 
     });
   },
-
+  showCourses: function showCourses(id) {
+    $.get('rest/studentcourses/' + id, function(data) {
+      var data2=data;
+      $.get('rest/student/' + id, function(data) {
+        $("#studentCoursesLabel").text(data.fullname+"'s Courses");
+      });
+           $('#forCourses').html("");
+               var html = "";
+               for (let i = 0; i < data2.length; i++) {
+                 html += `
+                 <div class="col-lg-3" style="float:left;">
+                       <div class="card"   margin-bottom: 25px;">
+                         <img class="card-img-top" style="height: 200px; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                         <div class="card-body">
+                           <h5 class="card-title">`+ data2[i].name +`</h5>
+                           </div>
+                   </div>
+               </div>`;
+               }
+               $('#forCourses').html(html);
+      $("#studentCoursesModal").modal("show");
+    });
+  },
   showStudentModal: function showStudentModal(id) {
     $.get('rest/student/' + id, function(data) {
       console.log(data);

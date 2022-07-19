@@ -8,12 +8,19 @@ Flight::route('GET /professor', function(){
   Flight::json(Flight::professorService()->select_all());
 });
 
+Flight::route('GET /professor/@id/courses', function($id){
+  Flight::json(Flight::professorService()->find_courses($id));
+});
+
 /**
 * List an  invidiual professor
 */
 Flight::route('GET /professor/@id', function($id){
   Flight::json(Flight::professorService()->select_by_id($id));
 });
+
+
+
 
 /**
 * add professor

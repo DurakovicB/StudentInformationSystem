@@ -6,7 +6,8 @@
 <div class="container marketing" style="margin-top:100px;">
   <div class="row">
     <div>
-      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addCourseModal">Add Course</button>
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addCourseModal"
+      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;">Add Course</button>
     </div>
   </div>
 
@@ -38,9 +39,9 @@
       </div>
       <div class="modal-body">
         <input id="id" type="hidden" />
-        <input id="name" type="text" />
-        <input id="description" type="text" />
-        <input id="professor_id" type="text" />
+        <input id="name" type="text" placeholder="Name"/>
+        <input id="description" type="text" placeholder="Description"/>
+        <input id="professor_id" type="text" placeholder="ProfessorID"/>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -88,11 +89,16 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">Professor Info</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p id='professorInfo'></p>
+        <img id="professorImage" src="" style="width: 250px;height: auto;"></img>
+        <p id='fullname'></p>
+        <p id='email'></p>
+        <p id='phone'></p>
+        <p id='dateofbirth'></p>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -101,3 +107,14 @@
     </div>
   </div>
 </div>
+
+<script>
+
+  var token = localStorage.getItem("token");
+  if (token) {
+    CourseService.init();
+  } else {
+    window.location.replace("login.html");
+  }
+
+</script>

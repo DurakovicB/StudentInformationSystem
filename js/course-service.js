@@ -73,7 +73,6 @@ var CourseService = {
                            <div class="card-body">
                              <h5 class="card-title">`+ data[i].name +`</h5>
                              <p class="card-text">`+ data[i].description +`</p>
-                             <p class="card-text" id='professorID' type="hidden">`+ data[i].professor_id +`</p>
                              <div class="btn-group" role="group">
                                <button type="button" class="btn btn-primary course-button" onclick="CourseService.showEditModal(`+data[i].id+`)">Edit</button>
                                <button type="button" class="btn btn-danger course-button" onclick="CourseService.delete(`+data[i].id+`)">Delete</button>
@@ -102,7 +101,14 @@ var CourseService = {
        },
        success: function(data) {
          console.log(data);
-         $("#professorInfo").text(JSON.stringify(data));
+         if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/maleprofessoravatar.png";
+         else picture = "resources/pictures/femaleprofessoravatar.png";
+         $("#professorImage").attr("src",picture);
+         $("#email").text(data.email);
+         $("#phone").text(data.phone);
+         $("#fullname").text(data.fullname);
+         $("#dateofbirth").text(data.dateofbirth);
+
 
          $("#professorModal").modal("show");
        },
