@@ -101,7 +101,7 @@ var CourseService = {
        },
        success: function(data) {
          console.log(data);
-         if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/maleprofessoravatar.png";
+         if(data.gender.toLowerCase()=="male") picture ="resources/pictures/maleprofessoravatar.png";
          else picture = "resources/pictures/femaleprofessoravatar.png";
          $("#professorImage").attr("src",picture);
          $("#email").text(data.email);

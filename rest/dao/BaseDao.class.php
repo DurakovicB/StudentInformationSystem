@@ -7,17 +7,19 @@ class BaseDao
 
 
   protected $connection;
-  protected $dbname = "systeminformationsystem";
+  protected $dbname = "studentinformationsystem";
   private $table;
   //constructor
   public function __construct($table)
   {
-    $this->table=$table;
-    $servername = "localhost";
-    $username = "WebProgrammer";
-    $password = "WebProgrammer";
+    $this->table = $table;
 
-    $this->connection = new PDO("mysql:host=$servername;dbname=$this->dbname", $username, $password);
+    $servername = Config::DB_HOST();
+    $username = Config::DB_USERNAME();
+    $password = Config::DB_PASSWORD();
+    $schema = Config::DB_SCHEME();
+    $port = Config::DB_PORT();
+    $this->connection = new PDO("mysql:host=$servername;dbname=$schema;port=$port", $username, $password);
     // set the PDO error mode to exception
     $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
   //  echo "Connected successfully <br>";
@@ -25,7 +27,7 @@ class BaseDao
 
   public function select_all()
   {
-    $query = "select * from $this->dbname.$this->table";
+    $query = "select * from $this->table";
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
@@ -33,7 +35,7 @@ class BaseDao
   }
   public function select_by_id($id)
   {
-    $query = "select * from $this->dbname.$this->table ";
+    $query = "select * from $this->table ";
     $query.="where id=$id";
 
     $select = $this->connection->prepare($query);
@@ -43,13 +45,13 @@ class BaseDao
   }
   public function delete($id)
   {
-    $query = "delete from $this->dbname.$this->table where id=:id";
+    $query = "delete from $this->table where id=:id";
     $delete = $this->connection->prepare($query);
     $delete->bindParam(':id',$id); //SQL injection prevention
     $delete->execute();
   }
   public function add($entity){
-    $query = "INSERT INTO $this->dbname.$this->table ";$query.=" (";
+    $query = "INSERT INTO $this->table ";$query.=" (";
     foreach ($entity as $column => $value) {
       $query .= $column.", ";
     }
@@ -68,7 +70,7 @@ class BaseDao
   }
 
   public function update($id, $entity, $id_column = "id"){
-    $query = "UPDATE $this->dbname.$this->table SET ";
+    $query = "UPDATE $this->table SET ";
     foreach($entity as $name => $value){
       $query .= $name ."= :". $name. ", ";
     }

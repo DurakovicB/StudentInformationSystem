@@ -1,20 +1,16 @@
-<div>
 
 
-  <!-- END: Topbar -->
-</div>
-<div class="container marketing" style="margin-top:100px;">
 
-  <div class="row">
-    <div>
+
+    <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#assignCourseModal"
+      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;">Assign Course</button>
+
       <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addProfessorModal"
-      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;
-">Add Professor</button>
-    </div>
-  </div>
+      style="position: fixed;right:0;bottom:0.5;  margin: 25px 50px 75px 100px;">Add Professor</button>
 
 
 
+    <div class="container marketing" style="margin-top:100px;">
 
   <div id="professor-list" class="row">
   </div><!-- /.row -->
@@ -35,14 +31,14 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Edit Professor</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <input id="id" type="hidden" />
-        <input id="fullname" type="text" />
-        <input id="email" type="text" />
-        <input id="phone" type="text" />
+        <input id="fullname" type="text" placeholder="Name"/>
+        <input id="email" type="text" placeholder="Email adress"/>
+        <input id="phone" type="text" placeholder="Phone number"/>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -96,7 +92,29 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="assignCourseModal" tabindex="-1" aria-labelledby="assignCourseModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignCourseModalLabel">Assign Course To Professor</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <label for="course">Select course:</label>
+          <select id="course_id" class="form-control" ></select>
+            <label for="professor">Select professor for the course:</label>
+          <select id="professor_id" class="form-control" ></select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary save-professor-button" data-bs-dismiss="modal" onclick="ProfessorService.assignCourse()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
 
 
 <!-- Professor courses MODAL -->
@@ -117,6 +135,8 @@
   </div>
 </div>
 <script>
+
+
   var token = localStorage.getItem("token");
   if (token) {
     ProfessorService.init();

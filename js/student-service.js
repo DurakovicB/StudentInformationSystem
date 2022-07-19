@@ -91,7 +91,7 @@ var StudentService = {
                  html += `
                  <div class="col-lg-3" style="float:left;">
                        <div class="card"   margin-bottom: 25px;">
-                         <img class="card-img-top" style="height: 200px; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                         <img class="card-img-top" style="height: auto; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
                          <div class="card-body">
                            <h5 class="card-title">`+ data2[i].name +`</h5>
                            </div>

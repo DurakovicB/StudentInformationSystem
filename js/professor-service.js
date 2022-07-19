@@ -9,6 +9,7 @@ var ProfessorService = {
       }
     });
     ProfessorService.list();
+    ProfessorService.fillOptions();
   },
 
   add: function(professor) {
@@ -98,7 +99,6 @@ var ProfessorService = {
                          <img class="card-img-top" style="height: auto; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
                          <div class="card-body">
                            <h5 class="card-title">`+ data2[i].name +`</h5>
-                           <p class="card-text">`+ data2[i].description +`</p>
                            </div>
                    </div>
                </div>`;
@@ -134,7 +134,6 @@ var ProfessorService = {
         $('.save-professor-button').attr('disabled', false);
         $("#professor-list").html('<div class="spinner-border" role="status"> <span class="sr-only"></span>  </div>');
         ProfessorService.list(); // perf optimization
-        console.log(result);
       }
     });
   },
@@ -151,7 +150,52 @@ var ProfessorService = {
       $("#exampleModal").modal("show");
 
     })},
+    fillOptions: function fillOptions()
+    {
+      $.get("rest/course", function(data) {
+        var html = "";
+        for (let i = 0; i < data.length; i++) {
+          html += `<option value=` + data[i].id + ` >` + data[i].name  + `</option>`;
+        }
+        $("#course_id").html(html);
+      });
+        $.get("rest/professor", function(data) {
+          var html = "";
+
+          for (let i = 0; i < data.length; i++) {
+            html += `<option value=` + data[i].id + ` >` + data[i].fullname  + `</option>`;
+          }
+          $("#professor_id").html(html);
+
+        });
+
+
+        },
+
+        assignCourse: function() {
+          // $('.save-professor-button').attr('disabled', true);
+          var professor = {};
+
+          professor.professor_id = $("#professor_id").val();
+
+          $.ajax({
+            url: 'rest/course/' + $('#course_id').val(),
+            type: 'PUT',
+            data: JSON.stringify(professor),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(result){
+              $("#assignCourseModal").modal("hide");
+              // $('.save-professor-button').attr('disabled', false);
+              ProfessorService.list(); //
+              ProfessorService.fillOptions(); // perf optimization
+            }
+              });
+            },
+
+
   search: function search(string){
+
 
   }
 
