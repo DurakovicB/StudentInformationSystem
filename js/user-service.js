@@ -2,6 +2,7 @@ var UserService = {
   init: function(){
     var token = localStorage.getItem("token");
     var student_id = localStorage.getItem("student_id");
+    
     if (token && student_id>0)
     {
       window.location.replace("index.html");

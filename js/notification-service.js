@@ -1,7 +1,10 @@
 //HAVEN?T DONE ANYTHING HERE WAITING FOR HTML
 var NotificationService = {
   init: function() {
-    if(localStorage.getItem("student_id")!=0)
+     if(localStorage.getItem("student_id")!=0)
+     {
+    $("[id=addNotificationButton]").hide();
+      }
 
 
     $('#addNotificationForm').validate({
@@ -11,7 +14,6 @@ var NotificationService = {
         NotificationService.add(notification);
       }
     });
-    $("[id=addNotificationButton]").hide();
 
 
     NotificationService.list();
@@ -47,6 +49,9 @@ var NotificationService = {
       $.ajax({
         url: 'rest/notification/' + id,
         type: 'DELETE',
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
         success: function(result) {
           NotificationService.list();
         }
@@ -56,7 +61,13 @@ var NotificationService = {
 
 
   list: function() {
-    $.get("rest/notification", function(data) {
+    $.ajax({
+       url: "rest/notification",
+       type: "GET",
+       beforeSend: function(xhr){
+         xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+       },
+       success: function(data) {
       console.log(data);
       $('notifications-table').html("");
       var html = `<thead>
@@ -76,16 +87,24 @@ var NotificationService = {
       }
       $('#notifications-table').html(html);
       if(localStorage.getItem("student_id")!=0)$(".deletebutton").hide();
-
+}
     });
   },
 
   showNotificationModal: function showNotificationModal(id) {
-    $.get('rest/notification/' + id, function(data) {
+    $.ajax({
+       url: "rest/notification/" + id,
+       type: "GET",
+       beforeSend: function(xhr){
+         xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+       },
+       success: function(data) {
+
       console.log(data);
       $("#notificationInfo").text(data.description);
 
       $("#notificationModal").modal("show");
+    }
     });
   },
 

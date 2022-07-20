@@ -29,7 +29,7 @@ Flight::map('error', function(Exception $ex){
 });*/
 
 Flight::route('/*', function(){
-  return TRUE;
+  // return TRUE;
   //perform JWT decode
   $path = Flight::request()->url;
   if ($path == '/login'|| $path == '/docs.json') return TRUE; // exclude login route from middleware
