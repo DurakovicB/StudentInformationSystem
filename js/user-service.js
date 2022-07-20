@@ -8,8 +8,6 @@ var UserService = {
       window.location.replace("index.html");
     }
 
-
-
     $('#login-form').validate({
       submitHandler: function(form) {
         var entity = Object.fromEntries((new FormData(form)).entries());
@@ -32,16 +30,25 @@ var UserService = {
         else  window.location.replace("admin.html");
 
       },
-      
+
     });
   },
   fillName: function(){
-    if(localStorage.getItem("student_id")==0)
+    if(localStorage.getItem("student_id")!=0)
     {
-      $("#user_full_name").text("ADMIN ACCESS");
+      $.ajax({
+            url: "rest/student/"+localStorage.getItem("student_id"),
+            type: 'GET',
+            contentType: "application/json",
+            dataType: "json",
+            beforeSend: function(xhr){
+              xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+            },
+            success: function(data) {
+              $("#user_full_name").text(data.fullname);
+            }});
 
     }
-    $("#user_full_name")
   },
   logout: function(){
     localStorage.clear();

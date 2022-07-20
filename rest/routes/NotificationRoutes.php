@@ -3,9 +3,9 @@
 * List all notification
 */
 /**
- * @OA\Get(path="/notification", tags={"notes"}, security={{"ApiKeyAuth": {}}},
- *         summary="Return all user notes from the API. ",
- *         @OA\Response( response=200, description="List of notes.")
+ * @OA\Get(path="/notification", tags={"Notification"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Return all notifications from the API. ",
+ *         @OA\Response( response=200, description="List of notifications.")
  * )
  */
 Flight::route('GET /notification', function(){
@@ -21,6 +21,13 @@ Flight::route('GET /notification/search', function(){
 /**
 * List invidiual notification
 */
+
+/**
+ * @OA\Get(path="/notification/@id", tags={"Notification"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Return all info about a specific notification from the API. ",
+ *         @OA\Response( response=200, description="List of notification details.")
+ * )
+ */
 Flight::route('GET /notification/@id', function($id){
   Flight::json(Flight::notificationService()->select_by_id($id));
 });

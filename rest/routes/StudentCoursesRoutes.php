@@ -3,15 +3,12 @@
 * List all studentcourses
 */
 /**
- * @OA\Get(path="/studentcourses", tags={"notes"}, security={{"ApiKeyAuth": {}}},
- *         summary="Return all user notes from the API. ",
+ * @OA\Get(path="/studentcourses/@id", tags={"Student","Course"}, security={{"ApiKeyAuth": {}}},
+ *         summary="Return all grades for a student. ",
  *         @OA\Response( response=200, description="List of notes.")
  * )
  */
 
-/**
-* List all student courses
-*/
 Flight::route('GET /studentcourses/@id', function($id){
   Flight::json(Flight::studentcoursesService()->select_all_courses($id));
 });

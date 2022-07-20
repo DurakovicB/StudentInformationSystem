@@ -161,6 +161,7 @@
   var token = localStorage.getItem("token");
   if (token) {
     CourseService.init();
+    UserService.fillName();
   } else {
     window.location.replace("login.html");
   }

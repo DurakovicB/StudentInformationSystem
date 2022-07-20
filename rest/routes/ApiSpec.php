@@ -2,10 +2,9 @@
 
 
 /**
- * @OA\Info(title="ToDo API Specs", version="0.2", @OA\Contact(email="dino.keco@ibu.edu.ba", name="Dino Keco"))
+ * @OA\Info(title="Student Information System API Specs", version="1", @OA\Contact(email="bilal.durakovic@stu.ibu.edu.ba", name="Bilal Durakovic"))
  * @OA\OpenApi(
  *    @OA\Server(url="http://localhost:81/WebProgramming/rest", description="Development Environment" ),
- *    @OA\Server(url="https://todos.biznet.ba/rest", description="Production Environment" )
  * ),
  * @OA\SecurityScheme(securityScheme="ApiKeyAuth", type="apiKey", in="header", name="Authorization" )
  */
