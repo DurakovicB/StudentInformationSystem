@@ -13,7 +13,9 @@ Flight::route('POST /login', function(){
       if($user['password'] == md5($login['password'])){
         unset($user['password']);
         $jwt = JWT::encode($user, Config::JWT_SECRET(), 'HS256');
-        Flight::json(['token' => $jwt]);
+
+        Flight::json(array('student_id' => $user['student_id'],'token' => $jwt));
+
       }else{
         Flight::json(["message" => "Wrong password"], 404);
       }

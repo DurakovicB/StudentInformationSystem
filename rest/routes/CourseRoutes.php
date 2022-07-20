@@ -25,7 +25,9 @@ Flight::route('GET /course/@id', function($id){
   Flight::json(Flight::courseService()->select_by_id($id));
 });
 
-
+Flight::route('GET /coursesforstudent/@id', function($id){
+  Flight::json(Flight::courseService()->select_for_student($id));
+});
 /**
 * add course
 */

@@ -10,6 +10,11 @@ class ProfessorService extends BaseService{
   public function find_courses($id){
     return $this->dao->find_courses($id);
   }
+  public function find_professors_for_student($id)
+  {
+    return $this->dao->find_professors_for_student($id);
+
+  }
 
 
 }

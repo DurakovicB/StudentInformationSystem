@@ -15,6 +15,10 @@ Flight::route('GET /student/@id', function($id){
   Flight::json(Flight::studentService()->select_by_id($id));
 });
 
+
+Flight::route('GET /studentcolleagues/@id', function($id){
+  Flight::json(Flight::studentService()->select_colleagues($id));
+});
 /**
 * add student
 */

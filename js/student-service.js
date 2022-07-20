@@ -9,6 +9,10 @@ var StudentService = {
       }
     });
     StudentService.list();
+    StudentService.fillOptions();
+    if(localStorage.getItem("student_id")!=0)$("#addStudentButton,#addStudentCourseButton").hide();
+
+
   },
 
   add: function(student) {
@@ -50,6 +54,8 @@ var StudentService = {
 
 
   list: function() {
+    if(localStorage.getItem("student_id")==0)
+    {
     $.get("rest/student", function(data) {
       $('student-list').html("");
       var html = "";
@@ -78,6 +84,34 @@ var StudentService = {
       $('#student-list').html(html);
 
     });
+  }else
+  {
+    $.get("rest/studentcolleagues/"+localStorage.getItem("student_id"), function(data) {
+    $('student-list').html("");
+    var html = "";
+    for (let i = 0; i < data.length; i++) {
+      var picture="";
+      if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
+      else picture = "resources/pictures/zenskiavatar.png";
+      html += `
+      <div class="col-lg-3">
+            <div class="card" style="width: 18rem;">
+              <img class="card-img-top" src="`+picture+`" alt="Card image cap">
+              <div class="card-body">
+                <h5 class="card-title">`+ data[i].fullname +`</h5>
+                <p class="card-text">`+ data[i].email +`</p>
+                <p class="card-text">`+ data[i].phone +`</p>
+                <p class="card-text" id='studentID' type="hidden">`+ data[i].id +`</p>
+                <div class="btn-group" role="group">
+                  <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
+                </div>
+                </div>
+        </div>
+    </div>`;
+    }
+    $('#student-list').html(html);
+  });
+  }
   },
   showCourses: function showCourses(id) {
     $.get('rest/studentcourses/' + id, function(data) {
@@ -147,6 +181,50 @@ var StudentService = {
       $("#exampleModal").modal("show");
 
     })},
+    fillOptions: function fillOptions()
+    {
+      $.get("rest/course", function(data) {
+        var html = "";
+        for (let i = 0; i < data.length; i++) {
+          html += `<option value=` + data[i].id + ` >` + data[i].name  + `</option>`;
+        }
+        $("#course_id").html(html);
+      });
+        $.get("rest/student", function(data) {
+          var html = "";
+
+          for (let i = 0; i < data.length; i++) {
+            html += `<option value=` + data[i].id + ` >` + data[i].fullname  + `</option>`;
+          }
+          $("#student_id").html(html);
+
+        });
+        },
+        assignCourse: function() {
+          // $('.save-professor-button').attr('disabled', true);
+          var student = {};
+
+          student.student_id = $("#student_id").val();
+          student.course_id = $("#course_id").val();
+          student.percentage_total_amount = $("#percentage_total_amount").val();
+          student.percentage_acquired = $("#percentage_acquired").val();
+          student.grade_title = $("#grade_title").val();
+
+
+          $.ajax({
+            url: 'rest/studentcourses',
+            type: 'POST',
+            data: JSON.stringify(student),
+            contentType: "application/json",
+            dataType: "json",
+            success: function(result){
+              $("#assignCourseModal").modal("hide");
+              // $('.save-professor-button').attr('disabled', false);
+              StudentService.list(); //
+              StudentService.fillOptions(); // perf optimization
+            }
+              });
+            },
   search: function search(string){
 
   }

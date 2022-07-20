@@ -4,7 +4,6 @@ var ProfessorService = {
     $('#addProfessorForm').validate({
       submitHandler: function(form) {
         var professor = Object.fromEntries((new FormData(form)).entries());
-        console.log(professor);
         ProfessorService.add(professor);
       }
     });
@@ -51,8 +50,9 @@ var ProfessorService = {
 
 
   list: function() {
+    if(localStorage.getItem("student_id")==0)
+    {
     $.get("rest/professor", function(data) {
-      console.log(data);
       $('professor-list').html("");
       var html = "";
       for (let i = 0; i < data.length; i++) {
@@ -82,6 +82,37 @@ var ProfessorService = {
       $('#professor-list').html(html);
 
     });
+  }else {
+    $("#assignCourseButton,#addProfessorButton").hide();
+
+    $.get("rest/professorsforstudent/"+localStorage.getItem("student_id"), function(data) {
+      $('professor-list').html("");
+      var html = "";
+      for (let i = 0; i < data.length; i++) {
+        var picture="";
+        if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/maleprofessoravatar.png";
+        else picture = "resources/pictures/femaleprofessoravatar.png";
+        html += `
+        <div class="col-lg-3">
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top" src="`+picture+`" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">`+ data[i].fullname +`</h5>
+                  <p class="card-text">`+ data[i].email +`</p>
+                  <p class="card-text" id='professorID' type="hidden">`+ data[i].id +`</p>
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
+
+                  </div>
+                  </div>
+          </div>
+      </div>`;
+      }
+      $('#professor-list').html(html);
+
+    });
+  }
+
   },
 
   showCourses: function showCourses(id) {
@@ -121,7 +152,6 @@ var ProfessorService = {
     professor.fullname = $("#fullname").val();
     professor.email = $("#email").val();
     professor.phone = $("#phone").val();
-    console.log(professor);
 
     $.ajax({
       url: 'rest/professor/' + $('#id').val(),
@@ -142,7 +172,6 @@ var ProfessorService = {
 
   showEditModal: function showEditModal(id) {
     $.get('rest/professor/' + id, function(data) {
-      console.log(data);
       $("#fullname").val(data.fullname);
       $("#id").val(data.id);
       $("#phone").val(data.phone);

@@ -3,7 +3,6 @@ var CourseService = {
     $('#addCourseForm').validate({
       submitHandler: function(form) {
         var course = Object.fromEntries((new FormData(form)).entries());
-        console.log(course);
         CourseService.add(course);
       }
     });
@@ -11,7 +10,6 @@ var CourseService = {
   },
 
   add: function(course) {
-
     $.ajax({
       url: 'rest/course/',
       type: 'POST',
@@ -47,7 +45,6 @@ var CourseService = {
            CourseService.list();
          },
          error: function(XMLHttpRequest, textStatus, errorThrown) {
-         toastr.error(XMLHttpRequest.responseJSON.message);
          UserService.logout();
          }
          });
@@ -56,6 +53,8 @@ var CourseService = {
   },
 
   list: function(){
+    if(localStorage.getItem("student_id")==0)
+    {
         $.ajax({
            url: "rest/course",
            type: "GET",
@@ -86,10 +85,44 @@ var CourseService = {
 
              },
            error: function(XMLHttpRequest, textStatus, errorThrown) {
-             toastr.error(XMLHttpRequest.responseJSON.message);
              UserService.logout();
            }
         });
+      } else {
+        $("#addCourseButton").hide();
+          $.ajax({
+             url: "rest/coursesforstudent/"+localStorage.getItem("student_id"),
+             type: "GET",
+             beforeSend: function(xhr){
+               xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+             },
+             success: function(data) {
+               $('course-list').html("");
+                   var html = "";
+                   for (let i = 0; i < data.length; i++) {
+                     html += `
+                     <div class="col-lg-3">
+                           <div class="card" style="width: 18rem;  margin-bottom: 25px;">
+                             <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                             <div class="card-body">
+                               <h5 class="card-title">`+ data[i].name +`</h5>
+                               <p class="card-text">`+ data[i].description +`</p>
+                               <div class="btn-group" role="group">
+                                 <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
+                               </div>
+                               </div>
+                       </div>
+                   </div>`;
+                   }
+                   $('#course-list').html(html);
+
+               },
+             error: function(XMLHttpRequest, textStatus, errorThrown) {
+               UserService.logout();
+             }
+          });
+        }
+
       },
 
   showProfessorModal: function showProfessorModal(id) {

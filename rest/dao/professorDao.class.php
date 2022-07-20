@@ -20,5 +20,13 @@ class ProfessorDao extends BaseDao
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
+  public function find_professors_for_student($id)
+  {
+  $query = "select DISTINCT p.id,p.fullname,p.email,p.gender from professor p, student_courses sc,course c where c.id=sc.course_id and sc.student_id=$id and p.id=c.professor_id";
+  $select = $this->connection->prepare($query);
+  $select->execute();
+  $result = $select->fetchAll(PDO::FETCH_ASSOC);
+  return $result;
+  }
 }
 ?>

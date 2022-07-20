@@ -1,6 +1,9 @@
 //HAVEN?T DONE ANYTHING HERE WAITING FOR HTML
 var NotificationService = {
   init: function() {
+    if(localStorage.getItem("student_id")!=0)
+
+
     $('#addNotificationForm').validate({
       submitHandler: function(form) {
         var notification = Object.fromEntries((new FormData(form)).entries());
@@ -8,6 +11,9 @@ var NotificationService = {
         NotificationService.add(notification);
       }
     });
+    $("[id=addNotificationButton]").hide();
+
+
     NotificationService.list();
   },
 
@@ -65,10 +71,11 @@ var NotificationService = {
             <th>` + data[i].title + `</th>
             <th>` + data[i].created_at + `</th>
             <th><button class="editbtn" onclick=NotificationService.showNotificationModal(` + data[i].id + `)>Show</button></th>
-            <th><button class="editbtn" onclick=NotificationService.delete(` + data[i].id + `)>Delete</button></th>
+            <th><button class="editbtn deletebutton" onclick=NotificationService.delete(` + data[i].id + `)>Delete</button></th>
           </tr>`;
       }
       $('#notifications-table').html(html);
+      if(localStorage.getItem("student_id")!=0)$(".deletebutton").hide();
 
     });
   },

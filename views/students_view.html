@@ -7,9 +7,11 @@
 
   <div class="row">
     <div>
-      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addStudentModal"
-      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;
-">Add Student</button>
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addStudentModal" id="addStudentButton"  
+      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;">Add Student</button>
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#assignStudentCourseModal" id="addStudentCourseButton"
+      style="position: fixed;right:0;bottom:0.5;  margin: 25px 50px 75px 100px;">Assign Grade</button>
+
     </div>
   </div>
 
@@ -60,7 +62,7 @@
       <div class="modal-content">
         <form id="addStudentForm">
           <div class="modal-header">
-            <h5 class="modal-title" id="addModalLabel">Add Student</h5>
+            <h5 class="modal-title" id="addModalLabel" data-bs-dismiss="modal">Add Student</h5>
             <button type="button" class"btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -86,7 +88,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
           </div>
         </form>
       </div>
@@ -130,7 +132,36 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="assignStudentCourseModal" tabindex="-1" aria-labelledby="assignStudentCourseModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assignStudentCourseModalLabel">Assign Course To Student</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <label for="course_id">Select course:</label>
+        <select id="course_id" class="form-control" ></select>
+          <label for="student_id">Select student for the grade:</label>
+        <select id="student_id" class="form-control" ></select>
+        <label for="grade_title">Grade title:</label>
+        <input id="grade_title" type="text" class="form-control" />
+        <label for="percentage_total_amount">Total grade percentage:</label>
+        <input id="percentage_total_amount" type="number" class="form-control" />
+        <label for="percentage_acquired">Grade percentage acquired:</label>
+        <input id="percentage_acquired" type="number" class="form-control" />
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-professor-button" data-bs-dismiss="modal" onclick="StudentService.assignCourse()">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
+
   var token = localStorage.getItem("token");
   if (token) {
     StudentService.init();

@@ -20,6 +20,6 @@ class StudentCoursesDao extends BaseDao
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
-
+  
 }
 ?>
