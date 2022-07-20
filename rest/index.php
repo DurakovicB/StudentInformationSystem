@@ -56,12 +56,12 @@ header('Content-Type: application/json');
 echo $openapi->toJson();
 
 });
-  require_once __DIR__.'../routes/ProfessorRoutes.php';
-require_once __DIR__.'../routes/CourseRoutes.php';
-require_once __DIR__.'../routes/UserRoutes.php';
-require_once __DIR__.'../routes/StudentRoutes.php';
-require_once __DIR__.'../routes/NotificationRoutes.php';
-require_once __DIR__.'../routes/StudentCoursesRoutes.php';
+  require_once __DIR__.'/routes/ProfessorRoutes.php';
+require_once __DIR__.'/routes/CourseRoutes.php';
+require_once __DIR__.'/routes/UserRoutes.php';
+require_once __DIR__.'/routes/StudentRoutes.php';
+require_once __DIR__.'/routes/NotificationRoutes.php';
+require_once __DIR__.'/routes/StudentCoursesRoutes.php';
 
 
 
