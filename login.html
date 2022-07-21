@@ -15,22 +15,47 @@
 
 <body>
   <main>
-    <div class="container marketing" style="margin-top:100px;">
-      <!-- Three columns of text below the carousel -->
-      <div class="row">
-        <form id="login-form">
-          <div class="mb-3">
-            <label class="form-label">Email address</label>
-            <input type="email" name="email" class="form-control" value="admin@ibu.edu.ba">
+
+    <section class="vh-100 gradient-custom">
+      <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+              <div class="card-body p-5 text-center">
+
+                <div class="mb-md-5 mt-md-4 pb-5">
+
+                  <h2 class="fw-bold mb-2 text-uppercase">Student Information System</h2>
+                  <p class="text-white-50 mb-5">Login into your account!</p>
+                  <form id="login-form">
+                  <div class="form-outline form-white mb-4">
+                    <input type="email" name="email" class="form-control form-control-lg" placeholder="Email" value="admin@ibu.edu.ba"/>
+                    <label class="form-label" for="typeEmailX">Email</label>
+                  </div>
+
+                  <div class="form-outline form-white mb-4">
+                    <input type="password" name="password" class="form-control form-control-lg" placeholder="Password" value="123"/>
+                    <label class="form-label" for="typePasswordX">Password</label>
+                  </div>
+                  <!-- <p class="small mb-5 pb-lg-2"><a class="text-white-50" href="#!">Forgot password?</a></p> -->
+
+                  <button class="btn btn-outline-light btn-lg px-5" type="submit">Login</button>
+                </form>
+
+
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Password</label>
-            <input type="password" name="password" class="form-control" value="123">
-          </div>
-          <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
+
+<style>
+body {
+  background-image: url('resources/pictures/backgound2.jpg');
+}
+</style>
   </main>
   <script src="js/jquery-3.6.0.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>

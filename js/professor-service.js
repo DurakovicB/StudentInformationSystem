@@ -77,9 +77,9 @@ var ProfessorService = {
                     <div class="card-body">
                       <h5 class="card-title">`+ data[i].fullname +`</h5>
                       <p class="card-text">`+ data[i].email +`</p>
-                      <p class="card-text">`+ data[i].phone +`</p>
+                      <p class="card-text">Phone: `+ data[i].phone +`</p>
                       <p class="card-text">`+ data[i].dateofbirth +`</p>
-                      <p class="card-text" id='professorID' type="hidden">`+ data[i].id +`</p>
+                      <p class="card-text" id='professorID' type="text">ProfessorID: `+ data[i].id +`</p>
                       <div class="btn-group" role="group">
                         <button type="button" class="btn btn-primary professor-button" onclick="ProfessorService.showEditModal(`+data[i].id+`)">Edit</button>
                         <button type="button" class="btn btn-danger professor-button" onclick="ProfessorService.delete(`+data[i].id+`)">Delete</button>

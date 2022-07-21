@@ -72,6 +72,7 @@ var CourseService = {
                            <div class="card-body">
                              <h5 class="card-title">`+ data[i].name +`</h5>
                              <p class="card-text">`+ data[i].description +`</p>
+                             <p class="card-text">Course ID: `+ data[i].id +`</p>
                              <div class="btn-group" role="group">
                                <button type="button" class="btn btn-primary course-button" onclick="CourseService.showEditModal(`+data[i].id+`)">Edit</button>
                                <button type="button" class="btn btn-danger course-button" onclick="CourseService.delete(`+data[i].id+`)">Delete</button>
@@ -107,6 +108,7 @@ var CourseService = {
                              <div class="card-body">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
+                               <p class="card-text">Course ID:`+ data[i].id +`</p>
                                <div class="btn-group" role="group">
                                  <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
                                </div>

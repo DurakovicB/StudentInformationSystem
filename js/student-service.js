@@ -81,8 +81,8 @@ var StudentService = {
                         <div class="card-body">
                           <h5 class="card-title">`+ data[i].fullname +`</h5>
                           <p class="card-text">`+ data[i].email +`</p>
-                          <p class="card-text">`+ data[i].phone +`</p>
-                          <p class="card-text" id='studentID' type="hidden">`+ data[i].id +`</p>
+                          <p class="card-text">Phone: `+ data[i].phone +`</p>
+                          <p class="card-text" id='studentID' type="text">StudentID: `+ data[i].id +`</p>
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-primary student-button" onclick="StudentService.showEditModal(`+data[i].id+`)">Edit</button>
                             <button type="button" class="btn btn-danger student-button" onclick="StudentService.delete(`+data[i].id+`)">Delete</button>
