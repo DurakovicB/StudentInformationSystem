@@ -11,7 +11,7 @@
  Target Server Version : 50734
  File Encoding         : 65001
 
- Date: 19/07/2022 22:11:57
+ Date: 28/03/2023 09:48:46
 */
 
 SET NAMES utf8mb4;
@@ -142,11 +142,12 @@ CREATE TABLE `users`  (
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `student_id` int(40) UNSIGNED NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (1, 'admin@ibu.edu.ba', '202cb962ac59075b964b07152d234b70', NULL);
+INSERT INTO `users` VALUES (1, 'ahmed@ibu.edu.ba', '202cb962ac59075b964b07152d234b70', 1);
+INSERT INTO `users` VALUES (2, 'bilal@ibu.edu.ba', '202cb962ac59075b964b07152d234b70', 4);
 
 SET FOREIGN_KEY_CHECKS = 1;

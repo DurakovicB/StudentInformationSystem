@@ -55,6 +55,21 @@ var StudentService = {
     }
   },
 
+showFinalGrade: function(student_id,course_id)
+{
+  $.ajax({
+    url: 'rest/studentgrades/'+student_id+'/'+course_id,
+    type: 'get',
+    beforeSend: function(xhr){
+      xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+    },
+    contentType: "application/json",
+    dataType: "json",
+    success: function(result) {
+
+    }
+  });
+},
 
   list: function() {
     if(localStorage.getItem("student_id")==0)
@@ -164,6 +179,7 @@ var StudentService = {
                                  <img class="card-img-top" style="height: auto; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
                                  <div class="card-body">
                                    <h5 class="card-title">`+ data2[i].name +`</h5>
+
                                    </div>
                            </div>
                        </div>`;
