@@ -1,18 +1,3 @@
-/*
- Navicat Premium Data Transfer
-
- Source Server         : WebProgrammer
- Source Server Type    : MySQL
- Source Server Version : 50734
- Source Host           : localhost:3306
- Source Schema         : systeminformationsystem
-
- Target Server Type    : MySQL
- Target Server Version : 50734
- File Encoding         : 65001
-
- Date: 28/03/2023 09:48:46
-*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -56,9 +41,9 @@ CREATE TABLE `notification`  (
 -- ----------------------------
 -- Records of notification
 -- ----------------------------
-INSERT INTO `notification` VALUES (1, 'Regarding exam registration', 'Dear Students, on the LMS you can find a video tutorial on how to register for your exams. Please be aware that students will not be able to do exams that they haven\'t previously registered for.', '2022-07-12 15:39:48');
-INSERT INTO `notification` VALUES (2, 'Happy Holidays', 'The staff of the University wishes you happy holidays. We hope to see you soon!', '2022-07-17 15:17:33');
-INSERT INTO `notification` VALUES (3, 'Erasmus Information', 'Information about upcoming erasmus programs will be available on our website. Be sure to check it regularly.', '2022-07-17 15:21:01');
+INSERT INTO `notification` VALUES (1, 'Regarding exam registration', 'Dear Students, on the LMS you can find a video tutorial on how to register for your exams. Please be aware that students will not be able to do exams that they haven\'t previously registered for.', '2023-04-12 15:39:48');
+INSERT INTO `notification` VALUES (2, 'Happy Holidays', 'The staff of the University wishes you happy holidays. We hope to see you soon!', '2023-04-17 15:17:33');
+INSERT INTO `notification` VALUES (3, 'Erasmus Information', 'Information about upcoming erasmus programs will be available on our website. Be sure to check it regularly.', '2023-05-17 15:21:01');
 
 -- ----------------------------
 -- Table structure for professor
@@ -121,7 +106,7 @@ CREATE TABLE `student_courses`  (
   INDEX `student`(`student_id`) USING BTREE,
   CONSTRAINT `course` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 30 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of student_courses
@@ -131,6 +116,17 @@ INSERT INTO `student_courses` VALUES (1, 2, 40, 75, 'Project', 2);
 INSERT INTO `student_courses` VALUES (1, 2, 30, 55, 'Final', 3);
 INSERT INTO `student_courses` VALUES (1, 3, 10, 100, 'Quiz 1', 4);
 INSERT INTO `student_courses` VALUES (1, 1, 5, 40, 'Quiz 1', 7);
+INSERT INTO `student_courses` VALUES (1, 1, 30, 70, 'midterm', 19);
+INSERT INTO `student_courses` VALUES (1, 2, 10, 85, 'quiz', 20);
+INSERT INTO `student_courses` VALUES (1, 3, 30, 60, 'final', 21);
+INSERT INTO `student_courses` VALUES (2, 1, 30, 80, 'midterm', 22);
+INSERT INTO `student_courses` VALUES (2, 3, 10, 70, 'quiz', 23);
+INSERT INTO `student_courses` VALUES (3, 1, 30, 65, 'final', 24);
+INSERT INTO `student_courses` VALUES (3, 2, 30, 90, 'midterm', 25);
+INSERT INTO `student_courses` VALUES (4, 1, 30, 75, 'midterm', 26);
+INSERT INTO `student_courses` VALUES (4, 3, 10, 80, 'quiz', 27);
+INSERT INTO `student_courses` VALUES (5, 2, 10, 75, 'final', 28);
+INSERT INTO `student_courses` VALUES (5, 3, 30, 70, 'midterm', 29);
 
 -- ----------------------------
 -- Table structure for users
