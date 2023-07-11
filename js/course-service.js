@@ -111,7 +111,7 @@ var CourseService = {
                                <p class="card-text">`+ data[i].description +`</p>
                                <p class="card-text">`+ data[i].total_grade +`</p>
 
-                               <p class="card-text">Course ID:`+ data[i].id +`</p>
+                               <p class="card-text">Course ID: `+ data[i].id +`</p>
                                <div class="btn-group" role="group">
                                  <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
                                </div>
