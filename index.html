@@ -41,7 +41,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#notifications_view" style="  font-size: 20px;">Notifications</a>
         </li>
-
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="#timetable_view" style="  font-size: 20px;">Timetable</a>
+        </li>
         <li class="nav-item" style="  font-size: 20px;">
           <a class="nav-link " href="#students_view">Colleagues</a>
         </li>
@@ -69,6 +71,7 @@ body {
   <section id="students_view" data-load="students_view.html"></section>
   <section id="notifications_view" data-load="notifications_view.html"></section>
   <section id="professors_view" data-load="professors_view.html"></section>
+  <section id="timetable_view" data-load="timetable_view.html"></section>
 
 </main>
 
@@ -126,12 +129,34 @@ body {
 
     // define routes
     app.route({
+      view: 'timetable_view',
+      onCreate: function() {
+        document.getElementById('students_view').style.display = "none";
+        document.getElementById('notifications_view').style.display = "none";
+        document.getElementById('courses_grades_view').style.display = "none";
+        document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "inline";
+
+
+      },
+      onReady: function() {
+        document.getElementById('students_view').style.display = "none";
+        document.getElementById('notifications_view').style.display = "none";
+        document.getElementById('courses_grades_view').style.display = "none";
+        document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "inline";
+
+      }
+    });
+    app.route({
       view: 'courses_grades_view',
       onCreate: function() {
         document.getElementById('students_view').style.display = "none";
         document.getElementById('notifications_view').style.display = "none";
         document.getElementById('courses_grades_view').style.display = "inline";
         document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "none";
+
 
       },
       onReady: function() {
@@ -139,6 +164,7 @@ body {
         document.getElementById('notifications_view').style.display = "none";
         document.getElementById('courses_grades_view').style.display = "inline";
         document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "none";
 
       }
     });
@@ -150,6 +176,7 @@ body {
         document.getElementById('notifications_view').style.display = "none";
         document.getElementById('courses_grades_view').style.display = "none";
         document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "none";
 
       },
       onReady: function() {
@@ -157,6 +184,7 @@ body {
         document.getElementById('notifications_view').style.display = "none";
         document.getElementById('courses_grades_view').style.display = "none";
         document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "none";
 
       }
     });
@@ -167,6 +195,7 @@ body {
         document.getElementById('notifications_view').style.display = "inline";
         document.getElementById('courses_grades_view').style.display = "none";
         document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "none";
 
       },
       onReady: function() {
@@ -174,6 +203,7 @@ body {
         document.getElementById('notifications_view').style.display = "inline";
         document.getElementById('courses_grades_view').style.display = "none";
         document.getElementById('professors_view').style.display = "none";
+        document.getElementById('timetable_view').style.display = "none";
 
       }
     });
@@ -184,6 +214,7 @@ body {
         document.getElementById('notifications_view').style.display = "none";
         document.getElementById('courses_grades_view').style.display = "none";
         document.getElementById('professors_view').style.display = "inline";
+        document.getElementById('timetable_view').style.display = "none";
 
       },
       onReady: function() {
@@ -191,6 +222,7 @@ body {
         document.getElementById('notifications_view').style.display = "none";
         document.getElementById('courses_grades_view').style.display = "none";
         document.getElementById('professors_view').style.display = "inline";
+        document.getElementById('timetable_view').style.display = "none";
 
       }
     });
