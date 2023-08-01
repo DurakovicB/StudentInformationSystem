@@ -18,6 +18,37 @@ USE `studentinformationsystem`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `classes`
+--
+
+DROP TABLE IF EXISTS `classes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `classes` (
+  `course_id` int DEFAULT NULL,
+  `classroom` varchar(50) DEFAULT NULL,
+  `starting_time` int DEFAULT NULL,
+  `type` varchar(10) DEFAULT NULL,
+  `professor_name` varchar(100) DEFAULT NULL,
+  `day` varchar(10) DEFAULT NULL,
+  `active` varchar(10) NOT NULL DEFAULT 'true',
+  `classes_id` int NOT NULL AUTO_INCREMENT,
+  `professor_id` int DEFAULT NULL,
+  PRIMARY KEY (`classes_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `classes`
+--
+
+LOCK TABLES `classes` WRITE;
+/*!40000 ALTER TABLE `classes` DISABLE KEYS */;
+INSERT INTO `classes` VALUES (19,'ITLab315',9,'lecture','Dino Keco','Monday','true',1,2),(20,'ITLab316',11,'lab','Aldin Kovacevic','Monday','true',2,11),(20,'ITLab316',15,'lecture','Sulejman Sarajlija','Tuesday','true',3,8),(22,'RA02',17,'lecture','Nermina Durmic','Monday','true',4,9),(22,'ITLab315',13,'lab','Aldin Kovacevic','Tuesday','true',5,11),(22,'ITLab316',15,'lab','Aldin Kovacevic','Thursday','true',6,11),(22,'ITLab315',15,'lab','Naida Fatic','Thursday','false',7,13),(19,'ITLab128',13,'lab','Zehra Sikira','Tuesday','false',8,12),(21,'Cinema Hall',9,'lecture','Adnan Miljkovic','Tuesday','true',9,10),(21,'ITLab128',11,'lab','Adnan Miljkovic','Tuesday','true',10,10),(21,'ITLab316',13,'lab','Adnan Miljkovic','Wednesday','true',11,10),(21,'ITLab316',15,'lab','Adnan Miljkovic','Wednesday','true',12,10),(23,'RA02',9,'lecture','Elma Avdic','Wednesday','true',13,4),(23,'ITLab128',9,'lab','Elma Avdic','Friday','true',14,4),(19,'ITLab128',11,'lab','Zehra Sikira','Friday','true',15,12),(19,'ITLab316',15,'lab','Becir Isakovic','Friday','true',16,7);
+/*!40000 ALTER TABLE `classes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `course`
 --
 
@@ -32,7 +63,7 @@ CREATE TABLE `course` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `professor` (`professor_id`) USING BTREE,
   CONSTRAINT `professor` FOREIGN KEY (`professor_id`) REFERENCES `professor` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +72,7 @@ CREATE TABLE `course` (
 
 LOCK TABLES `course` WRITE;
 /*!40000 ALTER TABLE `course` DISABLE KEYS */;
-INSERT INTO `course` VALUES (1,'Calculus II','Second installment of calculus',5),(2,'Calculus I','Math basics',5),(3,'Intro to Web ','Basics of Web Development',2),(4,'Intro to Mobile','Mobile programming - Android Studio / Java',2),(5,'Discrete Maths','Intermediatery mathematics, including cryptography',2),(6,'Database Design','Intermediary course on database theory and MySQL',1);
+INSERT INTO `course` VALUES (19,'Machine Learning','This course introduces students to the concepts and algorithms of machine learning. Topics include supervised and unsupervised learning, regression, classification, and clustering.',2),(20,'Advanced Web3 Topics','In this advanced course, students explore cutting-edge topics related to Web3 technologies, including blockchain, decentralized applications, and smart contracts.',8),(21,'Secure System Development','This course focuses on secure software development practices. Students learn about common vulnerabilities, security testing, and secure coding techniques.',10),(22,'Software Engineering','Software Engineering covers the entire software development lifecycle. Topics include requirements gathering, design, testing, and maintenance of software systems.',9),(23,'Mobile & Wireless Networking','This course delves into the principles of mobile and wireless networking. Students learn about protocols, network architectures, and mobile application development.',4),(24,'DevOps Engineering','DevOps Engineering explores the integration of development and operations teams to improve the software delivery process. Topics include continuous integration, continuous deployment, and infrastructure as code.',14);
 /*!40000 ALTER TABLE `course` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +117,7 @@ CREATE TABLE `professor` (
   `dateofbirth` date DEFAULT NULL,
   `gender` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +126,7 @@ CREATE TABLE `professor` (
 
 LOCK TABLES `professor` WRITE;
 /*!40000 ALTER TABLE `professor` DISABLE KEYS */;
-INSERT INTO `professor` VALUES (1,'dzelilam@gmail.com','Dzelila Mehanovic','061827455','1990-12-12','Female'),(2,'dinokeco@ibu.edu.ba','Dino Keco','062234123','1973-04-12','Male'),(4,'elma.avdic@ibu.edu.ba','Elma Avdic','061332412','1975-04-01','Female'),(5,'saidasultanic@stu.ibu.edu.ba','Saida Sultanic','062445611','1967-02-07','Female'),(7,'becirisakovic@ibu.edu.ba','Becir Isakovic','06222435','1996-06-09','male');
+INSERT INTO `professor` VALUES (1,'dzelilam@gmail.com','Dzelila Mehanovic','061827455','1990-12-12','Female'),(2,'dinokeco@ibu.edu.ba','Dino Keco','062234123','1973-04-12','Male'),(4,'elma.avdic@ibu.edu.ba','Elma Avdic','061332412','1975-04-01','Female'),(5,'saidasultanic@stu.ibu.edu.ba','Saida Sultanic','062445611','1967-02-07','Female'),(7,'becirisakovic@ibu.edu.ba','Becir Isakovic','06222435','1996-06-09','male'),(8,'sulejman.sarajlija@ibu.edu.ba','Sulejman Sarajlija','(202) 555-0123','1980-05-15','male'),(9,'nermina.durmic@ibu.edu.ba','Nermina Durmic','(415) 555-9876','1975-11-22','female'),(10,'adnan.miljkovic@ibu.edu.ba','Adnan Miljkovic','(212) 555-2345','1988-08-10','male'),(11,'aldin.kovacevic@ibu.edu.ba','Aldin Kovacevic','(305) 555-6789','1983-02-28','male'),(12,'zehra.sikira@ibu.edu.ba','Zehra Sikira','(213) 555-4321','1990-07-07','female'),(13,'naida.fatic@ibu.edu.ba','Naida Fatic','(404) 555-8765','1985-09-12','female'),(14,'dzenana.dzevlan@ibu.edu.ba','Dzenana Dzevlan','(312) 555-0198','1982-04-03','female');
 /*!40000 ALTER TABLE `professor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -145,7 +176,7 @@ CREATE TABLE `student_courses` (
   KEY `student` (`student_id`) USING BTREE,
   CONSTRAINT `course` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT,
   CONSTRAINT `student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -154,7 +185,7 @@ CREATE TABLE `student_courses` (
 
 LOCK TABLES `student_courses` WRITE;
 /*!40000 ALTER TABLE `student_courses` DISABLE KEYS */;
-INSERT INTO `student_courses` VALUES (1,2,30,60,'Midterm Exam',1),(1,2,40,75,'Project',2),(1,2,30,55,'Final',3),(1,3,10,100,'Quiz 1',4),(1,1,5,40,'Quiz 1',7),(1,1,30,70,'midterm',19),(1,2,10,85,'quiz',20),(1,3,30,60,'final',21),(2,1,30,80,'midterm',22),(2,3,10,70,'quiz',23),(3,1,30,65,'final',24),(3,2,30,90,'midterm',25),(4,1,30,75,'midterm',26),(4,3,10,80,'quiz',27),(5,2,10,75,'final',28),(5,3,30,70,'midterm',29);
+INSERT INTO `student_courses` VALUES (1,19,NULL,NULL,'enrolment grade',30),(1,20,NULL,NULL,'enrolment grade',31),(1,21,NULL,NULL,'enrolment grade',32),(1,22,NULL,NULL,'enrolment grade',33),(1,23,NULL,NULL,'enrolment grade',34),(1,24,NULL,NULL,'enrolment grade',35),(2,19,NULL,NULL,'enrolment grade',36),(2,20,NULL,NULL,'enrolment grade',37),(2,21,NULL,NULL,'enrolment grade',38),(2,23,NULL,NULL,'enrolment grade',39),(2,24,NULL,NULL,'enrolment grade',40),(3,19,NULL,NULL,'enrolment grade',41),(3,20,NULL,NULL,'enrolment grade',42),(3,22,NULL,NULL,'enrolment grade',43),(3,23,NULL,NULL,'enrolment grade',44),(3,24,NULL,NULL,'enrolment grade',45),(4,19,NULL,NULL,'enrolment grade',46),(4,21,NULL,NULL,'enrolment grade',48),(4,22,NULL,NULL,'enrolment grade',49),(4,24,NULL,NULL,'enrolment grade',51),(5,19,NULL,NULL,'enrolment grade',52),(5,21,NULL,NULL,'enrolment grade',53),(5,22,NULL,NULL,'enrolment grade',54),(5,23,NULL,NULL,'enrolment grade',55),(5,24,NULL,NULL,'enrolment grade',56);
 /*!40000 ALTER TABLE `student_courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -194,4 +225,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-26 14:59:04
+-- Dump completed on 2023-08-01 11:46:06
