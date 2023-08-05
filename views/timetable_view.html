@@ -220,50 +220,54 @@
 			<span class="invisible">asd</span>
 		  </label>
 		</div>
+		<br>
+		<div class="download-button-container">
+			<button class="btn btn-primary" onclick="exportTimetableAsImage()">Download Timetable</button>
+		</div>
 	  </div>
 	  
-
 </div>
 
 <style>
     .timetable-cell {
-        font-size: 18px;
-		border-right: none;
+  font-size: 18px;
+  border-right: none;
+}
 
-    }
+.timetable-cell:last-child {
+  border-right: 1px solid black;
+}
 
-	/* Add a border for the rightmost cell in the merged slots to separate them from other cells */
-	.timetable-cell:last-child {
-	border-right: 1px solid black;
-	}
+.timetable-day-cell {
+  font-size: 30px;
+  height: 100px;
+}
 
-    .timetable-day-cell {
-        font-size: 30px;
-        height: 100px;
-    }
+.timetable-day-cell span {
+  font-size: 24px;
+}
 
-    .timetable-day-cell span {
-        font-size: 24px;
-    }
+.timetable-day-cell sub {
+  font-size: 12px;
+}
 
-    .timetable-day-cell sub {
-        font-size: 12px;
-    }
+.timetable-header-cell,
+.timetable-day-cell,
+.timetable-cell {
+  border: 1px solid black;
+  padding: 5px;
+}
 
-	.timetable-header-cell,
-    .timetable-day-cell,
-    .timetable-cell {
-        border: 1px solid black;
-        padding: 5px;
-    }
-	.timetable-cell-hidden {
-	display: none;
-	}
-	.allcontainer {
+.timetable-cell-hidden {
+  display: none;
+}
+
+
+.allcontainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center; /* Vertically center the items */
+  justify-content: center; 
+  align-items: center; 
 }
 
 .checkbox-container {
@@ -271,19 +275,23 @@
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
-  margin-left: 30px; /* Add left margin to move the checkboxes to the right */
-}
-
-.checkbox-label {
-	font-size: 20px; 
-  margin-bottom: 18px;
 }
 
 .table-container {
-  /* Add any necessary styles for the timetable table container */
   float: left;
+  margin-right: 20px; 
 }
+
+
+.checkbox-label {
+  font-size: 20px;
+  margin-bottom: 18px;
+}
+
+
 </style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 <script src="js/jquery-3.6.0.min.js"></script>
 <script src="js/jQuerySPApp.js"></script>
@@ -292,6 +300,9 @@
 <script src="js/classes-service.js"></script>
 <script src="js/user-service.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+
 
 
 
@@ -305,13 +316,30 @@
     window.location.replace("login.html");
   }
 
-// Function to call the list function based on the checkbox states
+    function exportTimetableAsImage() {
+    const timetableDiv = document.getElementById("timetable");
+
+    html2canvas(timetableDiv, {
+      useCORS: true, 
+      scale: 3, 
+    }).then(function (canvas) {
+      const imgData = canvas.toDataURL("image/jpeg", 1.0);
+
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "timetable.jpg"; 
+      document.body.appendChild(link);
+      link.click();
+
+      document.body.removeChild(link);
+    });
+  }
+
 function updateListBasedOnCheckboxes() {
   const classesChecked = $('#classesCheckbox').prop('checked');
   const labsChecked = $('#labsCheckbox').prop('checked');
 
   if (classesChecked && labsChecked) {
-    // Both checkboxes are checked, show all classes
     ClassesService.list("all");
   } else if (classesChecked) {
 	clearTimetable();
@@ -526,7 +554,6 @@ function clearTimetable() {
 	</table>`);
   }
 
-// Event listener for checkbox change
 $('#classesCheckbox, #labsCheckbox').on('change', function() {
   updateListBasedOnCheckboxes();
 });

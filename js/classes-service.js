@@ -64,7 +64,7 @@ var ClassesService = {
                         ${classroom}
                       </div>
                       <div style="text-align: center;">
-                        <b>${courseId}${displayType}</b>
+                        ${courseId}${displayType}
                       </div>
                       <div style="text-align: right; font-size: 10px;">
                         ${professorName}
