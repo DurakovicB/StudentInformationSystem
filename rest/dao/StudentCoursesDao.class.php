@@ -20,16 +20,20 @@ class StudentCoursesDao extends BaseDao
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
+  
 
-  public function select_grade_for_course($student_id,$course_id)
-  {
-    $query = "select sum(percentage_acquired/100*percentage_total_amount) as total_grade from student_courses where student_id=$student_id and course_id=course_id and course_id=$course_id
-";
+  public function select_grades_for_course($student_id, $course_id)
+{
+    $query = "SELECT * FROM student_courses WHERE student_id = :student_id AND course_id = :course_id
+    and grade_title !='enrolment grade'";
     $select = $this->connection->prepare($query);
+    $select->bindParam(':student_id', $student_id, PDO::PARAM_INT);
+    $select->bindParam(':course_id', $course_id, PDO::PARAM_INT);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
-  }
+}
+
 
 }
 ?>

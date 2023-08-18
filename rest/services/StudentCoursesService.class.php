@@ -12,8 +12,8 @@ class StudentCoursesService extends BaseService{
     return $this->dao->select_all_courses($id);
   }
   
-  public function select_grade_for_course($student_id,$course_id){
-    return $this->dao->select_grade_for_course($student_id,$course_id);
+  public function select_grades_for_course($student_id,$course_id){
+    return $this->dao->select_grades_for_course($student_id,$course_id);
   }
 }
 ?>

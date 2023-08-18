@@ -11,7 +11,6 @@ var ClassesService = {
           xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
         },
         success: function(jsonData) {
-          console.log(jsonData);
           const dayToRow = {
             "Monday": 1,
             "Tuesday": 2,

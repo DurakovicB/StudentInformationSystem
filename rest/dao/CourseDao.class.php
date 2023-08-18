@@ -13,7 +13,7 @@ class CourseDao extends BaseDao
   }
   public function select_for_student($id)
   {
-    $query = "select sum(percentage_acquired/100*percentage_total_amount) as total_grade, c.id,c.professor_id,name,description from course c, student_courses sc where c.id=sc.course_id and sc.student_id=$id group by c.id";
+    $query = "select distinct name, description, professor_id,course_id from course c join student_courses sc on c.id = sc.course_id where sc.student_id = $id";
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);

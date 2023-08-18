@@ -109,13 +109,12 @@ var CourseService = {
                              <div class="card-body">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
-                               <p class="card-text">`+ data[i].total_grade +`</p>
-
-                               <p class="card-text">Course ID: `+ data[i].id +`</p>
+                               <p class="card-text">Course ID: `+ data[i].course_id +`</p>
                                <div class="btn-group" role="group">
-                                 <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
-                               </div>
-                               </div>
+                                <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
+                                <button type="button" class="btn btn-primary course-button" onclick="CourseService.showGradesModal(`+localStorage.getItem("student_id")+`,`+ data[i].course_id+`)">Show Grades</button>
+                              </div>
+                            </div>
                        </div>
                    </div>`;
                    }
@@ -157,6 +156,63 @@ var CourseService = {
        });
 
   },
+  showGradesModal: function showGradesModal(student_id, course_id) {
+    $.ajax({
+       url: "rest/studentgrades/" + student_id + "/" + course_id,
+       type: "GET",
+       beforeSend: function(xhr){
+         xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+       },
+       success: function(data) {
+        console.log(data);
+    
+        // Clear the previous content of the grades table body
+        $("#gradesTableBody").html("");
+    
+        let totalPercentage = 0;
+        let totalGrade = 0;
+    
+        // Populate the modal with grade information
+        for (let i = 0; i < data.length; i++) {
+            const subject = data[i].grade_title;
+            const percentage = data[i].percentage_total_amount + "%";
+            const grade = data[i].percentage_acquired + "%";
+            
+            // Calculate the weighted grade for this subject
+            const weightedGrade = (data[i].percentage_acquired / 100) * data[i].percentage_total_amount;
+            
+            totalPercentage += data[i].percentage_total_amount;
+            totalGrade += weightedGrade;
+    
+            // Append a new row to the grades table
+            $("#gradesTableBody").append(`
+                <tr>
+                    <td style="width:60%; vertical-align: middle;">${subject}</sub></td>
+                    <td style="text-align: right; vertical-align: middle;">${percentage}</td>
+                    <td style="text-align: right; vertical-align: middle;"><b>${grade}</b><br><sub>(${weightedGrade.toFixed(1)})</sub></td>
+                </tr>
+            `);
+        }
+    
+        // Append the total row
+        $("#gradesTableBody").append(`
+            <tr>
+                <th colspan="2">TOTAL</th>
+                <th style="text-align: right;">${totalGrade.toFixed(1)}</th>
+            </tr>
+        `);
+    
+        $("#gradesModal").modal("show");
+    },
+    error: function(XMLHttpRequest, textStatus, errorThrown) {
+        toastr.error(XMLHttpRequest.responseJSON.message);
+        UserService.logout();
+    }
+    
+    });
+}
+  ,
+  
   update: function() {
     $('.save-course-button').attr('disabled', true);
     var course = {};

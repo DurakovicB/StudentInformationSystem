@@ -86,23 +86,62 @@
 
 <!-- Professor MODAL -->
 <div class="modal fade" id="professorModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Professor Info</h5>
+        <h5 class="modal-title">Professor Information</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <img id="professorImage" src="" style="width: 250px;height: auto;"></img>
-        <p id='fullname'></p>
-        <p id='email'></p>
-        <p id='phone'></p>
-        <p id='dateofbirth'></p>
-
+        <div class="text-center mb-3">
+          <img id="professorImage" src="" style="width: 150px; height: auto; border-radius: 50%;" alt="Professor Image">
+        </div>
+        <div class="mb-3">
+          <strong>Full Name:</strong>
+          <p id="fullname" class="mb-0"></p>
+        </div>
+        <div class="mb-3">
+          <strong>Email:</strong>
+          <p id="email" class="mb-0"></p>
+        </div>
+        <div class="mb-3">
+          <strong>Phone:</strong>
+          <p id="phone" class="mb-0"></p>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-course-button" onclick="">Go to professors</button>
+        <button type="button" class="btn btn-primary save-course-button" onclick="">Go to Professors</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Grades MODAL -->
+<div class="modal fade" id="gradesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Grades</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Subject</th>
+              <th>Percentage</th>
+              <th>Grade</th>
+            </tr>
+          </thead>
+          <tbody id="gradesTableBody">
+            <!-- Dynamic content will be added here using JavaScript -->
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -118,3 +157,5 @@
   }
 
 </script>
+
+

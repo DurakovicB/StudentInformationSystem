@@ -100,12 +100,16 @@ Flight::route('PUT /studentcourses/@id', function($id){
 */
 
 Flight::route('GET /studentgrades/@student_id/@course_id', function($student_id,$course_id){
-  Flight::json(Flight::studentcoursesService()->select_grade_for_course($student_id,$course_id));
+  Flight::json(Flight::studentcoursesService()->select_grades_for_course($student_id,$course_id));
 });
 
 
 Flight::route('DELETE /studentcourses/@id', function($id){
   Flight::studentcoursesService()->delete($id);
   Flight::json(["message" => "deleted"]);
+});
+
+Flight::route('GET /studentcourses', function(){
+  Flight::json(Flight::studentcoursesService()->select_all());
 });
 ?>
