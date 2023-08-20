@@ -80,7 +80,7 @@ var ProfessorService = {
                       <p class="card-text">Phone: `+ data[i].phone +`</p>
                       <p class="card-text">`+ data[i].dateofbirth +`</p>
                       <p class="card-text" id='professorID' type="text">ProfessorID: `+ data[i].id +`</p>
-                      <div class="btn-group" role="group">
+                      <div class="btn-group" role="group">X
                         <button type="button" class="btn btn-primary professor-button" onclick="ProfessorService.showEditModal(`+data[i].id+`)">Edit</button>
                         <button type="button" class="btn btn-danger professor-button" onclick="ProfessorService.delete(`+data[i].id+`)">Delete</button>
                         <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
@@ -116,7 +116,7 @@ var ProfessorService = {
                         <div class="card-body">
                           <h5 class="card-title">`+ data[i].fullname +`</h5>
                           <p class="card-text">`+ data[i].email +`</p>
-                          <p class="card-text" id='professorID' type="hidden">`+ data[i].id +`</p>
+                          <p class="card-text">`+data[i].office+`</p> 
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
 
@@ -134,46 +134,49 @@ var ProfessorService = {
 
   showCourses: function showCourses(id) {
     $.ajax({
-            url: 'rest/professor/' + id+'/courses',
-            type: 'GET',
-            contentType: "application/json",
-            dataType: "json",
-            beforeSend: function(xhr){
-              xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
-            },
-            success: function(data) {
-              var data2=data;
-
-              $.ajax({
-            url: 'rest/professor/' + id,
-            type: 'GET',
-            contentType: "application/json",
-            dataType: "json",
-            beforeSend: function(xhr){
-              xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
-            },
-            success: function(data) {
-              $("#professorCoursesLabel").text(data.fullname+"'s Courses");
-            }});
-
-                   $('#forCourses').html("");
-                       var html = "";
-                       for (let i = 0; i < data2.length; i++) {
-                         html += `
-                         <div class="col-lg-3" style="float:left;">
-                               <div class="card"   margin-bottom: 25px;">
-                                 <img class="card-img-top" style="height: auto; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
-                                 <div class="card-body">
-                                   <h5 class="card-title">`+ data2[i].name +`</h5>
-                                   </div>
-                           </div>
-                       </div>`;
-                       }
-                       $('#forCourses').html(html);
-              $("#professorCoursesModal").modal("show");
-            }});
-
-  },
+      url: 'rest/professor/' + id + '/courses',
+      type: 'GET',
+      contentType: "application/json",
+      dataType: "json",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
+      success: function(data) {
+        var data2 = data;
+  
+        $.ajax({
+          url: 'rest/professor/' + id,
+          type: 'GET',
+          contentType: "application/json",
+          dataType: "json",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+          },
+          success: function(data) {
+            $("#professorCoursesLabel").text(data.fullname + "'s Courses");
+          }
+        });
+  
+        $('#forCourses').html("");
+        var html = '<div class="row">';
+        for (let i = 0; i < data2.length; i++) {
+          html += `
+            <div class="col-lg-5 mb-4">
+              <div class="card course-card">
+                <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Course Image">
+                <div class="card-body">
+                  <h5 class="card-title">${data2[i].name}</h5>
+                </div>
+              </div>
+            </div>`;
+        }
+        html += '</div>';
+        $('#forCourses').html(html);
+        $("#professorCoursesModal").modal("show");
+      }
+    });
+  }
+  ,
   showProfessorModal: function showProfessorModal(id) {
     $.ajax({
             url: 'rest/professor/' + id,

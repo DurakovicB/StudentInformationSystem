@@ -170,18 +170,17 @@ showFinalGrade: function(student_id,course_id)
               $("#studentCoursesLabel").text(data.fullname+"'s Courses");
             }});
                    $('#forCourses').html("");
-                       var html = "";
-                       for (let i = 0; i < data2.length; i++) {
-                         html += `
-                         <div class="col-lg-3" style="float:left;">
-                               <div class="card"   margin-bottom: 25px;">
-                                 <img class="card-img-top" style="height: auto; width: auto;"; src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
-                                 <div class="card-body">
-                                   <h5 class="card-title">`+ data2[i].name +`</h5>
-
-                                   </div>
-                           </div>
-                       </div>`;
+                   var html = '<div class="row">';
+                   for (let i = 0; i < data2.length; i++) {
+                        html += `
+                        <div class="col-lg-5 mb-4">
+                          <div class="card course-card">
+                            <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Course Image">
+                            <div class="card-body">
+                              <h5 class="card-title">${data2[i].name}</h5>
+                            </div>
+                          </div>
+                        </div>`;
                        }
                        $('#forCourses').html(html);
               $("#studentCoursesModal").modal("show");

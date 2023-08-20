@@ -90,84 +90,54 @@ body {
 
 <script>
   $(document).ready(function() {
-    var app = $.jQuerySPApp({
-      defaultView: "courses_grades_view"
-    }); // initialize
-
-    // define routes
-    app.route({
-      view: 'courses_grades_view',
-      onCreate: function() {
-        document.getElementById('students_view').style.display = "none";
-        document.getElementById('notifications_view').style.display = "none";
-        document.getElementById('courses_grades_view').style.display = "inline";
-        document.getElementById('professors_view').style.display = "none";
-
-      },
-      onReady: function() {
-        document.getElementById('students_view').style.display = "none";
-        document.getElementById('notifications_view').style.display = "none";
-        document.getElementById('courses_grades_view').style.display = "inline";
-        document.getElementById('professors_view').style.display = "none";
-
-      }
-    });
-    app.route({
-      view: 'students_view',
-      load: 'students_view.html',
-      onCreate: function() {
-        document.getElementById('students_view').style.display = "inline";
-        document.getElementById('notifications_view').style.display = "none";
-        document.getElementById('courses_grades_view').style.display = "none";
-        document.getElementById('professors_view').style.display = "none";
-
-      },
-      onReady: function() {
-        document.getElementById('students_view').style.display = "inline";
-        document.getElementById('notifications_view').style.display = "none";
-        document.getElementById('courses_grades_view').style.display = "none";
-        document.getElementById('professors_view').style.display = "none";
-
-      }
-    });
-    app.route({
-      view: 'notifications_view',
-      onCreate: function() {
-        document.getElementById('students_view').style.display = "none";
-        document.getElementById('notifications_view').style.display = "inline";
-        document.getElementById('courses_grades_view').style.display = "none";
-        document.getElementById('professors_view').style.display = "none";
-
-      },
-      onReady: function() {
-        document.getElementById('students_view').style.display = "none";
-        document.getElementById('notifications_view').style.display = "inline";
-        document.getElementById('courses_grades_view').style.display = "none";
-        document.getElementById('professors_view').style.display = "none";
-
-      }
-    });
-    app.route({
-      view: 'professors_view',
-      onCreate: function() {
-        document.getElementById('students_view').style.display = "none";
-        document.getElementById('notifications_view').style.display = "none";
-        document.getElementById('courses_grades_view').style.display = "none";
-        document.getElementById('professors_view').style.display = "inline";
-
-      },
-      onReady: function() {
-        document.getElementById('students_view').style.display = "none";
-        document.getElementById('notifications_view').style.display = "none";
-        document.getElementById('courses_grades_view').style.display = "none";
-        document.getElementById('professors_view').style.display = "inline";
-
-      }
-    });
-
-    // run app
-    app.run();
+  var app = $.jQuerySPApp({
+    defaultView: "courses_grades_view",
+    templateDir: "./views/",
   });
+
+  function showView(view) {
+    const views = ['students_view', 'notifications_view', 'courses_grades_view', 'professors_view'];
+    for (let v of views) {
+      document.getElementById(v).style.display = v === view ? "inline" : "none";
+    }
+  }
+
+  function onReady(view) {
+    return function() {
+      showView(view);
+    };
+  }
+
+  app.route({
+    view: 'timetable_view',
+    onCreate: showView('timetable_view'),
+    onReady: onReady('timetable_view'),
+  });
+  app.route({
+    view: 'courses_grades_view',
+    onCreate: showView('courses_grades_view'),
+    onReady: onReady('courses_grades_view'),
+  });
+  app.route({
+    view: 'students_view',
+    load: 'students_view.html',
+    onCreate: showView('students_view'),
+    onReady: onReady('students_view'),
+  });
+  app.route({
+    view: 'notifications_view',
+    onCreate: showView('notifications_view'),
+    onReady: onReady('notifications_view'),
+  });
+  app.route({
+    view: 'professors_view',
+    onCreate: showView('professors_view'),
+    onReady: onReady('professors_view'),
+  });
+
+  app.run();
+});
+
 
   var token = localStorage.getItem("token");
   if (token) {

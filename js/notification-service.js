@@ -10,7 +10,6 @@ var NotificationService = {
     $('#addNotificationForm').validate({
       submitHandler: function(form) {
         var notification = Object.fromEntries((new FormData(form)).entries());
-        console.log(notification);
         NotificationService.add(notification);
       }
     });
@@ -68,26 +67,44 @@ var NotificationService = {
          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
        },
        success: function(data) {
-      console.log(data);
-      $('notifications-table').html("");
-      var html = `<thead>
-        <tr>
-          <th>Title</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody></tbody>`;
-      for (let i = 0; i < data.length; i++) {
-        html +=`<tr>
-            <th>` + data[i].title + `</th>
-            <th>` + data[i].created_at + `</th>
-            <th><button class="editbtn" onclick=NotificationService.showNotificationModal(` + data[i].id + `)>Show</button></th>
-            <th><button class="editbtn deletebutton" onclick=NotificationService.delete(` + data[i].id + `)>Delete</button></th>
-          </tr>`;
+        var table = $('#notifications-table');
+        table.html("");
+        
+        var html = `
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Date</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+        `;
+        
+        for (let i = 0; i < data.length; i++) {
+          html += `
+            <tr>
+              <td>${data[i].title}</td>
+              <td>${data[i].created_at}</td>
+              <td>
+                <button class="btn btn-primary" onclick="NotificationService.showNotificationModal(${data[i].id})">Show</button>
+              </td>
+              <td>
+                <button class="btn btn-danger deletebutton" onclick="NotificationService.delete(${data[i].id})">Delete</button>
+              </td>
+            </tr>
+          `;
+        }
+        
+        html += `</tbody>`;
+        table.html(html);
+        
+        if (localStorage.getItem("student_id") != 0) {
+          $(".deletebutton").hide();
+        }
       }
-      $('#notifications-table').html(html);
-      if(localStorage.getItem("student_id")!=0)$(".deletebutton").hide();
-}
+      
     });
   },
 
@@ -99,8 +116,6 @@ var NotificationService = {
          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
        },
        success: function(data) {
-
-      console.log(data);
       $("#notificationInfo").text(data.description);
 
       $("#notificationModal").modal("show");
