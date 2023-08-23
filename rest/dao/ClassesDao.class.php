@@ -30,16 +30,15 @@ class ClassesDao extends BaseDao
 
   public function get_classes_for_professor($professor_id)
   {
-    /* $query = "SELECT day, GROUP_CONCAT(CONCAT(classes.course_id, ' - ', professor_name, ' - ', classroom, ' - ', type, ' - ' , starting_time) ORDER BY starting_time) AS classes_on_day
-    FROM classes join student_courses sc on classes.course_id = sc.course_id
-    WHERE sc.student_id = $student_id and classes.active = 'true'
+   $query = "SELECT day, GROUP_CONCAT(CONCAT(c.name,  ' - ', professor_name, ' - ', classroom, ' - ', type, ' - ' , starting_time) ORDER BY starting_time) AS classes_on_day
+    FROM classes join course c on classes.course_id = c.id
+    WHERE classes.professor_id = $professor_id AND classes.active = 'true'
     GROUP BY day;";
 
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
-    */
   }
 }
 ?>

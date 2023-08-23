@@ -127,4 +127,7 @@ Flight::route('GET /professorstudents/@id', function($id){
   Flight::json(Flight::studentService()->select_students_for_professor($id));
 });
 
+Flight::route('GET /studentsforcourse/@id', function($id){
+  Flight::json(Flight::studentService()->students_for_course($id));
+});
  ?>

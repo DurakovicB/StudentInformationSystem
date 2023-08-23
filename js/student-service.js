@@ -1,5 +1,7 @@
-//HAVEN?T DONE ANYTHING HERE WAITING FOR HTML
+
+
 var StudentService = {
+  
   init: function() {
     $('#addStudentForm').validate({
       submitHandler: function(form) {
@@ -9,7 +11,7 @@ var StudentService = {
       }
     });
     StudentService.list();
-    StudentService.fillOptions();
+    StudentService.fillCourseOptions();
     if(localStorage.getItem("student_id")!=0)$("#addStudentButton,#addStudentCourseButton").hide();
 
 
@@ -285,10 +287,10 @@ showFinalGrade: function(student_id,course_id)
               $("#exampleModal").modal("show");
             }});
     },
-    fillOptions: function fillOptions()
+    fillCourseOptions: function fillCourseOptions()
     {
       $.ajax({
-            url: "rest/course",
+            url: "rest/coursesforprofessor/"+localStorage.getItem("professor_id"),
             type: 'GET',
             contentType: "application/json",
             dataType: "json",
@@ -301,25 +303,28 @@ showFinalGrade: function(student_id,course_id)
                 html += `<option value=` + data[i].id + ` >` + data[i].name  + `</option>`;
               }
               $("#course_id").html(html);
+              StudentService.fillStudentOptions();
             }});
-
-            $.ajax({
-                    url: "rest/student",
-                    type: 'GET',
-                    contentType: "application/json",
-                    dataType: "json",
-                    beforeSend: function(xhr){
-                      xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
-                    },
-                    success: function(data) {
-                      var html = "";
-
-                      for (let i = 0; i < data.length; i++) {
-                        html += `<option value=` + data[i].id + ` >` + data[i].fullname  + `</option>`;
-                      }
-                      $("#student_id").html(html);
-                    }});
         },
+    fillStudentOptions: function fillStudentOptions()
+    {
+        $.ajax({
+        url: "rest/studentsforcourse/"+$("#course_id").val(),
+        type: 'GET',
+        contentType: "application/json",
+        dataType: "json",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function(data) {
+          var html = "";
+
+          for (let i = 0; i < data.length; i++) {
+            html += `<option value=` + data[i].id + ` >` + data[i].fullname  + `</option>`;
+          }
+          $("#student_id").html(html);
+        }});
+    },
         assignCourse: function() {
           // $('.save-professor-button').attr('disabled', true);
           var student = {};
@@ -344,7 +349,7 @@ showFinalGrade: function(student_id,course_id)
               $("#assignCourseModal").modal("hide");
               // $('.save-professor-button').attr('disabled', false);
               StudentService.list(); //
-              StudentService.fillOptions(); // perf optimization
+              StudentService.fillCourseOptions(); // perf optimization
             }
               });
             },

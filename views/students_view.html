@@ -169,4 +169,11 @@
     window.location.replace("login.html");
   }
 
+
+  $(document).ready(function() {
+  // Attach an event handler to the select element's change event
+  $('#course_id').change(function() {
+    StudentService.fillStudentOptions();
+  });
+});
 </script>

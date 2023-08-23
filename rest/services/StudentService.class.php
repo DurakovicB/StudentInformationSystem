@@ -19,5 +19,10 @@ class StudentService extends BaseService{
 
   }
 
+  public function students_for_course($id)
+  {
+    return $this->dao->students_for_course($id);
+
+  }
 }
 ?>

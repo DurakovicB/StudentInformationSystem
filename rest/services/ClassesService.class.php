@@ -11,5 +11,8 @@ class ClassesService extends BaseService{
   public function get_classes_for_student($student_id){
     return $this->dao->get_classes_for_student($student_id);
   }
+  public function get_classes_for_professor($professor_id){
+    return $this->dao->get_classes_for_professor($professor_id);
+  }
 }
 ?>
