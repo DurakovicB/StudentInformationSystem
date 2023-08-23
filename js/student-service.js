@@ -72,7 +72,7 @@ showFinalGrade: function(student_id,course_id)
 },
 
   list: function() {
-    if(localStorage.getItem("student_id")==0)
+    if(localStorage.getItem("student_id")==0&&localStorage.getItem("professor_id")==0)
     {
       $.ajax({
             url: "rest/student",
@@ -110,8 +110,9 @@ showFinalGrade: function(student_id,course_id)
               $('#student-list').html(html);
             }});
   }
-  else
+  else if(localStorage.getItem("student_id")!=0)
   {
+    $("#addStudentCourseButton").hide();
     $.ajax({
             url: "rest/studentcolleagues/"+localStorage.getItem("student_id"),
             type: 'GET',
@@ -145,6 +146,39 @@ showFinalGrade: function(student_id,course_id)
               $('#student-list').html(html);
             }});
 
+  }else{
+    $("#addStudentButton").hide();
+    $.ajax({
+      url: "rest/professorstudents/"+localStorage.getItem("professor_id"),
+      type: 'GET',
+      contentType: "application/json",
+      dataType: "json",
+      beforeSend: function(xhr){
+        xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
+      success: function(data) {
+        $('student-list').html("");
+        var html = "";
+        for (let i = 0; i < data.length; i++) {
+          var picture="";
+          if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
+          else picture = "resources/pictures/zenskiavatar.png";
+          html += `
+          <div class="col-lg-3">
+                <div class="card" style="width: 18rem;">
+                  <img class="c ard-img-top" src="`+picture+`" alt="Card image cap">
+                  <div class="card-body">
+                    <h5 class="card-title">`+ data[i].fullname +`</h5>
+                    <p class="card-text">`+ data[i].email +`</p>
+                    <p class="card-text">`+ data[i].phone +`</p>
+                    <div class="btn-group" role="group">
+                    </div>
+                    </div>
+            </div>
+        </div>`;
+        }
+        $('#student-list').html(html);
+      }});
   }
   },
   showCourses: function showCourses(id) {

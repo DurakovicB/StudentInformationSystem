@@ -53,7 +53,7 @@ var CourseService = {
   },
 
   list: function(){
-    if(localStorage.getItem("student_id")==0)
+    if(localStorage.getItem("student_id")==0&&localStorage.getItem("professor_id")==0)
     {
         $.ajax({
            url: "rest/course",
@@ -90,7 +90,7 @@ var CourseService = {
              UserService.logout();
            }
         });
-      } else {
+      } else if(localStorage.getItem("student_id")!=0) {
         $("#addCourseButton").hide();
           $.ajax({
              url: "rest/coursesforstudent/"+localStorage.getItem("student_id"),
@@ -113,6 +113,41 @@ var CourseService = {
                                <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
                                 <button type="button" class="btn btn-primary course-button" onclick="CourseService.showGradesModal(`+localStorage.getItem("student_id")+`,`+ data[i].course_id+`)">Show Grades</button>
+                              </div>
+                            </div>
+                       </div>
+                   </div>`;
+                   }
+                   $('#course-list').html(html);
+
+               },
+             error: function(XMLHttpRequest, textStatus, errorThrown) {
+               UserService.logout();
+             }
+          });
+        }
+        else{
+          $("#addCourseButton").hide();
+          $.ajax({
+             url: "rest/coursesforprofessor/"+localStorage.getItem("professor_id"),
+             type: "GET",
+             beforeSend: function(xhr){
+               xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+             },
+             success: function(data) {
+               $('course-list').html("");
+                   var html = "";
+                   for (let i = 0; i < data.length; i++) {
+                     html += `
+                     <div class="col-lg-3">
+                           <div class="card" style="width: 18rem;  margin-bottom: 25px;">
+                             <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                             <div class="card-body">
+                               <h5 class="card-title">`+ data[i].name +`</h5>
+                               <p class="card-text">`+ data[i].description +`</p>
+                               <p class="card-text">Course ID: `+ data[i].id +`</p>
+                               <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-success course-button" >Open space</button>
                               </div>
                             </div>
                        </div>

@@ -2,8 +2,8 @@ var UserService = {
   init: function(){
     var token = localStorage.getItem("token");
     var student_id = localStorage.getItem("student_id");
-
-    if (token && student_id>0)
+    var professor_id = localStorage.getItem("professor_id");
+    if (token && student_id!=0)
     {
       window.location.replace("index.html");
     }
@@ -25,8 +25,14 @@ var UserService = {
       success: function(result) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("student_id", result.student_id);
-        if(localStorage.getItem("student_id")>0)
+        localStorage.setItem("professor_id", result.professor_id);
+
+        if(localStorage.getItem("student_id")!=0)
         window.location.replace("index.html");
+
+        else if(localStorage.getItem("professor_id")!=0)
+        window.location.replace("prof.html");
+        
         else  window.location.replace("admin.html");
 
       },
@@ -48,6 +54,20 @@ var UserService = {
               $("#user_full_name").text(data.fullname);
             }});
 
+    }else 
+      if(localStorage.getItem("professor_id")!=0)
+    {
+      $.ajax({
+            url: "rest/professor/"+localStorage.getItem("professor_id"),
+            type: 'GET',
+            contentType: "application/json",
+            dataType: "json",
+            beforeSend: function(xhr){
+              xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+            },
+            success: function(data) {
+              $("#user_full_name").text(data.fullname);
+            }});
     }
   },
   logout: function(){

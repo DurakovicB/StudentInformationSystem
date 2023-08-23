@@ -19,5 +19,14 @@ class CourseDao extends BaseDao
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
+
+  public function select_for_professor($id)
+  {
+    $query = "select * from course where professor_id= $id";
+    $select = $this->connection->prepare($query);
+    $select->execute();
+    $result = $select->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
 }
 ?>

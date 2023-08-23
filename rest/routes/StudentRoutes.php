@@ -123,4 +123,8 @@ Flight::route('DELETE /student/@id', function($id){
   Flight::json(["message" => "deleted"]);
 });
 
+Flight::route('GET /professorstudents/@id', function($id){
+  Flight::json(Flight::studentService()->select_students_for_professor($id));
+});
+
  ?>

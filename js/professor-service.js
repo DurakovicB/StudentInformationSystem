@@ -53,7 +53,7 @@ var ProfessorService = {
 
 
   list: function() {
-    if(localStorage.getItem("student_id")==0)
+    if(localStorage.getItem("student_id")==0&&localStorage.getItem("professor_id")==0)
     {
       $.ajax({
         url: 'rest/professor',
@@ -80,7 +80,7 @@ var ProfessorService = {
                       <p class="card-text">Phone: `+ data[i].phone +`</p>
                       <p class="card-text">`+ data[i].dateofbirth +`</p>
                       <p class="card-text" id='professorID' type="text">ProfessorID: `+ data[i].id +`</p>
-                      <div class="btn-group" role="group">X
+                      <div class="btn-group" role="group">
                         <button type="button" class="btn btn-primary professor-button" onclick="ProfessorService.showEditModal(`+data[i].id+`)">Edit</button>
                         <button type="button" class="btn btn-danger professor-button" onclick="ProfessorService.delete(`+data[i].id+`)">Delete</button>
                         <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
@@ -92,7 +92,46 @@ var ProfessorService = {
           }
           $('#professor-list').html(html);
         }});
-  }else {
+      }
+    else if(localStorage.getItem("professor_id")!=0){
+      $("#assignCourseButton,#addProfessorButton").hide();
+      $.ajax({
+        url: 'rest/professor',
+        type: 'GET',
+        contentType: "application/json",
+        dataType: "json",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function(data) {
+          $('professor-list').html("");
+          var html = "";
+          for (let i = 0; i < data.length; i++) {
+            var picture="";
+            if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/maleprofessoravatar.png";
+            else picture = "resources/pictures/femaleprofessoravatar.png";
+            html += `
+            <div class="col-lg-3">
+                  <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="`+picture+`" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">`+ data[i].fullname +`</h5>
+                      <p class="card-text">`+ data[i].email +`</p>
+                      <p class="card-text">Phone: `+ data[i].phone +`</p>
+                      <p class="card-text">`+ data[i].dateofbirth +`</p>
+                      <p class="card-text" id='professorID' type="text">ProfessorID: `+ data[i].id +`</p>
+                      <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
+
+                      </div>
+                      </div>
+              </div>
+          </div>`;
+          }
+          $('#professor-list').html(html);
+        }});
+  }
+  else {
     $("#assignCourseButton,#addProfessorButton").hide();
     $.ajax({
             url: "rest/professorsforstudent/"+localStorage.getItem("student_id"),

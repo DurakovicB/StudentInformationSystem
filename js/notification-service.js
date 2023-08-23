@@ -100,9 +100,9 @@ var NotificationService = {
         html += `</tbody>`;
         table.html(html);
         
-        if (localStorage.getItem("student_id") != 0) {
-          $(".deletebutton").hide();
+        if (localStorage.getItem("student_id") == 0 && localStorage.getItem("professor_id") == 0) {
         }
+        else  $(".deletebutton").hide();
       }
       
     });

@@ -32,5 +32,13 @@ class StudentDao extends BaseDao
     return $result;
   }
 
+  public function select_students_for_professor($id){
+
+    $query= "Select * from student where id in (select student_id from student_courses where course_id in (select id from course where professor_id=$id))";
+    $stmt = $this->connection->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+  }
+
 }
  ?>

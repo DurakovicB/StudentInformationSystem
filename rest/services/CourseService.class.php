@@ -11,5 +11,9 @@ class CourseService extends BaseService{
   public function select_for_student($id){
     return $this->dao->select_for_student($id);
   }
+
+  public function select_for_professor($id){
+    return $this->dao->select_for_professor($id);
+  }
 }
 ?>
