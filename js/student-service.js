@@ -74,7 +74,7 @@ showFinalGrade: function(student_id,course_id)
 },
 
   list: function() {
-    if(localStorage.getItem("student_id")==0&&localStorage.getItem("professor_id")==0)
+    if(localStorage.getItem("student_id")==0 && localStorage.getItem("professor_id")==0)
     {
       $.ajax({
             url: "rest/student",
@@ -137,7 +137,6 @@ showFinalGrade: function(student_id,course_id)
                         <div class="card-body">
                           <h5 class="card-title">`+ data[i].fullname +`</h5>
                           <p class="card-text">`+ data[i].email +`</p>
-                          <p class="card-text">`+ data[i].phone +`</p>
                           <div class="btn-group" role="group">
                             <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
                           </div>
@@ -172,7 +171,6 @@ showFinalGrade: function(student_id,course_id)
                   <div class="card-body">
                     <h5 class="card-title">`+ data[i].fullname +`</h5>
                     <p class="card-text">`+ data[i].email +`</p>
-                    <p class="card-text">`+ data[i].phone +`</p>
                     <div class="btn-group" role="group">
                     </div>
                     </div>

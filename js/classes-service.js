@@ -4,7 +4,7 @@ var ClassesService = {
     }
     ,
     list: function(type) {
-      if(localStorage.getItem("student_id") == null)
+      if(localStorage.getItem("student_id") != 0)
      { 
       $.ajax({
         url: "rest/studentclasses/" + localStorage.getItem("student_id"),
