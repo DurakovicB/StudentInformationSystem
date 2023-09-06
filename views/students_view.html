@@ -8,15 +8,21 @@
   <div class="row">
     <div>
       <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#addStudentModal" id="addStudentButton"  
-      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;">Add Student</button>
-      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#assignStudentCourseModal" id="addStudentCourseButton"
-      style="position: fixed;right:0;bottom:0.5;  margin: 25px 50px 75px 100px;">Assign Grade</button>
-
+      style="position: fixed; right: 0; bottom: 0; margin: 25px 40px 75px 100px;">Add Student</button>
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#assignGradeModal" id="addGradeButton"
+      style="position: fixed; right: 0; bottom: 5rem; margin: 25px 40px 75px 100px;">Assign Single Grade</button>
+      <button class="btn btn-success btn-lg" data-bs-toggle="modal" data-bs-target="#assignCourseGradeModal" id="addCourseGradeButton"
+      style="position: fixed; right: 0; bottom: 10rem; margin: 25px 30px 75px 100px;">Assign Course Grades</button>
     </div>
   </div>
+  
+  
 
-
-
+  <select id="courseFilter" class="form-control" style="margin-bottom: 25px; width: 250px;">
+    <option value="all">All Classes</option>
+    <option value="class1">Class 1</option>
+    <option value="class2">Class 2</option>
+  </select>
 
   <div id="student-list" class="row">
   </div><!-- /.row -->
@@ -54,7 +60,7 @@
   </div>
 </div>
 
-<!-- ADD MODAL -->
+<!-- ADD student MODAL -->
 
 <body>
   <div class="modal fade" id="addStudentModal" tabindex="-1" aria-hidden="true">
@@ -115,7 +121,7 @@
     </div>
   </div>
 </div>
-<!-- Student courses MODAL -->
+<!-- student courses MODAL -->
 <div class="modal fade " id="studentCoursesModal" tabindex="-1" aria-hidden="true" ;>
   <div class="modal-dialog">
     <div class="modal-content">
@@ -133,16 +139,17 @@
   </div>
 </div>
 
-<div class="modal fade" id="assignStudentCourseModal" tabindex="-1" aria-labelledby="assignStudentCourseModal" aria-hidden="true">
+<!-- Assign grade modal -->
+<div class="modal fade" id="assignGradeModal" tabindex="-1" aria-labelledby="assignGradeModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="assignStudentCourseModalLabel">Assign Course To Student</h5>
+        <h5 class="modal-title" id="assignGradeModalLabel">Assign Grade To Student</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <label for="course_id">Select course:</label>
-        <select id="course_id" class="form-control" ></select>
+        <label for="grade_modal_course_id">Select course:</label>
+        <select id="grade_modal_course_id" class="form-control" ></select>
           <label for="student_id">Select student for the grade:</label>
         <select id="student_id" class="form-control" ></select>
         <label for="grade_title">Grade title:</label>
@@ -155,11 +162,69 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-professor-button" data-bs-dismiss="modal" onclick="StudentService.assignCourse()">Save changes</button>
+        <button type="button" class="btn btn-primary save-professor-button" data-bs-dismiss="modal" onclick="StudentService.assignSingleGrade()">Assign Grade</button>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Add group grade modal -->
+<div class="modal fade" id="assignCourseGradeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="false">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Course Grades</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Inputs for grade title and percentage weight -->
+        <div class="mb-3">
+          <label for="gradeTitle" class="form-label" id="course_grade_modal_course_name">Course:</label>
+          <input type="text" class="form-control" id="courseName" placeholder="Course" disabled>
+        </div>
+        
+        <div class="mb-3">
+          <label for="gradeTitle" class="form-label">Grade Title:</label>
+          <input type="text" class="form-control" id="gradeTitle" placeholder="Enter Grade Title">
+        </div>
+        <div class="mb-3">
+          <label for="percentageWeight" class="form-label">Percentage Weight:</label>
+          <input type="number" class="form-control" id="percentageWeight" placeholder="Enter Percentage Weight">
+        </div>
+
+        <!-- Table for student grades -->
+        <table class="table" >
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Student Name</th>
+              <th>Grade Percentage</th>
+            </tr>
+          </thead>
+          <tbody id ="course_grade_modal_table">
+            <!-- Example rows, replace with dynamic data -->
+            <tr>
+              <td>1</td>
+              <td>John Doe</td>
+              <td><input type="number" class="form-control" placeholder="Enter Grade"></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Jane Smith</td>
+              <td><input type="number" class="form-control" placeholder="Enter Grade"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="StudentService.assignMultipleGrades()">Assign Grades</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
 
   var token = localStorage.getItem("token");
@@ -172,8 +237,29 @@
 
   $(document).ready(function() {
   // Attach an event handler to the select element's change event
-  $('#course_id').change(function() {
+  $('#grade_modal_course_id').change(function() {
     StudentService.fillStudentOptions();
   });
+  
+  $('#courseFilter').change(function() {
+    // Convert the select element into a jQuery object
+    var $courseFilter = $(this);
+
+    StudentService.list();
+    $('#courseName').val($courseFilter.find('option:selected').text());
+
+    if ($courseFilter.val() == "all") {
+        $('#grade_modal_course_id').prop('disabled', false);
+        $('#addCourseGradeButton').prop('disabled', true);
+    } else {
+        $('#grade_modal_course_id').val($courseFilter.val());
+        $('#grade_modal_course_id').prop('disabled', true);
+        $('#addCourseGradeButton').prop('disabled', false);
+        $('#course_grade_modal_table tbody').empty();
+        StudentService.populateCourseGradeTable();
+        StudentService.fillStudentOptions();
+    }
+});
+
 });
 </script>

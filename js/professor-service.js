@@ -72,17 +72,17 @@ var ProfessorService = {
             else picture = "resources/pictures/femaleprofessoravatar.png";
             html += `
             <div class="col-lg-3">
-                  <div class="card" style="width: 18rem;">
+                  <div class="card" style="width: 18rem;" margin-bottom: 25px;>
                     <img class="card-img-top" src="`+picture+`" alt="Card image cap">
                     <div class="card-body">
                       <h5 class="card-title">`+ data[i].fullname +`</h5>
                       <p class="card-text">`+ data[i].email +`</p>
+                      <p class="card-text">`+data[i].office+`</p> 
                       <p class="card-text" id='professorID' type="text">ProfessorID: `+ data[i].id +`</p>
                       <div class="btn-group" role="group">
                         <button type="button" class="btn btn-primary professor-button" onclick="ProfessorService.showEditModal(`+data[i].id+`)">Edit</button>
                         <button type="button" class="btn btn-danger professor-button" onclick="ProfessorService.delete(`+data[i].id+`)">Delete</button>
                         <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
-
                       </div>
                       </div>
               </div>
@@ -110,11 +110,12 @@ var ProfessorService = {
             else picture = "resources/pictures/femaleprofessoravatar.png";
             html += `
             <div class="col-lg-3">
-                  <div class="card" style="width: 18rem;">
+                  <div class="card" style="width: 18rem;" margin-bottom: 25px;>
                     <img class="card-img-top" src="`+picture+`" alt="Card image cap">
                     <div class="card-body">
                       <h5 class="card-title">`+ data[i].fullname +`</h5>
                       <p class="card-text">`+ data[i].email +`</p>
+                      <p class="card-text">`+data[i].office+`</p> 
                       <p class="card-text" id='professorID' type="text">ProfessorID: `+ data[i].id +`</p>
                       <div class="btn-group" role="group">
                         <button type="button" class="btn btn-success professor-button" onclick="ProfessorService.showCourses(`+data[i].id+`)">Show Courses</button>
@@ -146,7 +147,7 @@ var ProfessorService = {
                 else picture = "resources/pictures/femaleprofessoravatar.png";
                 html += `
                 <div class="col-lg-3">
-                      <div class="card" style="width: 18rem;">
+                      <div class="card" style="width: 18rem;" margin-bottom: 25px;>
                         <img class="card-img-top" src="`+picture+`" alt="Card image cap">
                         <div class="card-body">
                           <h5 class="card-title">`+ data[i].fullname +`</h5>

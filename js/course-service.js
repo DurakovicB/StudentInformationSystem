@@ -69,15 +69,16 @@ var CourseService = {
                    <div class="col-lg-3">
                          <div class="card" style="width: 18rem;  margin-bottom: 25px;">
                            <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
-                           <div class="card-body">
+                           <div class="card-body" style="height: 310px">
                              <h5 class="card-title">`+ data[i].name +`</h5>
                              <p class="card-text">`+ data[i].description +`</p>
+                             <div class="" style="position: absolute; bottom: 0; width: 100%; margin-bottom:10px">
                              <p class="card-text">Course ID: `+ data[i].id +`</p>
-                             <p class="card-text">`+ data[i].total_grade +`</p>
                              <div class="btn-group" role="group">
                                <button type="button" class="btn btn-primary course-button" onclick="CourseService.showEditModal(`+data[i].id+`)">Edit</button>
                                <button type="button" class="btn btn-danger course-button" onclick="CourseService.delete(`+data[i].id+`)">Delete</button>
                                <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
+                             </div>
                              </div>
                              </div>
                      </div>
@@ -106,13 +107,15 @@ var CourseService = {
                      <div class="col-lg-3">
                            <div class="card" style="width: 18rem;  margin-bottom: 25px;">
                              <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
-                             <div class="card-body">
+                             <div class="card-body" style="height: 310px">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
+                               <div class="" style="position: absolute; bottom: 0; width: 100%; margin-bottom:10px">
                                <p class="card-text">Course ID: `+ data[i].course_id +`</p>
                                <div class="btn-group" role="group">
                                 <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
                                 <button type="button" class="btn btn-primary course-button" onclick="CourseService.showGradesModal(`+localStorage.getItem("student_id")+`,`+ data[i].course_id+`)">Show Grades</button>
+                              </div>
                               </div>
                             </div>
                        </div>
@@ -142,12 +145,14 @@ var CourseService = {
                      <div class="col-lg-3">
                            <div class="card" style="width: 18rem;  margin-bottom: 25px;">
                              <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
-                             <div class="card-body">
+                             <div class="card-body" style="height: 310px">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
-                               <p class="card-text">Course ID: `+ data[i].id +`</p>
-                               <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-success course-button" >Open space</button>
+                               <div class="" style="position: absolute; bottom: 0; width: 100%; margin-bottom:10px">
+                                <p class="card-text">Course ID: `+ data[i].id +`</p>
+                                <div class="btn-group" role="group">
+                                  <button type="button" class="btn btn-success course-button">Open space</button>
+                                </div>
                               </div>
                             </div>
                        </div>

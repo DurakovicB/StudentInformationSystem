@@ -12,7 +12,9 @@ var StudentService = {
     });
     StudentService.list();
     StudentService.fillCourseOptions();
-    if(localStorage.getItem("student_id")!=0)$("#addStudentButton,#addStudentCourseButton").hide();
+    StudentService.populateCourseSelect();
+    $('#addCourseGradeButton').prop('disabled', true)
+    if(localStorage.getItem("student_id")!=0)$("#addStudentButton,#addStudentGradeButton").hide();
 
 
   },
@@ -114,7 +116,7 @@ showFinalGrade: function(student_id,course_id)
   }
   else if(localStorage.getItem("student_id")!=0)
   {
-    $("#addStudentCourseButton").hide();
+    $("#addGradeButton").hide();
     $.ajax({
             url: "rest/studentcolleagues/"+localStorage.getItem("student_id"),
             type: 'GET',
@@ -147,8 +149,10 @@ showFinalGrade: function(student_id,course_id)
               $('#student-list').html(html);
             }});
 
-  }else{
+  }else if(localStorage.getItem("professor_id")!=0){
     $("#addStudentButton").hide();
+    if($("#courseFilter").val()=="all"){
+
     $.ajax({
       url: "rest/professorstudents/"+localStorage.getItem("professor_id"),
       type: 'GET',
@@ -180,6 +184,40 @@ showFinalGrade: function(student_id,course_id)
         $('#student-list').html(html);
       }});
   }
+      else{
+        $.ajax({
+          url: "rest/studentsforcourse/"+$("#courseFilter").val(),
+          type: 'GET',
+          contentType: "application/json",
+          dataType: "json",
+          beforeSend: function(xhr){
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+          },
+          success: function(data) {
+            $('student-list').html("");
+            var html = "";
+            for (let i = 0; i < data.length; i++) {
+              var picture="";
+              if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
+              else picture = "resources/pictures/zenskiavatar.png";
+              html += `
+              <div class="col-lg-3">
+                    <div class="card" style="width: 18rem;">
+                      <img class="c ard-img-top" src="`+picture+`" alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">`+ data[i].fullname +`</h5>
+                        <p class="card-text">`+ data[i].email +`</p>
+                        <div class="btn-group" role="group">
+                        </div>
+                        </div>
+                </div>
+            </div>`;
+            }
+            $('#student-list').html(html);
+          }});
+      }
+  } 
+
   },
   showCourses: function showCourses(id) {
     $.ajax({
@@ -300,14 +338,14 @@ showFinalGrade: function(student_id,course_id)
               for (let i = 0; i < data.length; i++) {
                 html += `<option value=` + data[i].id + ` >` + data[i].name  + `</option>`;
               }
-              $("#course_id").html(html);
+              $("#grade_modal_course_id").html(html);
               StudentService.fillStudentOptions();
             }});
         },
     fillStudentOptions: function fillStudentOptions()
     {
         $.ajax({
-        url: "rest/studentsforcourse/"+$("#course_id").val(),
+        url: "rest/studentsforcourse/"+$("#grade_modal_course_id").val(),
         type: 'GET',
         contentType: "application/json",
         dataType: "json",
@@ -323,12 +361,12 @@ showFinalGrade: function(student_id,course_id)
           $("#student_id").html(html);
         }});
     },
-        assignCourse: function() {
+        assignSingleGrade: function() {
           // $('.save-professor-button').attr('disabled', true);
           var student = {};
 
           student.student_id = $("#student_id").val();
-          student.course_id = $("#course_id").val();
+          student.course_id = $("#grade_modal_course_id").val();
           student.percentage_total_amount = $("#percentage_total_amount").val();
           student.percentage_acquired = $("#percentage_acquired").val();
           student.grade_title = $("#grade_title").val();
@@ -351,9 +389,127 @@ showFinalGrade: function(student_id,course_id)
             }
               });
             },
-  search: function search(string){
+            populateCourseSelect:function() {
+              $.ajax({
+                url: "rest/coursesforprofessor/" + localStorage.getItem("professor_id"),
+                type: 'GET',
+                contentType: "application/json",
+                dataType: "json",
+                beforeSend: function(xhr){
+                  xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+                },
+                success: function(courseData) {
+                  courseData.sort(function(a, b) {
+                    return a.name.localeCompare(b.name);
+                  });
+                  
+                  // Add the "All Courses" option at the beginning
+                  var html = '<option value="all">All Courses (' + calculateTotalStudents(courseData) + ')</option>';
+                  
+                  // Loop through the course data to create the other options
+                  for (var i = 0; i < courseData.length; i++) {
+                    html += '<option value="' + courseData[i].id + '">' + courseData[i].name + ' (' + courseData[i].student_count + ')</option>';
+                  }
+                  
+                  // Set the HTML of the select element
+                  $("#courseFilter").html(html);
+                  
+                  // Function to calculate the total number of students
+                  function calculateTotalStudents(data) {
+                    var total = 0;
+                    for (var i = 0; i < data.length; i++) {
+                      total += parseInt(data[i].student_count, 10); // Use parseInt to convert to integer
+                    }
+                    return total;
+                  }
+                }
+              });
+              
+            },
+ populateCourseGradeTable: function() {
+  var selectedCourseId = $("#courseFilter option:selected").val();
 
-  }
+  // Make an Ajax request to fetch student data for the selected course
+  $.ajax({
+      url: "rest/studentsforcourse/" + selectedCourseId,
+      type: 'GET',
+      contentType: "application/json",
+      dataType: "json",
+      beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
+      success: function(data) {
+          var tableBody = $('#course_grade_modal_table');
+
+          // Clear the existing table rows
+          tableBody.empty();
+
+          // Loop through the fetched data and add rows to the table
+          for (var i = 0; i < data.length; i++) {
+              var student = data[i];
+              var row = `
+                  <tr>
+                      <td>${student.id}</td>
+                      <td>${student.fullname}</td>
+                      <td><input type="number" class="form-control" placeholder="Enter Grade Percentage"></td>
+                  </tr>
+              `;
+              tableBody.append(row);
+          }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.error("Error fetching data:", textStatus, errorThrown);
+      }
+  });
+},
+ assignMultipleGrades:function() {
+  // Get the selected course ID
+  var selectedCourseId = $("#courseFilter option:selected").val();
+
+  // Create an array to store grade objects
+  var grades = [];
+
+  // Loop through the table rows to collect grade data
+  $("#course_grade_modal_table tr").each(function () {
+      var studentId = $(this).find("td:eq(0)").text();
+      var gradePercentage = $(this).find("input[type='number']").val();
+
+      // Create a grade object and add it to the array
+      if (gradePercentage !== "") {
+
+      var grade = {
+          student_id: studentId,
+          course_id: selectedCourseId,
+          grade_title: $("#gradeTitle").val(),
+          percentage_acquired: parseFloat(gradePercentage),
+          percentage_total_amount: $("#percentageWeight").val() // Assuming total percentage is 100
+      };
+      grades.push(grade);
+
+    }
+  });
+
+  // Make an AJAX call to send the grades to the server
+  $.ajax({
+      url: 'rest/multiplestudentcourses', // Adjust the URL as needed
+      type: 'POST',
+      data: JSON.stringify(grades),
+      contentType: 'application/json',
+      dataType: 'json',
+      beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
+      success: function (result) {
+          // Handle success, e.g., close the modal
+          $("#assignCourseGradeModal").modal("hide");
+      },
+      error: function (error) {
+          // Handle error, e.g., display an error message to the user
+          console.error('Error assigning grades:', error);
+      }
+  });
+}
+
 
 
 }

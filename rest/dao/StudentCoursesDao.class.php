@@ -34,6 +34,46 @@ class StudentCoursesDao extends BaseDao
     return $result;
 }
 
+public function insertMultipleGrades($grades) {
+  // Define the SQL query to insert grades
+  $query = "INSERT INTO student_courses (student_id, course_id, grade_title, percentage_acquired, percentage_total_amount) VALUES ";
+  
+  $valueStrings = [];
+  $values = [];
+  
+  foreach ($grades as $grade) {
+      // Sanitize data to prevent SQL injection
+      $studentId = intval($grade['student_id']);
+      $courseId = intval($grade['course_id']);
+      $gradeTitle = $grade['grade_title'];
+      $percentageAcquired = $grade['percentage_acquired'];
+      $percentageTotalAmount = $grade['percentage_total_amount'];
+      
+      // Add the values to the array
+      $valueStrings[] = "(?, ?, ?, ?, ?)";
+      $values[] = $studentId;
+      $values[] = $courseId;
+      $values[] = $gradeTitle;
+      $values[] = $percentageAcquired;
+      $values[] = $percentageTotalAmount;
+  }
+  
+  $query .= implode(", ", $valueStrings);
+  
+  ##return $query;
+
+  // Prepare and execute the query
+  $stmt = $this->connection->prepare($query);
+  $stmt->execute($values);
+  
+  // Check for success
+  if ($stmt->rowCount() > 0) {
+      return true; // Insertion successful
+  } else {
+      return false; // Insertion failed
+  }
+}
+
 
 }
 ?>

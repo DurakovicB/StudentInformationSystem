@@ -112,4 +112,8 @@ Flight::route('DELETE /studentcourses/@id', function($id){
 Flight::route('GET /studentcourses', function(){
   Flight::json(Flight::studentcoursesService()->select_all());
 });
+
+Flight::route('POST /multiplestudentcourses', function(){
+  Flight::json(Flight::studentcoursesService()->insertMultipleGrades(Flight::request()->data->getData()));
+});
 ?>

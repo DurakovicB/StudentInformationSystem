@@ -22,7 +22,11 @@ class CourseDao extends BaseDao
 
   public function select_for_professor($id)
   {
-    $query = "select * from course where professor_id= $id";
+    $query = "SELECT c.id, c.name, c.description, c.professor_id, COUNT(distinct sc.student_id) as student_count
+    FROM course c
+    LEFT JOIN student_courses sc ON c.id = sc.course_id
+    WHERE c.professor_id = $id
+    GROUP BY c.id";
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
