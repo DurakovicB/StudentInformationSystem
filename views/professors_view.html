@@ -28,25 +28,35 @@
 
 <!-- EDIT MODAL -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header ">
         <h5 class="modal-title" id="exampleModalLabel">Edit Professor</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <input id="id" type="hidden" />
-        <input id="fullname" type="text" placeholder="Name"/>
-        <input id="email" type="text" placeholder="Email adress"/>
-        <input id="phone" type="text" placeholder="Phone number"/>
+        <div class="mb-3">
+          <label for="fullname" class="form-label">Full Name:</label>
+          <input id="fullname" type="text" class="form-control" placeholder="Full Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email Address:</label>
+          <input id="email" type="email" class="form-control" placeholder="Email Address" required>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone Number:</label>
+          <input id="phone" type="tel" class="form-control" placeholder="Phone Number">
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-professor-button" onclick="ProfessorService.update()">Save changes</button>
+        <button type="button" class="btn btn-primary save-professor-button" data-bs-dismiss="modal" onclick = "ProfessorService.update()">Save Changes</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ADD MODAL -->
 

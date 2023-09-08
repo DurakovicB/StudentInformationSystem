@@ -256,8 +256,12 @@
         $('#grade_modal_course_id').prop('disabled', true);
         $('#addCourseGradeButton').prop('disabled', false);
         $('#course_grade_modal_table tbody').empty();
+
+        if(localStorage.getItem("professor_id")==0)
+        {
         StudentService.populateCourseGradeTable();
         StudentService.fillStudentOptions();
+        }
     }
 });
 

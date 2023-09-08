@@ -47,4 +47,30 @@ Flight::route('POST /login', function(){
     }
 });
 
+
+
+Flight::route('GET /user', function(){
+  Flight::json(Flight::userService()->select_all());
+});
+
+Flight::route('GET /user/@id', function($id){
+  Flight::json(Flight::userService()->select_by_id($id));
+});
+
+Flight::route('PUT /user/@id', function($id){
+  $data = Flight::request()->data->getData();
+  //$data['id'] = $id;
+  Flight::json(Flight::userService()->update($id, $data));
+});
+
+Flight::route('DELETE /user/@id', function($id){
+  Flight::userService()->delete($id);
+  Flight::json(["message" => "deleted"]);
+});
+
+Flight::route('POST /user', function(){
+  Flight::json(Flight::userService()->add(Flight::request()->data->getData()));
+});
+
+
 ?>

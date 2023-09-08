@@ -13,6 +13,7 @@ var StudentService = {
     StudentService.list();
     StudentService.fillCourseOptions();
     StudentService.populateCourseSelect();
+
     $('#addCourseGradeButton').prop('disabled', true)
     if(localStorage.getItem("student_id")!=0)$("#addStudentButton,#addStudentGradeButton").hide();
 
@@ -78,6 +79,9 @@ showFinalGrade: function(student_id,course_id)
   list: function() {
     if(localStorage.getItem("student_id")==0 && localStorage.getItem("professor_id")==0)
     {
+      $("#addGradeButton").hide();
+      $("#addCourseGradeButton").hide();
+      if($("#courseFilter").val()=="all"){
       $.ajax({
             url: "rest/student",
             type: 'GET',
@@ -113,10 +117,47 @@ showFinalGrade: function(student_id,course_id)
               }
               $('#student-list').html(html);
             }});
+          }
+          else {
+            $.ajax({
+              url: "rest/studentsforcourse/"+$("#courseFilter").val(),
+              type: 'GET',
+              contentType: "application/json",
+              dataType: "json",
+              beforeSend: function(xhr){
+                xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+              },
+              success: function(data) {
+                $('student-list').html("");
+                var html = "";
+                for (let i = 0; i < data.length; i++) {
+                  var picture="";
+                  if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
+                  else picture = "resources/pictures/zenskiavatar.png";
+                  html += `
+                  <div class="col-lg-3">
+                        <div class="card" style="width: 18rem;">
+                          <img class="card-img-top" src="`+picture+`" alt="Card image cap">
+                          <div class="card-body">
+                            <h5 class="card-title">`+ data[i].fullname +`</h5>
+                            <p class="card-text">`+ data[i].email +`</p>
+                            <div class="btn-group" role="group">
+                              <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
+                            </div>
+                            </div>
+                    </div>
+                </div>`;
+                }
+                $('#student-list').html(html);
+              }});
+          }
+
   }
   else if(localStorage.getItem("student_id")!=0)
   {
     $("#addGradeButton").hide();
+    $("#addCourseGradeButton").hide();
+    if($("#courseFilter").val()=="all"){
     $.ajax({
             url: "rest/studentcolleagues/"+localStorage.getItem("student_id"),
             type: 'GET',
@@ -148,8 +189,42 @@ showFinalGrade: function(student_id,course_id)
               }
               $('#student-list').html(html);
             }});
+      }
+      else {
+        $.ajax({
+          url: "rest/studentsforcourse/"+$("#courseFilter").val(),
+          type: 'GET',
+          contentType: "application/json",
+          dataType: "json",
+          beforeSend: function(xhr){
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+          },
+          success: function(data) {
+            $('student-list').html("");
+            var html = "";
+            for (let i = 0; i < data.length; i++) {
+              var picture="";
+              if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
+              else picture = "resources/pictures/zenskiavatar.png";
+              html += `
+              <div class="col-lg-3">
+                    <div class="card" style="width: 18rem;">
+                      <img class="card-img-top" src="`+picture+`" alt="Card image cap">
+                      <div class="card-body">
+                        <h5 class="card-title">`+ data[i].fullname +`</h5>
+                        <p class="card-text">`+ data[i].email +`</p>
+                        <div class="btn-group" role="group">
+                          <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
+                        </div>
+                        </div>
+                </div>
+            </div>`;
+            }
+            $('#student-list').html(html);
+          }});
+      }
 
-  }else if(localStorage.getItem("professor_id")!=0){
+  } else if(localStorage.getItem("professor_id")!=0){
     $("#addStudentButton").hide();
     if($("#courseFilter").val()=="all"){
 
@@ -247,7 +322,7 @@ showFinalGrade: function(student_id,course_id)
                         html += `
                         <div class="col-lg-5 mb-4">
                           <div class="card course-card">
-                            <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Course Image">
+                            <img class="card-img-top" src="resources/pictures/book_image" alt="Course Image">
                             <div class="card-body">
                               <h5 class="card-title">${data2[i].name}</h5>
                             </div>
@@ -390,6 +465,8 @@ showFinalGrade: function(student_id,course_id)
               });
             },
             populateCourseSelect:function() {
+              if(localStorage.getItem("professor_id")!=0)
+              {
               $.ajax({
                 url: "rest/coursesforprofessor/" + localStorage.getItem("professor_id"),
                 type: 'GET',
@@ -415,17 +492,122 @@ showFinalGrade: function(student_id,course_id)
                   $("#courseFilter").html(html);
                   
                   // Function to calculate the total number of students
-                  function calculateTotalStudents(data) {
+                  function calculateTotalStudents() {
                     var total = 0;
-                    for (var i = 0; i < data.length; i++) {
-                      total += parseInt(data[i].student_count, 10); // Use parseInt to convert to integer
-                    }
+                    $.ajax({
+                      url: 'rest/professorstudents/'+localStorage.getItem("professor_id"),
+                      type: 'GET',
+                      dataType: 'json',
+                      async: false, // Make the Ajax request synchronous
+                      success: function(data) {
+                        total = data.length; // Count the number of entries in the response data
+                      },
+                      error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                      }
+                    });
                     return total;
                   }
                 }
               });
+              }
+              else if(localStorage.getItem("student_id")!=0)
+              {
+                $.ajax({
+                  url: "rest/coursesforstudent/" + localStorage.getItem("student_id"),
+                  type: 'GET',
+                  contentType: "application/json",
+                  dataType: "json",
+                  beforeSend: function(xhr){
+                    xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+                  },
+                  success: function(courseData) {
+                    courseData.sort(function(a, b) {
+                      return a.name.localeCompare(b.name);
+                    });
+                    
+                    // Add the "All Courses" option at the beginning
+                    var html = '<option value="all">All Courses (' + calculateTotalStudents(courseData) + ')</option>';
+                    
+                    // Loop through the course data to create the other options
+                    for (var i = 0; i < courseData.length; i++) {
+                      html += '<option value="' + courseData[i].course_id + '">' + courseData[i].name + ' (' + courseData[i].student_count + ')</option>';
+                    }
+                    
+                    // Set the HTML of the select element
+                    $("#courseFilter").html(html);
+                    
+                    // Function to calculate the total number of students
+                    function calculateTotalStudents() {
+                      var total = 0;
+                      $.ajax({
+                        url: 'rest/studentcolleagues/'+localStorage.getItem("student_id"),
+                        type: 'GET',
+                        dataType: 'json',
+                        async: false, // Make the Ajax request synchronous
+                        success: function(data) {
+                          total = data.length; // Count the number of entries in the response data
+                        },
+                        error: function(xhr, status, error) {
+                          console.error('Error:', error);
+                        }
+                      });
+                      return total;
+                    }
+                  }
+                });
+              }
+              else if(localStorage.getItem("professor_id")==0 && localStorage.getItem("student_id")==0)
+              {
+                $.ajax({
+                  url: "rest/course",
+                  type: 'GET',
+                  contentType: "application/json",
+                  dataType: "json",
+                  beforeSend: function(xhr){
+                    xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+                  },
+                  success: function(courseData) {
+                    courseData.sort(function(a, b) {
+                      return a.name.localeCompare(b.name);
+                    });
+                    
+                    // Add the "All Courses" option at the beginning
+                    console.log(calculateTotalStudents());
+                    var html = '<option value="all">All Courses (' + calculateTotalStudents() + ')</option>';
+                    
+                    // Loop through the course data to create the other options
+                    for (var i = 0; i < courseData.length; i++) {
+                      html += '<option value="' + courseData[i].course_id + '">' + courseData[i].name + ' (' + courseData[i].student_count + ')</option>';
+                    }
+                    
+                    // Set the HTML of the select element
+                    $("#courseFilter").html(html);
+                    
+                    // Function to calculate the total number of students
+                    function calculateTotalStudents() {
+                      var total = 0;
+                      $.ajax({
+                        url: 'rest/student',
+                        type: 'GET',
+                        dataType: 'json',
+                        async: false, // Make the Ajax request synchronous
+                        success: function(data) {
+                          total = data.length; // Count the number of entries in the response data
+                        },
+                        error: function(xhr, status, error) {
+                          console.error('Error:', error);
+                        }
+                      });
+                      return total;
+                    }
+                    
+                  }
+                });
+              }
+            
               
-            },
+        },
  populateCourseGradeTable: function() {
   var selectedCourseId = $("#courseFilter option:selected").val();
 

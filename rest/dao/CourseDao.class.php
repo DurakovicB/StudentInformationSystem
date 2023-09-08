@@ -11,9 +11,26 @@ class CourseDao extends BaseDao
   {
     parent::__construct("course");
   }
+
+  public function select_all()
+  {
+    $query = "select distinct name, description, professor_id,course_id, COUNT(distinct sc.student_id) as student_count
+    from course c
+    join student_courses sc on c.id = sc.course_id
+    group by c.id";
+    $select = $this->connection->prepare($query);
+    $select->execute();
+    $result = $select->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
+
   public function select_for_student($id)
   {
-    $query = "select distinct name, description, professor_id,course_id from course c join student_courses sc on c.id = sc.course_id where sc.student_id = $id";
+    $query = "select distinct name, description, professor_id,course_id, COUNT(distinct sc.student_id) as student_count
+    from course c
+    join student_courses sc on c.id = sc.course_id
+    where c.id in(select course_id from student_courses where student_id  = $id)
+    group by c.id";
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);

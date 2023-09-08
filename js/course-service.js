@@ -68,7 +68,7 @@ var CourseService = {
                    html += `
                    <div class="col-lg-3">
                          <div class="card" style="width: 18rem;  margin-bottom: 25px;">
-                           <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                           <img class="card-img-top" src="resources/pictures/book_image" alt="Card image cap">
                            <div class="card-body" style="height: 310px">
                              <h5 class="card-title">`+ data[i].name +`</h5>
                              <p class="card-text">`+ data[i].description +`</p>
@@ -106,7 +106,7 @@ var CourseService = {
                      html += `
                      <div class="col-lg-3">
                            <div class="card" style="width: 18rem;  margin-bottom: 25px;">
-                             <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                             <img class="card-img-top" src="resources/pictures/book_image" alt="Card image cap">
                              <div class="card-body" style="height: 310px">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
@@ -144,7 +144,7 @@ var CourseService = {
                      html += `
                      <div class="col-lg-3">
                            <div class="card" style="width: 18rem;  margin-bottom: 25px;">
-                             <img class="card-img-top" src="https://st2.depositphotos.com/3687485/12226/v/950/depositphotos_122265864-stock-illustration-isometric-book-icon-vector-illustration.jpg" alt="Card image cap">
+                             <img class="card-img-top" src="resources/pictures/book_image" alt="Card image cap">
                              <div class="card-body" style="height: 310px">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
@@ -286,7 +286,7 @@ var CourseService = {
 
   showEditModal: function showEditModal(id) {
     $.ajax({
-         url: "rest/course/"+id,
+         url: "rest/classes/"+id,
          type: "GET",
          beforeSend: function(xhr){
            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));

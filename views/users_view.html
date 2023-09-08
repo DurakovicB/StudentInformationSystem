@@ -1,0 +1,125 @@
+<div>
+
+
+  <!-- END: Topbar -->
+</div>
+<div class="container marketing" style="margin-top:100px;">
+  <div class="row">
+    <div>
+      <button class="btn btn-success btn-lg" id="addUserButton" data-bs-toggle="modal" data-bs-target="#addUserModal"
+      style="position: fixed;right:0;bottom:0;  margin: 25px 50px 75px 100px;">Add User</button>
+    </div>
+  </div>
+
+    <table class="table" >
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Student ID</th>
+          <th>Professor ID</th>
+          <th>User ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="user-table">
+      </tbody>
+    </table>
+    
+
+</div>
+</main>
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/jQuerySPApp.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/user-service.js"></script>
+<script src="js/users_crud-service.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+<!-- EDIT MODAL -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form for editing user details -->
+        <form>
+          <input type="hidden" id="id" />
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" class="form-control" id="email" placeholder="Email Address" />
+          </div>
+          <div class="mb-3">
+            <label for="student_id" class="form-label">Student ID</label>
+            <input type="text" class="form-control" id="student_id" placeholder="Student ID" />
+          </div>
+          <div class="mb-3">
+            <label for="professor_id" class="form-label">Professor ID</label>
+            <input type="text" class="form-control" id="professor_id" placeholder="Professor ID" />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary save-user-button" data-bs-dismiss="modal" onclick="UsersCrudService.update()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ADD USER MODAL -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="addUserForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add User</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Email</label>
+            <input name="email" type="text" class="form-control required" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <label>Student ID</label>
+            <input name="student_id" type="text" class="form-control" placeholder="Enter student_id">
+          </div>
+          <div class="form-group">
+            <label>Professor ID</label>
+            <input name="professor_id" type="text" class="form-control" placeholder="Enter professor_id">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input name="password" type="password" class="form-control required" placeholder="Enter password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+  
+  var token = localStorage.getItem("token");
+  if (token) {
+    UsersCrudService.init();
+  } else {
+    window.location.replace("login.html");
+  }
+
+</script>
+
+

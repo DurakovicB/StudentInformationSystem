@@ -9,14 +9,7 @@
   <title>Student Information System</title>
   <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
-<!--
-<main id="jqueryspapp" role="main">
-  <section id="emails" data-load="emails.html"></section>
-  <section id="campaigns" data-load="campaigns.html"></section>
-  <section id="settings" data-load="settings.html"></section>
-  <section id="email-templates" data-load="email-templates.html"></section>
-</main>
--->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
@@ -45,6 +38,14 @@
         <li class="nav-item">
           <a class="nav-link " href="#students_view" style="  font-size: 20px">Students</a>
         </li>
+
+        <li class="nav-item">
+          <a class="nav-link " href="#users_view" style="  font-size: 20px">Users</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link " aria-current="page" href="#timetable_view" style="  font-size: 20px;">Timetable</a>
+        </li>
       </ul>
       <img src="resources\pictures\adminpic.jpg" style="border-radius: 50%; width:75px; height:75px;margin-right:10px" id="user_picture"  class="d-inline-block align-text-top">
         <span  style="font-size: 20px; margin-right:15px" id="user_full_name">ADMIN</span>
@@ -63,6 +64,9 @@ body {
   <section id="students_view" data-load="students_view.html"></section>
   <section id="notifications_view" data-load="notifications_view.html"></section>
   <section id="professors_view" data-load="professors_view.html"></section>
+  <section id="users_view" data-load="users_view.html"></section>
+  <section id="timetable_view" data-load="timetable_view.html"></section>
+
 </main>
 <div class="container ">
   <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
@@ -96,7 +100,7 @@ body {
   });
 
   function showView(view) {
-    const views = ['students_view', 'notifications_view', 'courses_grades_view', 'professors_view'];
+    const views = ['students_view', 'notifications_view', 'courses_grades_view', 'professors_view','users_view','timetable_view'];
     for (let v of views) {
       document.getElementById(v).style.display = v === view ? "inline" : "none";
     }
@@ -133,6 +137,11 @@ body {
     view: 'professors_view',
     onCreate: showView('professors_view'),
     onReady: onReady('professors_view'),
+  });
+  app.route({
+    view: 'users_view',
+    onCreate: showView('users_view'),
+    onReady: onReady('users_view'),
   });
 
   app.run();
