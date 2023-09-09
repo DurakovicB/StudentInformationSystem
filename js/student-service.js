@@ -203,6 +203,7 @@ showFinalGrade: function(student_id,course_id)
             $('student-list').html("");
             var html = "";
             for (let i = 0; i < data.length; i++) {
+              if(data[i].id==localStorage.getItem("student_id")) {continue };
               var picture="";
               if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
               else picture = "resources/pictures/zenskiavatar.png";

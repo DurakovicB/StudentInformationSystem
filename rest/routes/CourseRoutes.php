@@ -124,8 +124,36 @@ Flight::route('DELETE /course/@id', function($id){
   Flight::json(["message" => "deleted"]);
 });
 
+
+/**
+* @OA\Get(
+*     path="/coursesforprofessor/{id}",
+*     tags={"Course"},
+*     summary="Get courses for a professor by providing the professor's ID.",
+*     security={{"ApiKeyAuth": {}}},
+*     @OA\Parameter(
+*         name="id",
+*         in="path",
+*         required=true,
+*         description="ID of the professor",
+*         @OA\Schema(
+*             type="integer",
+*             format="int64"
+*         )
+*     ),
+*     @OA\Response(
+*         response=200,
+*         description="List of courses for the professor."
+*     ),
+*     @OA\Response(
+*         response=500,
+*         description="Error"
+*     )
+* )
+*/
 Flight::route('GET /coursesforprofessor/@id', function($id){
   Flight::json(Flight::courseService()->select_for_professor($id));
 });
+
 
 ?>

@@ -49,25 +49,158 @@ Flight::route('POST /login', function(){
 
 
 
+/**
+* @OA\Get(
+*     path="/user",
+*     tags={"User"},
+*     summary="Get a list of all users.",
+*     security={{"ApiKeyAuth": {}}},
+*     @OA\Response(
+*         response=200,
+*         description="Returns a list of all users."
+*     ),
+*     @OA\Response(
+*         response=500,
+*         description="Error"
+*     )
+* )
+*/
 Flight::route('GET /user', function(){
   Flight::json(Flight::userService()->select_all());
 });
 
+/**
+* @OA\Get(
+*     path="/user/@id",
+*     tags={"User"},
+*     summary="Get user details by providing the user ID.",
+*     security={{"ApiKeyAuth": {}}},
+*     @OA\Parameter(
+*         name="id",
+*         in="path",
+*         required=true,
+*         description="ID of the user",
+*         @OA\Schema(
+*             type="integer",
+*             format="int64"
+*         )
+*     ),
+*     @OA\Response(
+*         response=200,
+*         description="Returns details of the user."
+*     ),
+*     @OA\Response(
+*         response=500,
+*         description="Error"
+*     )
+* )
+*/
 Flight::route('GET /user/@id', function($id){
   Flight::json(Flight::userService()->select_by_id($id));
 });
 
+/**
+* @OA\Put(
+*     path="/user/@id",
+*     tags={"User"},
+*     summary="Update user details by providing the user ID and new data.",
+*     security={{"ApiKeyAuth": {}}},
+*     @OA\Parameter(
+*         name="id",
+*         in="path",
+*         required=true,
+*         description="ID of the user",
+*         @OA\Schema(
+*             type="integer",
+*             format="int64"
+*         )
+*     ),
+*     @OA\RequestBody(
+*         description="New user data",
+*         required=true,
+*         @OA\MediaType(
+*             mediaType="application/json",
+*             @OA\Schema(
+*                 @OA\Property(property="name", type="string", example="John Doe", description="Name of the user"),
+*                 @OA\Property(property="email", type="string", example="john.doe@example.com", description="Email of the user"),
+*                 @OA\Property(property="role", type="string", example="student", description="Role of the user")
+*             )
+*         )
+*     ),
+*     @OA\Response(
+*         response=200,
+*         description="User that has been updated."
+*     ),
+*     @OA\Response(
+*         response=500,
+*         description="Error"
+*     )
+* )
+*/
 Flight::route('PUT /user/@id', function($id){
   $data = Flight::request()->data->getData();
-  //$data['id'] = $id;
   Flight::json(Flight::userService()->update($id, $data));
 });
 
+/**
+* @OA\Delete(
+*     path="/user/@id",
+*     tags={"User"},
+*     summary="Delete a user by providing the user ID.",
+*     security={{"ApiKeyAuth": {}}},
+*     @OA\Parameter(
+*         name="id",
+*         in="path",
+*         required=true,
+*         description="ID of the user",
+*         @OA\Schema(
+*             type="integer",
+*             format="int64"
+*         )
+*     ),
+*     @OA\Response(
+*         response=204,
+*         description="No content"
+*     ),
+*     @OA\Response(
+*         response=500,
+*         description="Error"
+*     )
+* )
+*/
 Flight::route('DELETE /user/@id', function($id){
   Flight::userService()->delete($id);
   Flight::json(["message" => "deleted"]);
 });
 
+/**
+* @OA\Post(
+*     path="/user",
+*     tags={"User"},
+*     summary="Add a new user by providing user details.",
+*     security={{"ApiKeyAuth": {}}},
+*     @OA\RequestBody(
+*         description="User details",
+*         required=true,
+*         @OA\MediaType(
+*             mediaType="application/json",
+*             @OA\Schema(
+*                 @OA\Property(property="name", type="string", example="John Doe", description="Name of the user"),
+*                 @OA\Property(property="email", type="string", example="john.doe@example.com", description="Email of the user"),
+*                 @OA\Property(property="role", type="string", example="student", description="Role of the user")
+*             )
+*         )
+*     ),
+*     @OA\Response(
+*         response=201,
+*         description="User created successfully."
+*     ),
+*     @OA\Response(
+*         response=500,
+*         description="Error"
+*     )
+* )
+*/
 Flight::route('POST /user', function(){
   Flight::json(Flight::userService()->add(Flight::request()->data->getData()));
 });

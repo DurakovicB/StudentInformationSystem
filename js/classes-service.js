@@ -1,13 +1,24 @@
 var ClassesService = {
     init: function() {
+      $('#addClassForm').validate({
+        submitHandler: function(form) {
+          var classData = Object.fromEntries((new FormData(form)).entries());
+          //console.log(classData);
+          ClassesService.add(classData);
+        }
+      });
+
         ClassesService.list("all");
+        ClassesService.populateAddModal();
+        ClassesService.populateEditModalSelects();
         ClassesService.populateCourseFilter();
     }
     ,
     list: function(type) {
       if(localStorage.getItem("student_id") == 0 && localStorage.getItem("professor_id")==0){
         $("#timetable").html("");
-        $("#downloadTimetableButton, #checkboxes").hide()
+        $("#downloadTimetableButton, #checkboxes").hide();
+        $("#courseFilter").hide();
         $.ajax({
           url: "rest/studentclasses",
           type: "GET",
@@ -30,6 +41,7 @@ var ClassesService = {
             $("<th>").text("Classroom").appendTo(headerRow);
             $("<th>").text("Time").appendTo(headerRow);
             $("<th>").text("Day").appendTo(headerRow);
+            $("<th>").text("Active").appendTo(headerRow);
             $("<th>").text("Actions").appendTo(headerRow); // Add Actions column
         
             // Add a table body
@@ -46,7 +58,9 @@ var ClassesService = {
               $("<td>").text(item["type"]).appendTo(row);
               $("<td>").text(item["classroom"]).appendTo(row);
               $("<td>").text(item["time"]).appendTo(row);
-              $("<td>").text(item["day"]).appendTo(row);
+              $("<td>").text(`${getDayName(item["day"])}`).appendTo(row);
+              $("<td>").text(item["active"]).appendTo(row);
+
         
               // Add hidden divs for course_id, professor_id, and classroom_id
               $("<div>")
@@ -81,6 +95,7 @@ var ClassesService = {
                 .on("click", function() {
                   // Call the update function from ClassesService
                   ClassesService.showEditModal(item["class_id"]);
+                  ClassesService.populateEditModal(item["class_id"]);
                 })
                 .appendTo(actionsCell);
         
@@ -95,6 +110,7 @@ var ClassesService = {
       }
       else if(localStorage.getItem("student_id") != 0)
      { 
+      $("#courseFilter").hide();
       $("#addClassButton").hide();
       $.ajax({
         url: "rest/studentclasses/" + localStorage.getItem("student_id"),
@@ -132,11 +148,11 @@ var ClassesService = {
             const classes = classes_on_day.split(",");
     
             // Get the corresponding row for the day
-            const row = dayToRow[day];
+            const row = day;
     
             // Populate the cells with class information in the respective columns
             classes.forEach(classInfo => {
-              const [courseId, professorName, classroom, classType, startingTime] = classInfo.split(" - ");
+              const [courseId, professorName, classroom, classType, startingTime,active] = classInfo.split(" - ");
               const col = timeToCol[startingTime];
     
               // Check if the type matches the desired type for display
@@ -209,11 +225,11 @@ var ClassesService = {
             const classes = classes_on_day.split(",");
     
             // Get the corresponding row for the day
-            const row = dayToRow[day];
+            const row = day;
     
             // Populate the cells with class information in the respective columns
             classes.forEach(classInfo => {
-              const [courseId, professorName, classroom, classType, startingTime] = classInfo.split(" - ");
+              const [courseId, professorName, classroom, classType, startingTime,active] = classInfo.split(" - ");
               const col = timeToCol[startingTime];
     
               // Check if the type matches the desired type for display
@@ -279,16 +295,17 @@ var ClassesService = {
             };
       
             // Iterate over the JSON data
+            if (jsonData.length >0){
             jsonData.forEach(entry => {
               const { day, classes_on_day } = entry;
               const classes = classes_on_day.split(",");
       
               // Get the corresponding row for the day
-              const row = dayToRow[day];
+              const row = day;
       
               // Populate the cells with class information in the respective columns
               classes.forEach(classInfo => {
-                const [courseId, professorName, classroom, classType, startingTime] = classInfo.split(" - ");
+                const [courseId, professorName, classroom, classType, startingTime,active] = classInfo.split(" - ");
                 const col = timeToCol[startingTime];
       
                 // Check if the type matches the desired type for display
@@ -321,6 +338,8 @@ var ClassesService = {
               });
             });
           }
+
+          }
         });
       }
     }
@@ -333,7 +352,7 @@ var ClassesService = {
           xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
         },
         success: function(data) {
-          console.log(data);
+          //console.log(data);
           $("#class_id").val(data.class_id);
           $("#course_name").val(data.course_name);
           $("#professor_name").val(data.professor_name);
@@ -376,9 +395,255 @@ var ClassesService = {
          
        }
       });
+    },
+    delete: function(id) {
+      if (confirm('Are you sure?') == true) {
+        $.ajax({
+          url: 'rest/class/' + id,
+          type: 'DELETE',
+          beforeSend: function(xhr){
+            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+          },
+          success: function(result) {
+            ClassesService.list();
+          }
+        });
+      }
+    },
+    populateAddModal: function() {
+            
+          // Function to populate the "Course" select element
+      const courseSelect = $("#courseSelectAddModal");
+
+      $.ajax({
+          url: "rest/course", // Replace with your API endpoint
+          type: "GET",
+          success: function (data) {
+              // Clear existing options
+              courseSelect.empty();
+
+              // Populate options dynamically from the API response
+              data.forEach(course => {
+                  const option = $("<option>")
+                      .val(course.course_id) // Use the appropriate ID from your data
+                      .text(course.name); // Use the appropriate property from your data
+                  courseSelect.append(option);
+              });
+          },
+          error: function (error) {
+              console.error("Error loading courses:", error);
+          }
+      });
+
+
+    // Function to populate the "Professor" select element
+      const professorSelect = $("#professorSelectAddModal");
+
+      $.ajax({
+          url: "rest/professor", // Replace with your API endpoint
+          type: "GET",
+          success: function (data) {
+              // Clear existing options
+              professorSelect.empty();
+
+              // Populate options dynamically from the API response
+              data.forEach(professor => {
+                  const option = $("<option>")
+                      .val(professor.id) // Use the appropriate ID from your data
+                      .text(professor.fullname); // Use the appropriate property from your data
+                  professorSelect.append(option);
+              });
+          },
+          error: function (error) {
+              console.error("Error loading professors:", error);
+          }
+      });
+
+      const classroomSelect = $("#classroomSelectAddModal");
+
+    $.ajax({
+        url: "rest/classrooms", // Replace with your API endpoint for classrooms
+        type: "GET",
+        success: function (data) {
+            // Clear existing options
+            classroomSelect.empty();
+
+            // Populate options dynamically from the API response
+            data.forEach(classroom => {
+                const option = $("<option>")
+                    .val(classroom.id) // Use the appropriate ID from your data
+                    .text(classroom.name); // Use the appropriate property from your data
+                classroomSelect.append(option);
+            });
+        },
+        error: function (error) {
+            console.error("Error loading classrooms:", error);
+        }
+    });
+    },
+    populateEditModalSelects: function() {
+            
+      // Function to populate the "Course" select element
+  const courseSelect = $("#courseSelectEditModal");
+
+  $.ajax({
+      url: "rest/course", // Replace with your API endpoint
+      type: "GET",
+      success: function (data) {
+          // Clear existing options
+          courseSelect.empty();
+
+          // Populate options dynamically from the API response
+          data.forEach(course => {
+              const option = $("<option>")
+                  .val(course.course_id) // Use the appropriate ID from your data
+                  .text(course.name); // Use the appropriate property from your data
+              courseSelect.append(option);
+          });
+      },
+      error: function (error) {
+          console.error("Error loading courses:", error);
+      }
+  });
+
+
+// Function to populate the "Professor" select element
+  const professorSelect = $("#professorSelectEditModal");
+
+  $.ajax({
+      url: "rest/professor", // Replace with your API endpoint
+      type: "GET",
+      success: function (data) {
+          // Clear existing options
+          professorSelect.empty();
+
+          // Populate options dynamically from the API response
+          data.forEach(professor => {
+              const option = $("<option>")
+                  .val(professor.id) // Use the appropriate ID from your data
+                  .text(professor.fullname); // Use the appropriate property from your data
+              professorSelect.append(option);
+          });
+      },
+      error: function (error) {
+          console.error("Error loading professors:", error);
+      }
+  });
+
+  const classroomSelect = $("#classroomSelectEditModal");
+
+$.ajax({
+    url: "rest/classrooms", // Replace with your API endpoint for classrooms
+    type: "GET",
+    success: function (data) {
+        // Clear existing options
+        classroomSelect.empty();
+
+        // Populate options dynamically from the API response
+        data.forEach(classroom => {
+            const option = $("<option>")
+                .val(classroom.id) // Use the appropriate ID from your data
+                .text(classroom.name); // Use the appropriate property from your data
+            classroomSelect.append(option);
+        });
+    },
+    error: function (error) {
+        console.error("Error loading classrooms:", error);
     }
+});
+},
+
+    add: function(classdata) {
+      $.ajax({
+        url: 'rest/class',
+        type: 'POST',
+        data: JSON.stringify(classdata),
+        contentType: "application/json",
+        dataType: "json",
+        beforeSend: function(xhr){
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function(result) {
+          $("#addClassModal").modal("hide");
+          ClassesService.list(); // perf optimization
+          $('#addClassForm').trigger("reset");
+  
+          $('body').removeClass('modal-open');
+          $('.modal-backdrop').remove();
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+        toastr.error(XMLHttpRequest.responseJSON.message);
+        UserService.logout();
+      }
+      });
+    },
+    populateEditModal: function(id) {
+      $.ajax({
+        url: 'rest/class/'+id ,
+        type: "GET",
+        success: function (data) {
+          // Populate the modal fields with data
+          $("#classIdEditModal").val(data.id); // Assuming the ID field exists in your data
+          $("#courseSelectEditModal").val(data.course_id); // Assuming course_id is available in your data
+          $("#professorSelectEditModal").val(data.professor_id); // Assuming professor_id is available in your data
+          $("#typeSelectEditModal").val(data.type); // Assuming type is available in your data
+          $("#classroomSelectEditModal").val(data.classroom_id); // Assuming classroom_id is available in your data
+          $("#timeSelectEditModal").val(data.starting_time); // Assuming starting_time is available in your data
+          $("#daySelectEditModal").val(data.day); // Assuming day is available in your data
+          $("#activeEditModal").val(data.active); // Assuming active is available in your data
+  
+          // Show the edit modal
+          $("#editClassModal").modal("show");
+        },
+        error: function (error) {
+          // Handle error if necessary
+          console.error("Error fetching class data:", error);
+        },
+      });
+    },
+    update: function() {
+  // Function to update class data    $('.save-class-button').attr('disabled', true);
+    var updatedClass = {};
+
+    updatedClass.course_id = $("#courseSelectEditModal").val();
+    updatedClass.professor_id = $("#professorSelectEditModal").val();
+    updatedClass.type = $("#typeSelectEditModal").val();
+    updatedClass.classroom_id = $("#classroomSelectEditModal").val();
+    updatedClass.starting_time = $("#timeSelectEditModal").val();
+    updatedClass.day = $("#daySelectEditModal").val();
+    updatedClass.active = $("#activeEditModal").val();
+
+    //console.log(updatedClass);
+
+    $.ajax({
+      url: 'rest/class/' + $('#classIdEditModal').val(),
+      type: 'PUT',
+      data: JSON.stringify(updatedClass),
+      contentType: "application/json",
+      dataType: "json",
+      beforeSend: function(xhr) {
+        xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+      },
+      success: function(result) {
+        $("#editClassModal").modal("hide");
+        $('.save-class-button').attr('disabled', false);
+        // You can update the class list or perform any other actions here
+        ClassesService.list();      },
+      error: function(error) {
+        // Handle error if necessary
+        console.error("Error updating class:", error);
+      },
+    });
+    }
+
     
-      
-      
-      
+   
+}
+function getDayName(dayValue) {
+  const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+  if (dayValue >= 1 && dayValue <= 5) {
+      return daysOfWeek[dayValue - 1];
+  } else {
+      return "Invalid Day";
+  }
 }
