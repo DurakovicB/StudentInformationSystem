@@ -49,7 +49,8 @@ Flight::route('GET /notification/@id', function($id){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+* summary="Add a new notification "
 * )
 */
 Flight::route('POST /notification', function(){
@@ -80,7 +81,8 @@ Flight::route('POST /notification', function(){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+*summary="Delete a notification from the API. "
 * )
 */
 Flight::route('DELETE /notification/@id', function($id){

@@ -40,7 +40,8 @@ Flight::route('GET /studentcourses/@id', function($id){
 *     @OA\Response(
 *         response=404,
 *         description="Something went wrong"
-*     )
+*     ),
+*     summary="Add a new grade"
 * )
 */
 Flight::route('POST /studentcourses', function(){
@@ -72,7 +73,8 @@ Flight::route('POST /studentcourses', function(){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+*     summary="Update a grade"
 * )
 */
 Flight::route('PUT /studentcourses/@id', function($id){
@@ -80,24 +82,6 @@ Flight::route('PUT /studentcourses/@id', function($id){
   Flight::json(Flight::studentcoursesService()->update($id, $data));
 });
 
-/**
-* delete studentcourses
-*/
-/**
-* @OA\Delete(
-*     path="/studentcourses/{id}", security={{"ApiKeyAuth": {}}},
-*     description="Delete a grade",
-*     tags={"Grades"},
-*     @OA\Response(
-*         response=200,
-*         description="Grade deleted"
-*     ),
-*     @OA\Response(
-*         response=500,
-*         description="Error"
-*     )
-* )
-*/
 
 /**
 * @OA\Get(
@@ -144,7 +128,7 @@ Flight::route('DELETE /studentcourses/@id', function($id){
 * @OA\Get(
 *     path="/studentcourses",
 *     tags={"Grades"},
-*     summary="Get a list of all student courses.",
+*     summary="Get a list of all grades.",
 *     security={{"ApiKeyAuth": {}}},
 *     @OA\Response(
 *         response=200,
@@ -153,7 +137,7 @@ Flight::route('DELETE /studentcourses/@id', function($id){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
 * )
 */
 Flight::route('GET /studentcourses', function(){
@@ -188,7 +172,8 @@ Flight::route('GET /studentcourses', function(){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+*     summary="Insert multiple student courses with grades by providing course data."
 * )
 */
 Flight::route('POST /multiplestudentcourses', function(){

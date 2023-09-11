@@ -62,7 +62,9 @@ Flight::route('GET /coursesforstudent/@id', function($id){
 *     @OA\Response(
 *         response=404,
 *         description="Something went wrong"
-*     )
+*     ),
+summary="Add a course to the API.",
+
 * )
 */
 Flight::route('POST /course', function(){
@@ -92,7 +94,9 @@ Flight::route('POST /course', function(){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+ *         summary="Update a course from the API.",
+
 * )
 */
 Flight::route('PUT /course/@id', function($id){
@@ -116,7 +120,8 @@ Flight::route('PUT /course/@id', function($id){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+      summary="Delete a course from the API.",
 * )
 */
 Flight::route('DELETE /course/@id', function($id){
@@ -148,7 +153,8 @@ Flight::route('DELETE /course/@id', function($id){
 *     @OA\Response(
 *         response=500,
 *         description="Error"
-*     )
+*     ),
+*     summary="Get courses for a professor by providing the professor's ID.",
 * )
 */
 Flight::route('GET /coursesforprofessor/@id', function($id){

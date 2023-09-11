@@ -11,7 +11,7 @@ require_once __DIR__.'/../Config.class.php';
 * @OA\Post(
 *     path="/login",
 *     description="Login to the system",
-*     tags={"User-Related"},
+*     tags={"User"},
 *     @OA\RequestBody(description="Basic user info", required=true,
 *       @OA\MediaType(mediaType="application/json",
 *    			@OA\Schema(
@@ -26,7 +26,8 @@ require_once __DIR__.'/../Config.class.php';
 *     @OA\Response(
 *         response=404,
 *         description="Wrong Password | User doesn't exist"
-*     )
+*     ),
+summary="Login to the system "
 * )
 */
 Flight::route('POST /login', function(){
