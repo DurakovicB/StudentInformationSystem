@@ -18,7 +18,7 @@ var ClassesService = {
       if(localStorage.getItem("student_id") == 0 && localStorage.getItem("professor_id")==0){
         $("#timetable").html("");
         $("#downloadTimetableButton, #checkboxes").hide();
-        $("#courseFilter").hide();
+        $("#courseFilterClasses").hide();
         $.ajax({
           url: "rest/studentclasses",
           type: "GET",
@@ -110,7 +110,7 @@ var ClassesService = {
       }
       else if(localStorage.getItem("student_id") != 0)
      { 
-      $("#courseFilter").hide();
+      $("#courseFilterClasses").hide();
       $("#addClassButton").hide();
       $.ajax({
         url: "rest/studentclasses/" + localStorage.getItem("student_id"),
@@ -188,7 +188,7 @@ var ClassesService = {
       });
     }
     else if (localStorage.getItem("professor_id") != 0){
-      if($("#courseFilter option:selected").val() == "all") {
+      if($("#courseFilterClasses option:selected").val() == "all") {
       $.ajax({
         url: "rest/professorclasses/" + localStorage.getItem("professor_id"),
         type: "GET",
@@ -265,7 +265,7 @@ var ClassesService = {
       });}
       else{
         $.ajax({
-          url: "rest/classesforcourse/" + $("#courseFilter option:selected").val(),
+          url: "rest/classesforcourse/" + $("#courseFilterClasses option:selected").val(),
           type: "GET",
           beforeSend: function(xhr) {
             xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
@@ -390,7 +390,7 @@ var ClassesService = {
           }
           
           // Set the HTML of the select element
-          $("#courseFilter").html(html);
+          $("#courseFilterClasses").html(html);
           
          
        }

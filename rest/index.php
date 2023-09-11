@@ -14,6 +14,7 @@ require_once __DIR__.'/services/NotificationService.class.php';
 require_once __DIR__.'/services/StudentCoursesService.class.php';
 require_once __DIR__.'/services/ClassesService.class.php';
 require_once __DIR__.'/services/UserService.class.php';
+require_once __DIR__.'/services/SpaceService.class.php';
 require_once __DIR__.'/dao/UserDao.class.php' ;
 
 Flight::register('userDao', 'UserDao');
@@ -24,6 +25,8 @@ Flight::register('studentService', 'StudentService');
 Flight::register('notificationService', 'NotificationService');
 Flight::register('studentcoursesService', 'StudentCoursesService');
 Flight::register('classesService', 'ClassesService');
+Flight::register('spaceService', 'SpaceService');
+
 
 
 /*
@@ -67,6 +70,8 @@ require_once __DIR__.'/routes/StudentRoutes.php';
 require_once __DIR__.'/routes/NotificationRoutes.php';
 require_once __DIR__.'/routes/StudentCoursesRoutes.php';
 require_once __DIR__.'/routes/ClassesRoutes.php';
+require_once __DIR__.'/routes/SpaceRoutes.php';
+
 
 
 

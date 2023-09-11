@@ -1,0 +1,107 @@
+<div>
+  <!-- END: Topbar -->
+</div>
+
+<select id="courseFilterSpaces" class="form-control" style=" width: 250px; margin-top:25px; margin-left:250px;">
+  <option value="course1">Course 1</option>
+  <option value="course2">Course 2</option>
+</select>
+
+<div class="container">
+  <div id="space-list" class="mt-4">
+    <!-- Posts will be dynamically added here -->
+  </div>
+</div>
+
+<div class="container marketing" style="margin-top: 100px">
+  <div class="row">
+    <div>
+      <button
+        class="btn btn-success btn-lg"
+        data-bs-toggle="modal"
+        data-bs-target="#addSpaceModal"
+        id="addSpaceButton"
+        style="
+          position: fixed;
+          right: 0;
+          bottom: 0;
+          margin: 25px 50px 75px 100px;
+        "
+      >
+        Add Space
+      </button>
+    </div>
+  </div>
+</div>
+
+<script src="js/jquery-3.6.0.min.js"></script>
+<script src="js/jQuerySPApp.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/jquery.validate.min.js"></script>
+<script src="js/space-service.js"></script>
+<script src="js/user-service.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!-- ADD MODAL -->
+<div class="modal fade" id="addSpaceModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="addSpaceForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Space</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            ;
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Title</label>
+            <input
+              name="title"
+              type="text"
+              class="form-control required"
+              placeholder="Enter title"
+            />
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input
+              name="description2"
+              type="text"
+              class="form-control required"
+              placeholder="Enter description"
+            />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary" onclick="saveSpace()">
+            Add
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $('#courseFilterSpaces').change(function() {
+    SpaceService.list();
+  });
+  var token = localStorage.getItem("token");
+  if (token) {
+    SpaceService.init();
+  } else {
+    window.location.replace("login.html");
+  }
+</script>

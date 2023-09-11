@@ -9,5 +9,16 @@ class SpaceService extends BaseService{
     parent::__construct(new SpaceDao());
   }
 
+  public function get_spaces_for_course($course_id){
+    return $this->dao->get_spaces_for_course($course_id);
+  }
+
+  public function get_reactions_for_space($id){
+    return $this->dao->get_reactions_for_space($id);
+  }
+
+  public function get_reactions(){
+    return $this->dao->get_reactions();
+  }
 }
 ?>

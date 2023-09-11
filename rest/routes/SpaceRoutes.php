@@ -89,4 +89,18 @@ Flight::route('DELETE /space/@id', function($id){
   Flight::spaceService()->delete($id);
   Flight::json(["message" => "deleted"]);
 });
+
+Flight::route('GET /reactionsforspace/@id', function($id){
+  Flight::json(Flight::spaceService()->get_reactions_for_space($id));
+});
+
+Flight::route('GET /spacesforcourse/@id', function($id){
+  Flight::json(Flight::spaceService()->get_spaces_for_course($id));
+});
+
+Flight::route('GET /reactions', function(){
+  Flight::json(Flight::spaceService()->get_reactions());
+});
+
+
 ?>

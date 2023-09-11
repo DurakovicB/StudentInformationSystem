@@ -6,7 +6,7 @@
 	</table>
 </body>
 
-<select id="courseFilter" class="form-control" style=" width: 250px; margin-top:25px; margin-left:200px;">
+<select id="courseFilterClasses" class="form-control" style=" width: 250px; margin-top:25px; margin-left:200px;">
     <option value="all">All Classes</option>
     <option value="class1">Class 1</option>
     <option value="class2">Class 2</option>
@@ -773,7 +773,7 @@ $('#classesCheckbox, #labsCheckbox').on('change', function() {
   updateListBasedOnCheckboxes();
 });
 
-$('#courseFilter').change(function() {
+$('#courseFilterClasses').change(function() {
 	clearTimetable();
     // Convert the select element into a jQuery object
     //var $courseFilter = $(this);

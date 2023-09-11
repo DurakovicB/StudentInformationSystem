@@ -81,7 +81,7 @@ showFinalGrade: function(student_id,course_id)
     {
       $("#addGradeButton").hide();
       $("#addCourseGradeButton").hide();
-      if($("#courseFilter").val()=="all"){
+      if($("#courseFilterStudents").val()=="all"){
       $.ajax({
             url: "rest/student",
             type: 'GET',
@@ -120,7 +120,7 @@ showFinalGrade: function(student_id,course_id)
           }
           else {
             $.ajax({
-              url: "rest/studentsforcourse/"+$("#courseFilter").val(),
+              url: "rest/studentsforcourse/"+$("#courseFilterStudents").val(),
               type: 'GET',
               contentType: "application/json",
               dataType: "json",
@@ -135,18 +135,22 @@ showFinalGrade: function(student_id,course_id)
                   if(data[i].gender.toLowerCase()=="male") picture ="resources/pictures/muskiavatar.png";
                   else picture = "resources/pictures/zenskiavatar.png";
                   html += `
-                  <div class="col-lg-3">
-                        <div class="card" style="width: 18rem;">
-                          <img class="card-img-top" src="`+picture+`" alt="Card image cap">
-                          <div class="card-body">
-                            <h5 class="card-title">`+ data[i].fullname +`</h5>
-                            <p class="card-text">`+ data[i].email +`</p>
-                            <div class="btn-group" role="group">
-                              <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
-                            </div>
-                            </div>
-                    </div>
-                </div>`;
+                <div class="col-lg-3">
+                      <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="`+picture+`" alt="Card image cap">
+                        <div class="card-body">
+                          <h5 class="card-title">`+ data[i].fullname +`</h5>
+                          <p class="card-text">`+ data[i].email +`</p>
+                          <p class="card-text">Phone: `+ data[i].phone +`</p>
+                          <p id='studentID' >StudentID: `+ data[i].id +`</p>
+                          <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary student-button" onclick="StudentService.showEditModal(`+data[i].id+`)">Edit</button>
+                            <button type="button" class="btn btn-danger student-button" onclick="StudentService.delete(`+data[i].id+`)">Delete</button>
+                            <button type="button" class="btn btn-success " onclick="StudentService.showCourses(`+data[i].id+`)">Show Courses</button>
+                          </div>
+                          </div>
+                  </div>
+              </div>`;
                 }
                 $('#student-list').html(html);
               }});
@@ -157,7 +161,7 @@ showFinalGrade: function(student_id,course_id)
   {
     $("#addGradeButton").hide();
     $("#addCourseGradeButton").hide();
-    if($("#courseFilter").val()=="all"){
+    if($("#courseFilterStudents").val()=="all"){
     $.ajax({
             url: "rest/studentcolleagues/"+localStorage.getItem("student_id"),
             type: 'GET',
@@ -192,7 +196,7 @@ showFinalGrade: function(student_id,course_id)
       }
       else {
         $.ajax({
-          url: "rest/studentsforcourse/"+$("#courseFilter").val(),
+          url: "rest/studentsforcourse/"+$("#courseFilterStudents").val(),
           type: 'GET',
           contentType: "application/json",
           dataType: "json",
@@ -227,7 +231,7 @@ showFinalGrade: function(student_id,course_id)
 
   } else if(localStorage.getItem("professor_id")!=0){
     $("#addStudentButton").hide();
-    if($("#courseFilter").val()=="all"){
+    if($("#courseFilterStudents").val()=="all"){
 
     $.ajax({
       url: "rest/professorstudents/"+localStorage.getItem("professor_id"),
@@ -262,7 +266,7 @@ showFinalGrade: function(student_id,course_id)
   }
       else{
         $.ajax({
-          url: "rest/studentsforcourse/"+$("#courseFilter").val(),
+          url: "rest/studentsforcourse/"+$("#courseFilterStudents").val(),
           type: 'GET',
           contentType: "application/json",
           dataType: "json",
@@ -490,7 +494,7 @@ showFinalGrade: function(student_id,course_id)
                   }
                   
                   // Set the HTML of the select element
-                  $("#courseFilter").html(html);
+                  $("#courseFilterStudents").html(html);
                   
                   // Function to calculate the total number of students
                   function calculateTotalStudents() {
@@ -536,7 +540,7 @@ showFinalGrade: function(student_id,course_id)
                     }
                     
                     // Set the HTML of the select element
-                    $("#courseFilter").html(html);
+                    $("#courseFilterStudents").html(html);
                     
                     // Function to calculate the total number of students
                     function calculateTotalStudents() {
@@ -583,7 +587,7 @@ showFinalGrade: function(student_id,course_id)
                     }
                     
                     // Set the HTML of the select element
-                    $("#courseFilter").html(html);
+                    $("#courseFilterStudents").html(html);
                     
                     // Function to calculate the total number of students
                     function calculateTotalStudents() {
@@ -610,7 +614,7 @@ showFinalGrade: function(student_id,course_id)
               
         },
  populateCourseGradeTable: function() {
-  var selectedCourseId = $("#courseFilter option:selected").val();
+  var selectedCourseId = $("#courseFilterStudents option:selected").val();
 
   // Make an Ajax request to fetch student data for the selected course
   $.ajax({
@@ -647,7 +651,7 @@ showFinalGrade: function(student_id,course_id)
 },
  assignMultipleGrades:function() {
   // Get the selected course ID
-  var selectedCourseId = $("#courseFilter option:selected").val();
+  var selectedCourseId = $("#courseFilterStudents option:selected").val();
 
   // Create an array to store grade objects
   var grades = [];

@@ -52,8 +52,9 @@ class ClassesDao extends BaseDao
 
   public function get_classes_for_professor($professor_id)
   {
-   $query = "SELECT day, GROUP_CONCAT(CONCAT(c.name,  ' - ', professor_name, ' - ', cr.name, ' - ', type, ' - ' , starting_time, ' - ', active) ORDER BY starting_time) AS classes_on_day
+   $query = "SELECT day, GROUP_CONCAT(CONCAT(c.name,  ' - ', p.fullname, ' - ', cr.name, ' - ', type, ' - ' , starting_time, ' - ', active) ORDER BY starting_time) AS classes_on_day
     FROM classes join course c on classes.course_id = c.id
+    join professor p on classes.professor_id = p.id
     join classroom cr on classes.classroom_id = cr.id
     WHERE c.id in (select id from course where professor_id = $professor_id)
     AND classes.active = 'true'
@@ -67,7 +68,7 @@ class ClassesDao extends BaseDao
 
   public function get_classes_for_course($courseId)
 {
-    $query = "SELECT day, GROUP_CONCAT(CONCAT(co.name,  ' - ', professor_name, ' - ', cr.name, ' - ', type, ' - ' , starting_time, ' - ',active) ORDER BY starting_time) AS classes_on_day
+    $query = "SELECT day, GROUP_CONCAT(CONCAT(co.name,  ' - ', p.fullname, ' - ', cr.name, ' - ', type, ' - ' , starting_time, ' - ',active) ORDER BY starting_time) AS classes_on_day
             FROM classes c
             JOIN classroom cr ON c.classroom_id = cr.id
             JOIN professor p ON c.professor_id = p.id

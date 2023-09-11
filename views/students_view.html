@@ -18,7 +18,7 @@
   
   
 
-  <select id="courseFilter" class="form-control" style="margin-bottom: 25px; width: 250px;">
+  <select id="courseFilterStudents" class="form-control" style="margin-bottom: 25px; width: 250px;">
     <option value="all">All Classes</option>
     <option value="class1">Class 1</option>
     <option value="class2">Class 2</option>
@@ -241,18 +241,18 @@
     StudentService.fillStudentOptions();
   });
   
-  $('#courseFilter').change(function() {
+  $('#courseFilterStudents').change(function() {
     // Convert the select element into a jQuery object
-    var $courseFilter = $(this);
+    var $courseFilterStudents = $(this);
 
     StudentService.list();
-    $('#courseName').val($courseFilter.find('option:selected').text());
+    $('#courseName').val($courseFilterStudents.find('option:selected').text());
 
-    if ($courseFilter.val() == "all") {
+    if ($courseFilterStudents.val() == "all") {
         $('#grade_modal_course_id').prop('disabled', false);
         $('#addCourseGradeButton').prop('disabled', true);
     } else {
-        $('#grade_modal_course_id').val($courseFilter.val());
+        $('#grade_modal_course_id').val($courseFilterStudents.val());
         $('#grade_modal_course_id').prop('disabled', true);
         $('#addCourseGradeButton').prop('disabled', false);
         $('#course_grade_modal_table tbody').empty();
