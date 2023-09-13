@@ -35,7 +35,18 @@ class SpaceDao extends BaseDao
 
   public function get_reactions(){
     $query="SELECT s.gender, sr.student_id, s.fullname as student_name, sr.comment, sr.space_id from space_reactions sr 
-    join student s on s.id = sr.student_id";
+    left join student s on s.id = sr.student_id";
+    $select = $this->connection->prepare($query);
+    $select->execute();
+    $result = $select->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
+
+  public function get_replies($space_id){
+    $query="SELECT s.gender, sr.student_id, s.fullname as student_name, sr.comment, sr.space_id from space_reactions sr 
+    left join student s on s.id = sr.student_id
+    where sr.space_id = $space_id
+    and comment is not null";
     $select = $this->connection->prepare($query);
     $select->execute();
     $result = $select->fetchAll(PDO::FETCH_ASSOC);

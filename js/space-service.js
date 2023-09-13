@@ -1,10 +1,7 @@
 var SpaceService={
     init:function(){
         SpaceService.populateCourseSelect();
-        setTimeout(function () {
-          // Code to run after the delay
-          SpaceService.list();
-        }, 500);
+        
     },
     populateCourseSelect:function() {
         if(localStorage.getItem("professor_id")!=0)
@@ -161,11 +158,15 @@ var SpaceService={
               var gender = comment.gender; // Assuming you have gender in reactionsData
       
               var picture;
-              if (gender.toLowerCase() === 'male') {
+              if(comment.gender){
+
+               if (gender.toLowerCase() === 'male') {
                 picture = 'resources/pictures/muskiavatar.png'; // Adjust the path to your custom profile picture
               } else {
                 picture = 'resources/pictures/zenskiavatar.png'; // Adjust the path to your custom profile picture
               }
+            } else if(localStorage.getItem("student_id")==0) picture="resources/pictures/studentcap.png";
+
       
               // Create a comment with a smaller profile picture
               var commentDiv = $('<div class="comment-div row">');
@@ -177,7 +178,10 @@ var SpaceService={
       
               // Create a div for the comment text and input section (on the right)
               var commentTextDiv = $('<div class="comment-text-div col-10">');
+              if(studentName)
               commentTextDiv.append('<p class="student-name">' + studentName + ':</p>');
+              else commentTextDiv.append('<p class="student-name">' + 'Professor' + ':</p>');
+
               commentTextDiv.append('<p class="comment-text">' + commentText + '</p>');
       
               // Append comment text and input section
@@ -224,74 +228,118 @@ var SpaceService={
       var reply = {};
       reply.space_id = spaceId;
       reply.comment = $("#reply" + spaceId).val();
-      if(localStorage.getItem("student_id")!=0) 
-      {
-        reply.student_name =$("#user_full_name");
-      reply.student_id=localStorage.getItem("student_id");
+    
+      if (localStorage.getItem("student_id") != 0) {
+        reply.student_name = $("#user_full_name").text(); // Assuming you have a DOM element with the user's full name
+        reply.student_id = localStorage.getItem("student_id");
+      } else {
+        reply.student_id = 0;
       }
-      else reply.student_id = 0;
+    
       if (reply.comment == "") return;
+    
       $.ajax({
         url: 'rest/reaction',
         type: 'POST',
         data: JSON.stringify(reply),
         contentType: "application/json",
         dataType: "json",
-        beforeSend: function(xhr){
+        beforeSend: function (xhr) {
           xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
         },
-        success: function(result) {
-          //Appending the new comment to the replies div
-           // Fetch the gender information for the student who posted the comment
-           $.ajax({
-            url: 'rest/student/' + localStorage.getItem("student_id"), // Replace with the correct URL
-            type: 'GET',
-            contentType: "application/json",
-            dataType: "json",
-            beforeSend: function(xhr){
-              xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
-            },
-            success: function(studentData) {
-              // Get the gender information from the student data
-              var gender = studentData.gender;
-        
-              // Create a new comment div with the correct profile picture
-              var commentDiv = $('<div class="comment-div row">');
-        
-              // Create a div for the profile picture (on the left)
-              var pictureDiv = $('<div class="profile-picture-div col-2" style="margin-right: 20px;">');
-              var picturePath = (gender.toLowerCase() === 'male') ? 'resources/pictures/muskiavatar.png' : 'resources/pictures/zenskiavatar.png';
-              pictureDiv.append('<img src="' + picturePath + '" alt="Profile Picture" style="width:40px;">');
-              commentDiv.append(pictureDiv);
-        
-              // Create a div for the comment text and input section (on the right)
-              var commentTextDiv = $('<div class="comment-text-div col-10">');
-              commentTextDiv.append('<p class="student-name">' + reply.fullname + ':</p>');
-              commentTextDiv.append('<p class="comment-text">' + reply.comment + '</p>');
-        
-              // Append comment text and input section
-              commentDiv.append(commentTextDiv);
-        
-              // Append the new comment div to the replies div
-              var spaceId = reply.space_id;
-              var repliesDiv = $('.replies-div[data-space-id="' + spaceId + '"]');
-              repliesDiv.append(commentDiv);
-        
-              // Clear the reply input field
-              $('#reply' + spaceId).val('');
-            },
-            error: function(XMLHttpRequest, textStatus, errorThrown) {
-              toastr.error(XMLHttpRequest.responseJSON.message);
-              UserService.logout();
-            }
-          });
+        success: function (result) {
+         
+             SpaceService.fetchComments(spaceId);
+           
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-        toastr.error(XMLHttpRequest.responseJSON.message);
-        UserService.logout();
-      }
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          toastr.error(XMLHttpRequest.responseJSON.message);
+          UserService.logout();
+        }
       });
-    }
+    },
+    fetchComments:function(spaceId) {
+      $.ajax({
+        url: 'rest/repliesforspace/' + spaceId, // Replace with the correct API endpoint to fetch comments
+        type: 'GET',
+        contentType: "application/json",
+        dataType: "json",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function (commentsData) {
+          // Update the comments section with the fetched comments
+          SpaceService.updateCommentsSection(spaceId, commentsData);
+        },
+        error: function (XMLHttpRequest, textStatus, errorThrown) {
+          toastr.error(XMLHttpRequest.responseJSON.message);
+          UserService.logout();
+        }
+      });
+    },
+    // Function to update the comments section with fetched comments
+updateCommentsSection: function(spaceId, commentsData) {
+  var repliesDiv = $('.replies-div[data-space-id="' + spaceId + '"]');
+  repliesDiv.empty(); // Clear existing comments
+
+  if (commentsData.length === 0) {
+    // Handle the case when there are no comments
+    repliesDiv.append('<p>No comments yet.</p>');
+  } else {
+    // Iterate through the fetched comments and append them to the comments section
+    commentsData.forEach(function (comment) {
+      // Create comment elements and append them to repliesDiv
+      var commentDiv = $('<div class="comment-div row">');
+
+      // Create a div for the profile picture (on the left)
+      var pictureDiv = $('<div class="profile-picture-div col-2" style="margin-right: 20px;">');
+      var picturePath = "";
+      if(comment.gender)
+      {
+        if(comment.gender.toLowerCase() == 'male') 
+        picturePath= 'resources/pictures/muskiavatar.png' ;
+        else picturePath= 'resources/pictures/zenskiavatar.png';
+      }
+      else picturePath="resources/pictures/studentcap.png"
+
+        pictureDiv.append('<img src="' + picturePath + '" alt="Profile Picture" style="width:40px;">');
+        commentDiv.append(pictureDiv);
+      
+      // Create a div for the comment text and input section (on the right)
+      var commentTextDiv = $('<div class="comment-text-div col-10">');
+      if(comment.student_id!=0) 
+        commentTextDiv.append('<p class="student-name">' + comment.student_name + ':</p>');
+      else 
+        commentTextDiv.append('<p class="student-name">Professor:</p>');
+      commentTextDiv.append('<p class="comment-text">' + comment.comment + '</p>');
+
+      // Append comment text and input section
+      commentDiv.append(commentTextDiv);
+
+      // Append the commentDiv to repliesDiv
+      repliesDiv.append(commentDiv);
+    });
+  }
+
+  // Add the reply input field and button
+  var replyInput = $('<input type="text" class="form-control" placeholder="Write a comment..." id="reply' + spaceId + '">');
+  var replyBtn = $('<button class="btn btn-primary btn-sm float-right">Reply</button>');
+
+  // Handle reply button click
+  replyBtn.on('click', function () {
+    // Call the reply function passing the spaceId
+    SpaceService.reply(spaceId);
+  });
+
+  // Append the reply input and button
+  repliesDiv.append(replyInput);
+  repliesDiv.append(replyBtn);
+
+  // Make the repliesDiv visible if there are comments
+  repliesDiv.removeClass('d-none');
+}
+
+    
                        
 
 

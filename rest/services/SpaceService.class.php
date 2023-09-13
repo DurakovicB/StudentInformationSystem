@@ -24,5 +24,9 @@ class SpaceService extends BaseService{
   public function insert_reaction($student_id, $space_id, $comment){
     return $this->dao->insert_reaction($student_id, $space_id, $comment);
   }
+
+  public function get_replies($space_id){
+    return $this->dao->get_replies($space_id);
+  }
 }
 ?>

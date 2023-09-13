@@ -107,4 +107,8 @@ Flight::route('POST /reaction', function(){
   Flight::json(Flight::spaceService()->insert_reaction($data['student_id'], $data['space_id'], $data['comment']));
 });
 
+Flight::route('GET /repliesforspace/@id', function($id){
+  Flight::json(Flight::spaceService()->get_replies($id));
+});
+
 ?>
