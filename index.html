@@ -40,6 +40,9 @@
         <li class="nav-item" style="  font-size: 20px;">
           <a class="nav-link " href="#students_view">Colleagues</a>
         </li>
+        <li class="nav-item" style="  font-size: 20px;">
+          <a class="nav-link " href="#spaces_view">Spaces</a>
+        </li>
 
       </ul>
         <!-- <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"> -->
@@ -65,6 +68,7 @@ body {
   <section id="notifications_view" data-load="notifications_view.html"></section>
   <section id="professors_view" data-load="professors_view.html"></section>
   <section id="timetable_view" data-load="timetable_view.html"></section>
+  <section id="spaces_view" data-load="spaces_view.html"></section>
 
 </main>
 
@@ -121,7 +125,7 @@ body {
   });
 
   function showView(view) {
-    const views = ['students_view', 'notifications_view', 'courses_grades_view', 'professors_view', 'timetable_view'];
+    const views = ['students_view', 'notifications_view', 'courses_grades_view', 'professors_view', 'timetable_view', 'spaces_view'];
     for (let v of views) {
       document.getElementById(v).style.display = v === view ? "inline" : "none";
     }
@@ -133,7 +137,11 @@ body {
     };
   }
   
-
+  app.route({
+    view: 'spaces_view',
+    onCreate: showView('spaces_view'),
+    onReady: onReady('spaces_view'),
+  });
   app.route({
     view: 'timetable_view',
     onCreate: showView('timetable_view'),
