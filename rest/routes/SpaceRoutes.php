@@ -111,4 +111,14 @@ Flight::route('GET /repliesforspace/@id', function($id){
   Flight::json(Flight::spaceService()->get_replies($id));
 });
 
+Flight::route('POST /space', function(){
+  Flight::json(Flight::spaceService()->add(Flight::request()->data->getData()));
+});
+
+Flight::route('DELETE /space/@id', function($id){
+  Flight::spaceService()->delete($id);
+  Flight::json(["message" => "deleted"]);
+});
+
+
 ?>

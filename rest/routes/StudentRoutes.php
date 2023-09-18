@@ -61,7 +61,7 @@ Flight::route('GET /studentcolleagues/@id', function($id){
 *         response=404,
 *         description="Something went wrong"
 *     ),
-summary="Add a new student "
+* summary="Add a new student "
 * )
 */
 Flight::route('POST /student', function(){
