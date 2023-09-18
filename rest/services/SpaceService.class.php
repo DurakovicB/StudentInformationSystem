@@ -32,5 +32,9 @@ class SpaceService extends BaseService{
   public function get_replies($space_id){
     return $this->dao->get_replies($space_id);
   }
+
+  public function delete_like($student_id, $space_id){
+    return $this->dao->delete_like($student_id, $space_id);
+  }
 }
 ?>

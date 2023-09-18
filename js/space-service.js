@@ -118,22 +118,22 @@ var SpaceService={
     
       function displaySpaces(spacesData, reactionsData) {
         var spaceList = $('#space-list');
-        
+      
         for (var i = 0; i < spacesData.length; i++) {
           var space = spacesData[i];
           var spaceId = space.id;
           var spaceTitle = space.title;
           var spaceContent = space.content;
           var comments = [];
-          var likeCount = 0;
+          var likeCount = 0; // Initialize like count for each space
       
           // Filter reactions for the current space
-          var reactionsForSpace = reactionsData.filter(function(reaction) {
+          var reactionsForSpace = reactionsData.filter(function (reaction) {
             return reaction.space_id === spaceId;
           });
       
           // Separate comments from likes
-          reactionsForSpace.forEach(function(reaction) {
+          reactionsForSpace.forEach(function (reaction) {
             if (reaction.comment !== null) {
               comments.push(reaction);
             } else {
@@ -156,15 +156,46 @@ var SpaceService={
             cardHeader.append(deleteButton);
           }
       
+          // Create a clickable like emoji with a default class
+          var likeEmoji = $('<p class="card-text text-muted like-emoji clickable" style="cursor: pointer;color: blue;" data-space-id="' + spaceId + '">👍 ' + likeCount + '</p>');
+
+          // Check if the space is liked by the user and change the emoji appearance
+          if (localStorage.getItem("student_id") != 0 && isSpaceLikedByStudent(spaceId)) {
+            likeEmoji.addClass('liked');
+          }
+          
+          // Add a click event handler for the like emoji
+          if (localStorage.getItem("student_id") != 0) {
+            likeEmoji.on('click', function () {
+              var spaceId = $(this).data('space-id');
+              var isLiked = $(this).hasClass('liked');
+              var likeCountElement = $(this); // Get the like count element by the clicked like emoji
+          
+              if (isLiked) {
+                // Call unlike function if already liked
+                SpaceService.unlike(spaceId);
+                $(this).removeClass('liked');
+                // Decrement like count for this space
+                var currentLikeCount = parseInt(likeCountElement.text().split(' ')[1]);
+                likeCountElement.text('👍 ' + (currentLikeCount - 1));
+              } else {
+                // Call like function if not liked
+                SpaceService.like(spaceId);
+                $(this).addClass('liked');
+                // Increment like count for this space
+                var currentLikeCount = parseInt(likeCountElement.text().split(' ')[1]);
+                likeCountElement.text('👍 ' + (currentLikeCount + 1));
+              }
+            });
+          }
+      
+          cardHeader.append(likeEmoji);
+      
           spaceCard.append(cardHeader);
       
           // Card Body with Content
           var cardBody = $('<div class="card-body">');
           cardBody.append('<p class="card-text">' + spaceContent + '</p>');
-      
-          // Display like count in the format of an emoji and count
-          var likeEmoji = '👍';
-          cardBody.append('<p class="card-text text-muted">' + likeEmoji + ' ' + likeCount + '</p>');
       
           // Create a "Show Replies" button for every space
           var showRepliesBtn = $('<button class="btn btn-link show-replies-btn" style="margin-bottom:10px" data-space-id="' + spaceId + '">Show Replies</button>');
@@ -177,13 +208,13 @@ var SpaceService={
           repliesDiv.prepend('<hr><h6>Comments</h6>');
       
           // Add comments to the replies div
-          comments.forEach(function(comment) {
+          comments.forEach(function (comment) {
             var studentName = comment.student_name; // Assuming you have student_name in reactionsData
             var commentText = comment.comment;
             var gender = comment.gender; // Assuming you have gender in reactionsData
       
             var picture;
-            if(comment.gender){
+            if (comment.gender) {
               if (gender.toLowerCase() === 'male') {
                 picture = 'resources/pictures/muskiavatar.png'; // Adjust the path to your custom profile picture
               } else {
@@ -203,7 +234,7 @@ var SpaceService={
       
             // Create a div for the comment text and input section (on the right)
             var commentTextDiv = $('<div class="comment-text-div col-10">');
-            if(studentName) {
+            if (studentName) {
               commentTextDiv.append('<p class="student-name">' + studentName + ':</p>');
             } else {
               commentTextDiv.append('<p class="student-name">Professor:</p>');
@@ -221,8 +252,8 @@ var SpaceService={
           var replyBtn = $('<button class="btn btn-primary btn-sm float-right">Reply</button>');
       
           // Handle reply button click
-          replyBtn.on('click', (function(id) {
-            return function() {
+          replyBtn.on('click', (function (id) {
+            return function () {
               SpaceService.reply(id); // Call SpaceService.reply with the correct space ID
             };
           })(spaceId));
@@ -245,10 +276,46 @@ var SpaceService={
           var repliesDiv = $('.replies-div[data-space-id="' + spaceId + '"]');
           repliesDiv.toggleClass('d-none');
         });
+      
+        function isSpaceLikedByStudent(space_id) {
+          student_id = localStorage.getItem("student_id");
+          var liked = false;
+      
+          // Make a GET request to fetch all reactions
+          $.ajax({
+            url: 'rest/reactions',
+            type: 'GET',
+            contentType: 'application/json',
+            dataType: 'json',
+            async: false, // Make the request synchronous for simplicity
+            beforeSend: function (xhr) {
+              xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+            },
+            success: function (reactionsData) {
+              // Check if there's a reaction from the student for the specified space with an empty content column (indicating a like)
+              for (var i = 0; i < reactionsData.length; i++) {
+                var reaction = reactionsData[i];
+                if (
+                  reaction.space_id === space_id &&
+                  reaction.student_id === student_id &&
+                  reaction.comment === null
+                ) {
+                  liked = true;
+                  break;
+                }
+              }
+            },
+            error: function (error) {
+              console.error('Error fetching reactions:', error);
+            }
+          });
+      
+          return liked;
+        }
       }
       
       
-
+      
     },
     reply: function(spaceId) {
       var reply = {};
@@ -402,11 +469,51 @@ var SpaceService={
           }
         });
       }
+    },
+    like: function(spaceId) {
+      // Get the student ID from localStorage
+      var studentId = localStorage.getItem('student_id');
+      
+      // Create a JSON object for the like reaction
+      var likeReaction = {
+        student_id: studentId,
+        space_id: spaceId,
+        comment: null // This indicates a like reaction (no comment)
+      };
+    
+      // Make a POST request to add the like reaction
+      $.ajax({
+        url: 'rest/reaction',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(likeReaction),
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+        },
+        success: function(response) {
+          // Handle the success response, if needed
+          //console.log('Like reaction added successfully:', response);
+        },
+        error: function(error) {
+          // Handle any errors that occur during the POST request
+          console.error('Error adding like reaction:', error);
+        }
+      });
+    },
+    unlike: function(spaceId) {
+
+      var studentId = localStorage.getItem('student_id');
+            $.ajax({
+              url: 'rest/like/' + studentId + '/'+ spaceId,
+              type: 'DELETE',
+              beforeSend: function(xhr){
+                xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
+              },
+              success: function(result) {
+                //SpaceService.list();
+              }
+            });
     }
-    
-
-    
-                       
-
 
       }

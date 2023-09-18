@@ -62,5 +62,16 @@ class SpaceDao extends BaseDao
     $result = $select->fetchAll(PDO::FETCH_ASSOC);
     return $result;
   }
+
+  public function delete_like($student_id, $space_id){
+    $query="DELETE FROM space_reactions
+    WHERE student_id = $student_id
+    AND space_id = $space_id
+    and comment is null";
+    $select = $this->connection->prepare($query);
+    $select->execute();
+    $result = $select->fetchAll(PDO::FETCH_ASSOC);
+    return $result;
+  }
 }
 ?>
