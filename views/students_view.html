@@ -39,11 +39,11 @@
 
 
 <!-- EDIT MODAL -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="updateModalLabel">Modal title</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -169,15 +169,14 @@
 </div>
 
 <!-- Add group grade modal -->
-<div class="modal fade" id="assignCourseGradeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="false">
-  <div class="modal-dialog modal-lg">
+<div class="modal fade" id="assignCourseGradeModal" tabindex="-1" aria-labelledby="assignCourseGradeModalLabel" aria-hidden="true" >
+  <div class="modal-dialog ">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Add Course Grades</h5>
+        <h5 class="modal-title" id="assignCourseGradeModalLabel">Add Course Grades</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Inputs for grade title and percentage weight -->
         <div class="mb-3">
           <label for="gradeTitle" class="form-label" id="course_grade_modal_course_name">Course:</label>
           <input type="text" class="form-control" id="courseName" placeholder="Course" disabled>
@@ -192,7 +191,6 @@
           <input type="number" class="form-control" id="percentageWeight" placeholder="Enter Percentage Weight">
         </div>
 
-        <!-- Table for student grades -->
         <table class="table" >
           <thead>
             <tr>
@@ -202,7 +200,6 @@
             </tr>
           </thead>
           <tbody id ="course_grade_modal_table">
-            <!-- Example rows, replace with dynamic data -->
             <tr>
               <td>1</td>
               <td>John Doe</td>
@@ -257,7 +254,7 @@
         $('#addCourseGradeButton').prop('disabled', false);
         $('#course_grade_modal_table tbody').empty();
 
-        if(localStorage.getItem("professor_id")==0)
+        if(localStorage.getItem("professor_id")!=0)
         {
         StudentService.populateCourseGradeTable();
         StudentService.fillStudentOptions();

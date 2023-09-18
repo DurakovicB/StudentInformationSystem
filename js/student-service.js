@@ -15,7 +15,7 @@ var StudentService = {
     StudentService.populateCourseSelect();
 
     $('#addCourseGradeButton').prop('disabled', true)
-    if(localStorage.getItem("student_id")!=0)$("#addStudentButton,#addStudentGradeButton").hide();
+    if(localStorage.getItem("student_id")!=0) $("#addStudentButton,#addStudentGradeButton").hide();
 
 
   },
@@ -375,7 +375,7 @@ showFinalGrade: function(student_id,course_id)
         xhr.setRequestHeader('Authorization', localStorage.getItem('token'));
       },
       success: function(result) {
-        $("#exampleModal").modal("hide");
+        $("#updateModal").modal("hide");
         $('.save-student-button').attr('disabled', false);
         $("#student-list").html('<div class="spinner-border" role="status"> <span class="sr-only"></span>  </div>');
         StudentService.list(); // perf optimization
@@ -400,7 +400,7 @@ showFinalGrade: function(student_id,course_id)
               $("#id").val(data.id);
               $("#phone").val(data.phone);
               $("#email").val(data.email);
-              $("#exampleModal").modal("show");
+              $("#updateModal").modal("show");
             }});
     },
     fillCourseOptions: function fillCourseOptions()
@@ -649,6 +649,7 @@ showFinalGrade: function(student_id,course_id)
       }
   });
 },
+
  assignMultipleGrades:function() {
   // Get the selected course ID
   var selectedCourseId = $("#courseFilterStudents option:selected").val();

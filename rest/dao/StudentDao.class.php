@@ -41,7 +41,7 @@ class StudentDao extends BaseDao
   }
 
   public function students_for_course($id){
-    $query= "Select * from student where id in (select student_id from student_courses where course_id=$id)";
+    $query= "Select * from student where id in (select student_id from student_courses where course_id=$id) order by id asc";
     $stmt = $this->connection->prepare($query);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
