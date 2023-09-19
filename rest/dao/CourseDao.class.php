@@ -14,9 +14,9 @@ class CourseDao extends BaseDao
 
   public function select_all()
   {
-    $query = "select distinct name, description, professor_id,course_id, COUNT(distinct sc.student_id) as student_count
+    $query = "select distinct name, description, professor_id,c.id as course_id, COUNT(distinct sc.student_id) as student_count
     from course c
-    join student_courses sc on c.id = sc.course_id
+    left join student_courses sc on c.id = sc.course_id
     group by c.id";
     $select = $this->connection->prepare($query);
     $select->execute();

@@ -31,25 +31,37 @@
 
 <!-- EDIT MODAL -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg"> <!-- Added 'modal-lg' for a larger modal -->
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header "> <!-- Changed header background color to 'bg-primary' and text color to 'text-light' -->
+        <h5 class="modal-title" id="exampleModalLabel">Edit Course</h5>
+        <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input id="id" type="hidden" />
-        <input id="name" type="text" placeholder="Name"/>
-        <input id="description" type="text" placeholder="Description"/>
-        <input id="professor_id" type="text" placeholder="ProfessorID"/>
+        <form>
+          <input id="id" type="hidden" />
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input id="name" type="text" class="form-control" placeholder="Name" />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input id="description" type="text" class="form-control" placeholder="Description" />
+          </div>
+          <div class="mb-3">
+            <label for="professor_id" class="form-label">Professor ID</label>
+            <input id="professor_id" type="text" class="form-control" placeholder="Professor ID" />
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-course-button" onclick="CourseService.update()">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="CourseService.update()">Save Changes</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ADD MODAL -->
 <div class="modal fade" id="addCourseModal" tabindex="-1" aria-hidden="true">
@@ -57,7 +69,7 @@
     <div class="modal-content">
       <form id="addCourseForm">
         <div class="modal-header">
-          <h5 class="modal-title" id="addModalLabel">Add Course</h5>
+          <h5 class="modal-title" id="addModalLabel" >Add Course</h5>
           <button type="button" class ="btn-close" data-bs-dismiss="modal" ; aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -76,7 +88,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary" >Submit</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" >Submit</button>
         </div>
       </form>
     </div>

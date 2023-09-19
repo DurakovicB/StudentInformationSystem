@@ -40,25 +40,37 @@
 
 <!-- EDIT MODAL -->
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg"> <!-- Added 'modal-lg' for a larger modal -->
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="updateModalLabel">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-header "> <!-- Changed header background color to 'bg-primary' and text color to 'text-light' -->
+        <h5 class="modal-title" id="updateModalLabel">Edit Student</h5>
+        <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <input id="id" type="hidden" />
-        <input id="fullname" type="text" />
-        <input id="email" type="text" />
-        <input id="phone" type="text" />
+        <form>
+          <input id="id" type="hidden" />
+          <div class="mb-3">
+            <label for="fullname" class="form-label">Full Name</label>
+            <input id="fullname" type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input id="email" type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input id="phone" type="text" class="form-control" />
+          </div>
+        </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary save-student-button" onclick="StudentService.update()">Save changes</button>
+        <button type="button" class="btn btn-primary" onclick="StudentService.update()">Save Changes</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <!-- ADD student MODAL -->
 

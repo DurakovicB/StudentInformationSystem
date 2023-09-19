@@ -188,6 +188,7 @@ var ClassesService = {
       });
     }
     else if (localStorage.getItem("professor_id") != 0){
+      $("#addClassButton").hide();
       if($("#courseFilterClasses option:selected").val() == "all") {
       $.ajax({
         url: "rest/professorclasses/" + localStorage.getItem("professor_id"),

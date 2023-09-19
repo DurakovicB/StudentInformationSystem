@@ -145,16 +145,25 @@ var SpaceService={
       
           // Create a Bootstrap card for the space
           var spaceCard = $('<div class="card mb-3">');
-      
+
           // Card Header with Title
           var cardHeader = $('<div class="card-header d-flex justify-content-between align-items-center">');
-          cardHeader.append('<h5 class="card-title">' + spaceTitle + '</h5>');
-      
+
+          // Create a div to hold the space title and delete button
+          var titleAndDeleteDiv = $('<div class="d-flex align-items-center">');
+
+          // Create the space title
+          var spaceTitleElement = $('<h5 class="card-title">' + spaceTitle + '</h5>');
+
           // Display the "Delete" button only for professors
           if (isProfessor) {
-            var deleteButton = $('<button type="button" class="btn btn-danger btn-sm" id="deleteButton" onclick="SpaceService.delete(' + spaceId + ')">X</button>');
-            cardHeader.append(deleteButton);
+              var deleteButton = $('<button type="button" class="btn btn-danger btn-sm ml-2" style ="margin-left:10px" id="deleteButton" onclick="SpaceService.delete(' + spaceId + ')">X</button>');
+              titleAndDeleteDiv.append(spaceTitleElement, deleteButton);
+          } else {
+              titleAndDeleteDiv.append(spaceTitleElement);
           }
+
+          cardHeader.append(titleAndDeleteDiv);
       
           // Create a clickable like emoji with a default class
           var likeEmoji = $('<p class="card-text text-muted like-emoji clickable" style="cursor: pointer;color: blue;" data-space-id="' + spaceId + '">👍 ' + likeCount + '</p>');

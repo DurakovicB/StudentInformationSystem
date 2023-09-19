@@ -75,8 +75,8 @@ var CourseService = {
                              <div class="" style="position: absolute; bottom: 0; width: 100%; margin-bottom:10px">
                              <p class="card-text">Course ID: `+ data[i].course_id +`</p>
                              <div class="btn-group" role="group">
-                               <button type="button" class="btn btn-primary course-button" onclick="CourseService.showEditModal(`+data[i].id+`)">Edit</button>
-                               <button type="button" class="btn btn-danger course-button" onclick="CourseService.delete(`+data[i].id+`)">Delete</button>
+                               <button type="button" class="btn btn-primary course-button" onclick="CourseService.showEditModal(`+data[i].course_id+`)">Edit</button>
+                               <button type="button" class="btn btn-danger course-button" onclick="CourseService.delete(`+data[i].course_id+`)">Delete</button>
                                <button type="button" class="btn btn-success course-button" onclick="CourseService.showProfessorModal(`+data[i].professor_id+`)">Show Professor</button>
                              </div>
                              </div>
@@ -145,14 +145,12 @@ var CourseService = {
                      <div class="col-lg-3">
                            <div class="card" style="width: 18rem;  margin-bottom: 25px;">
                              <img class="card-img-top" src="resources/pictures/book_image" alt="Card image cap">
-                             <div class="card-body" style="height: 310px">
+                             <div class="card-body" style="height: 250px">
                                <h5 class="card-title">`+ data[i].name +`</h5>
                                <p class="card-text">`+ data[i].description +`</p>
                                <div class="" style="position: absolute; bottom: 0; width: 100%; margin-bottom:10px">
                                 <p class="card-text">Course ID: `+ data[i].id +`</p>
-                                <div class="btn-group" role="group">
-                                  <button type="button" class="btn btn-success course-button">Open space</button>
-                                </div>
+                                
                               </div>
                             </div>
                        </div>
@@ -286,7 +284,7 @@ var CourseService = {
 
   showEditModal: function showEditModal(id) {
     $.ajax({
-         url: "rest/classes/"+id,
+         url: "rest/course/"+id,
          type: "GET",
          beforeSend: function(xhr){
            xhr.setRequestHeader('Authorization', localStorage.getItem('token'));

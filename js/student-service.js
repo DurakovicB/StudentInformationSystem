@@ -328,7 +328,7 @@ showFinalGrade: function(student_id,course_id)
                         <div class="col-lg-5 mb-4">
                           <div class="card course-card">
                             <img class="card-img-top" src="resources/pictures/book_image" alt="Course Image">
-                            <div class="card-body">
+                            <div class="card-body" style="height: 110px">
                               <h5 class="card-title">${data2[i].name}</h5>
                             </div>
                           </div>
